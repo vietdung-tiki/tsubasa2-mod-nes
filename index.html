@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="EN" lang="EN">
+
+<head>
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="content-type" content="no-cache, must-revalidate" />
+	<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT" />
+	<meta name="keywords"
+		content="Captain Tsubasa 2, CT2 trainer, CT2 hack, Captain Tsubasa 2 Hack tool, Hack, modified ROM, daymoe, Captain Tsubasa 2 mod" />
+	<meta name="description" content="Captain Tsubasa 2 Super Hack Tool (online version)" />
+	<title>Captain Tsubasa 2 Super Hack Tool (online version)</title>
+	<!--<style>html {filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); -webkit-filter: grayscale(100%); }</style>-->
+</head>
+
+<body>
+	<div id="main">
+		<div>
+			<p style="font-size: 1.1em"> by daymoe 2020-04-04 Upd 2025-05-11</p>
+			<a href="http://daymoe.com/rom/" rel="nofollow noopener noreferrer">Captain Tsubasa II Super Striker
+				RomMarket</a>&nbsp;<a href="https://daymoe.com/rom/message.html" rel="nofollow noopener noreferrer">Comments
+				(Post a message)</a><br>
+			<a href="javascript:;" class="a-upload">Open File<input type="file" name="" id="Nesfileupload"
+					accept=".nes"></a>&nbsp;<span id="isfileload">Page Loading...</span><br>
+			<button onClick="LoadOldData()">Load Cache</button>&nbsp;<button id="_set_data" onClick="SetOldData()"
+				style="display: none;">Set Cache</button>
+			<div id="_run_game_div" style="display: none;"><button id="_run_data" onClick="PlayNes()">Run Online</button>
+			</div>
+			<div><span id="checknes">type:???</span>&nbsp;<span id="ramtype">Ram Plus Type:???</span></div>
+			<button id="btnsave" onClick="savefile()" style="pointer-events: none">Save File</button>
+			<br>
+		</div>
+		<p id="result" style="width: 100%; word-break: break-all; word-wrap: break-word;"></p>
+		<div id="HackDiv" style="pointer-events: none;">
+			<ul id="menu">
+				<li class="ctab">Teams</li>
+				<li class="ctab">Players</li>
+				<li class="ctab">Commands</li>
+				<li class="ctab">AI&nbsp;</li>
+				<li class="ctab">Music</li>
+				<li class="ctab">HEX</li>
+				<li class="ctab">CHR</li>
+				<li class="tabFocus ctab">About</li>
+			</ul>
+			<ul id="content">
+				<li class="ctab">
+					<div id="TeamEdit">
+						<div>
+							<button id="Teamedit_x_0" af="#Teamedit_a_0" onclick="showTeamEditbuttondiv(0)">Team Editing</button>
+							<button id="Teamedit_x_1" af="#Teamedit_a_1" onclick="showTeamEditbuttondiv(1)">Team Sock Colors</button>
+						</div>
+						<div class="tab_content">
+							<div id="Teamedit_a_0">
+								<div id="Team_list"> </div>
+								<div id="Team_player_list"> </div>
+							</div>
+							<div id="Teamedit_a_1" style="display: none;">Team Socks</div>
+						</div>
+					</div>
+				</li>
+				<li class="ctab">
+					<div id="PlayerEdit">
+						<div>
+							<button id="playeredit_x_0" af="#playeredit_a_0" onclick="showPlayerEditbuttondiv(0)">Appearance \
+								Color</button>
+							<button id="playeredit_x_1" af="#playeredit_a_1" onclick="showPlayerEditbuttondiv(1)">Player
+								Abilities</button>
+							<button id="playeredit_x_2" af="#playeredit_a_2" onclick="showPlayerEditbuttondiv(2)">Portrait
+								Colors</button>
+							<button id="playeredit_x_3" af="#playeredit_a_3" onclick="showPlayerEditbuttondiv(3)">Portrait
+								Attachment</button>
+						</div>
+						<div class="tab_content">
+							<div id="playeredit_a_0">Appearance and Colors</div>
+							<div id="playeredit_a_1" style="display: none;">Player Abilities</div>
+							<div id="playeredit_a_2" style="display: none;">Duel Portrait Color Edit</div>
+							<div id="playeredit_a_3" style="display: none;">Duel Portrait Attachment</div>
+						</div>
+					</div>
+				</li>
+				<li class="ctab">
+					<div id="InstructTab"></div>
+				</li>
+				<li class="ctab">
+					<div>
+						<div id="AI_Players_Name">AI_Players</div>
+						<div id="AIDataTypeDiv">
+							<div>
+								<button id="aitab_0" af="#aitab0" onclick="showAIbuttondiv(0)">Attribute Index</button>
+								<button id="aitab_1" af="#aitab1" onclick="showAIbuttondiv(1)">Stride Types</button>
+								<button id="aitab_2" af="#aitab2" onclick="showAIbuttondiv(2)">Offensive Runs</button>
+								<button id="aitab_3" af="#aitab3" onclick="showAIbuttondiv(3)">Defensive Runs</button>
+								<button id="aitab_4" af="#aitab4" onclick="showAIbuttondiv(4)">NPC Offense</button>
+								<button id="aitab_5" af="#aitab5" onclick="showAIbuttondiv(5)">NPC Defense</button>
+								<button id="aitab_6" af="#aitab6" onclick="showAIbuttondiv(6)">GK Defense</button>
+								<button id="aitab_7" af="#aitab7" onclick="showAIbuttondiv(7)">Passing Intent</button>
+							</div>
+							<div class="tab_content">
+								<div id="aitab0"></div>
+								<div id="aitab1"></div>
+								<div id="aitab2"></div>
+								<div id="aitab3"></div>
+								<div id="aitab4"></div>
+								<div id="aitab5"></div>
+								<div id="aitab6"></div>
+								<div id="aitab7"></div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="ctab">
+					<div id="MusicEditTab"></div>
+				</li>
+				<li class="ctab">
+					<div id="Edit16Tab"></div>
+				</li>
+				<li class="ctab">
+					<div>
+						<div>
+							<button id="chr_x_0" af="#CHRTab" onclick="showCHRbuttondiv(0)">Chr</button>
+							<button id="chr_x_1" af="#BGview" onclick="showCHRbuttondiv(1)">Story Background</button>
+							<button id="chr_x_2" af="#BGview_0528" onclick="showCHRbuttondiv(2)">0528 Background</button>
+							<button id="chr_x_3" af="#SpriteView" onclick="showCHRbuttondiv(3)">0528 Sprites</button>
+						</div>
+						<div class="tab_content">
+							<div id="CHRTab"></div>
+							<div id="BGview" style="display: none;"></div>
+							<div id="BGview_0528" style="display: none;"></div>
+							<div id="SpriteView" style="display: none;"></div>
+						</div>
+					</div>
+				</li>
+				<li class="c ctab" style="pointer-events: auto;">
+					<span>On mobile, it’s recommended to use Chrome or Microsoft Edge.<br>Switching your phone to landscape
+						improves the experience.<br>The page may load slowly...<br>Available features: Team \ Appearance \ Ability \
+						Commands \ Music \ AI \ CHR \ Hex editor.</span><br>
+					<textarea style="width: 100%; resize: none; height: 180px;" readonly="readonly">
+2025.05.08 Improve emulator features tailored for CT2.
+2025.04.23 Modified the emulator referencing VirtuaNES source; now compatible with most mods (Japanese/Chinese, etc.)
+2025.04.20 Switched to the open-source emulator NesJs.
+Added support for mappers 74/195/198.
+Fixed an MMC3 bug in the emulator.
+Added cheat functionality / GamePad / palette / filters, etc.
+2023.12.01 Optimized parts of the code.
+2023.11.30 Added 0528 background previews (supports original and 1.32; manual address setting and editing not yet added).
+2023.11.21 Added story background data preview (plan to port the stitching tool features to the web).
+2023.11.21 Changed the default read/write cap for special shots to 8 types.
+2023.05.19 Chr editor fixes and some small additions.
+2023.05.18 Rewrote parts of Chr and added simple editing features.
+2023.04.24 Added sock color editing.
+2023.04.23 Added star player addition.
+2023.04.22 Added formation & tactics editing.
+2023.04.21 Added duel portrait attachment \ duel portrait color editing.
+2023.04.03 Updated the web emulator’s cheat section customization (similar to the PC EC, convenient for testing).
+2023.03.28 In Commands, added special skill viewer; supports original / universal and early blank-address patch mods.
+2023.03.27 Added command (skill) data view/edit; fixed team edit [regular blank address] data display.
+2023.03.24 Full AI viewer (web version is view-only; addresses are labeled).
+2023.03.16 Added Chr viewer.
+2023.03.15 Adjusted live preview–related code when modifying player appearance + colors.
+2022.04.27 Optimized hex editor data loading (very large files may load slowly; processing speed depends on the client device).
+2020.08.18 Fixed wrong team music addresses in the Chinese version.
+2020.04.04 Music editing supports preview (silent-audio bug excluded).
+2020.04.02 Added cache so you don’t have to reopen files frequently (may not always work).
+2020.04.01 Fixed a bug in player appearance editing.
+</textarea>
+					<span>After several updates, features are now close to the PC version.<br>Source code download: <a
+							href="src.zip?20250524">source (src)</a> (can be opened and run locally, emulator not included)<br>Note:
+						Mobile compatibility depends on the browser. For special needs, please use the PC version of Hack
+						CT2.</span>
+				</li>
+			</ul>
+		</div>
+		<div id='msgboxdiv' class='msgboxdiv'></div>
+	</div>
+</body>
+
+</html>
+<script>
+	var cssjsvernob = "?20250422";
+	function externallinks() {
+		if (!document.getElementsByTagName) return;
+		var anchors = document.getElementsByTagName("a");
+		for (var i = 0; i < anchors.length; i++) {
+			var anchor = anchors[i];
+			if (anchor.getAttribute("href") &&
+				anchor.getAttribute("rel") == "external")
+				anchor.target = "_blank";
+		}
+	}
+	window.onload = externallinks;
+</script>
+<script src="AllPageLoad.js?20250422"></script>
+<script src="Ct2.js?20250422"></script>

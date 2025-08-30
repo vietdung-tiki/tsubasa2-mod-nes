@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="dstyle.css?v37">
+  <link rel="stylesheet" type="text/css" href="css/gamepad.css?v37">
+  <title>NesJS_for Hack CT2 web</title>
+</head>
+
+<body>
+  <!-- Fullscreen container -->
+  <div id="fullscreenContainer" style="position:relative;">
+    <div id="statusBar" class="status-bar"
+      style="width:100%;white-space:pre-wrap;word-break:break-all;margin:0;padding:0;line-height:1.3; display:flex; align-items:center; justify-content:center; position:relative;">
+      <pre id="nesornsf"
+        style="width:100%;white-space:pre-wrap;word-break:break-all;margin:0;padding:0;line-height:1.3;text-align:center;display:block;">Controller keys — drag .nes/.nsf/.zip onto the page.  A/B = J/K,  D-pad = W/S/A/D,  Select = F,  Start = G.  Quick save/load: 1/2,  Slot list: 3,  Restart: F1.  Click me to toggle NSF/NES mode. <button id="statusBarClose" class="status-bar-close">X</button></pre>
+
+    </div>
+    <canvas id="output"></canvas>
+    <div class="menus">
+      <button id="menu-toggle" class="hamburger">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <ul id="menu-dropdown" class="menu-dropdown" style="display: none;">
+        <li><input id="rom" type="file"></li>
+        <li><button id="Cheat">Cheats</button><button id="debugPanelBtn">Debug Panel</button><button
+            id="controllerBtn">Key Mapping</button></li>
+        <li><button id="ct2cheat">Captain Tsubasa II Cheats</button></li>
+        <li>
+          <div>Palette: <select id="palettes"></select></div>
+        </li>
+        <li><button id="pause" style="display: none;">Pause</button></li>
+        <li><button id="openAshackRom" onclick="openAshackRom();">Force-enable 2000–6000 dynamic memory</button></li>
+        <li><button id="matchInfobtn">Match Info (in-game helper)</button></li>
+        <li><button id="fullsc_">Fullscreen</button><button id="reset">Soft Reset</button><button id="hardreset">Hard
+            Reset</button></li>
+        <li><button id="showjoybuttons">Touch Controls</button><label style="margin-left:8px;"><input type="checkbox"
+              id="showFpsCheckbox">Show FPS</label></li>
+        <li><button id="aboutme">About</button></li>
+
+      </ul>
+    </div>
+    <div id="mainArea">
+      <div id="logArea" style="display:none;"><br><br><br><br>
+        <pre id="log"></pre>
+        <p>
+          Source on <a href="https://github.com/angelo-wf/Nesjs">Github</a>.
+        </p>
+      </div>
+    </div>
+    <div id="fullscreen-exit-tip">Press Esc to exit fullscreen</div>
+    <button id="fullscreen-exit-btn">Exit Fullscreen</button>
+    <div id="wrapper" style="display:none;">
+      <button class="close-debug-btn" id="closeDebugPanelBtn" title="Close debug panel">&times;</button>
+      <div id="disasm_dragbar"
+        style="width:100%;height:18px;cursor:move;background:#e0e0e0;border-radius:8px 8px 0 0;margin-bottom:4px;text-align:center;font-size:13px;letter-spacing:2px;color:#888;">
+        Debugger (draggable)</div>
+      <div id="tr">
+        View: <select id="debugViewSelect">
+
+          <option value="3">Debugger (VirtuaNES-like)</option>
+          <option value="2">Memory Viewer</option>
+          <option value="0">CHR & Palette</option>
+          <option value="1">Nametables</option>
+        </select>
+
+        <div>
+          <canvas id="doutput" style="display: block;"></canvas>
+          <div id="chrviewdiv" style="display: none"><canvas id="chapage" width="128" height="128"></canvas><select
+              id="chapageID"></select>
+            <br><button id="ActChr">CHR dots</button><button id="ActSpi">Sprite dots</button>
+          </div>
+
+        </div>
+        <div id="viewram" style="display: none;">
+          <select id="ramtype">
+            <option value="0">CPU RAM</option>
+            <option value="1">PPU RAM</option>
+            <option value="2">PRG</option>
+            <option value="3">CHR</option>
+            <option value="4">Nametable RAM</option>
+            <option value="5">Palette</option>
+            <option value="6">Sprite RAM</option>
+          </select>
+          <button id="prepage">Prev Page</button>
+          <button id="nexpage">Next Page</button>
+
+          <div style=" background: #fff; color: #fff; font-family: monospace; font-size: 14px; ">
+            0x000000: 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 </div>
+          <div id="memory-viewer"
+            style="height: 400px; overflow-y: auto; background: #181818; color: #fff; font-family: monospace; font-size: 14px; border: 1px solid #444; position: relative;">
+            <div id="memory-fake-height"></div>
+            <pre id="dtextoutput" class="state"
+              style="margin: 0; white-space: pre; line-height: 1.5; padding: 0.5em;"></pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script src="js/afunction.js?v37"></script>
+  <script src="lib/zip.js?v37"></script>
+  <script src="lib/inflate.js?v37"></script>
+  <script src="nes/mappers.js?v37"></script>
+  <script src="nes/cpu.js?v37"></script>
+  <script src="nes/pipu.js?v37"></script>
+  <script src="nes/apu.js?v37"></script>
+  <script src="nes/nes.js?v37"></script>
+  <script src="js/debugger.js?v37"></script>
+  <script src="js/audio.js?v37"></script>
+  <script src="js/dbmain.js?v37"></script>
+  <script src="js/controller.js?v37"></script>
+  <script src="js/control.js?v37"></script>
+  <script src="js/gamepad.js?v37"></script>
+  <script src="js/cheats.js?v37"></script>
+  <script src="js/ramview.js?v37"></script>
+  <script src="js/chrview.js?v37"></script>
+  <script src="js/CT2info.js?v37"></script>
+  <script src="js/savemanager.js?v37"></script>
+  <script src="js/nsfmapper.js?v37"></script>
+  <script src="js/nsf.js?v37"></script>
+  <script src="js/nsfmain.js?v37"></script>
+  <script src="js/nsfCT2edit.js?v37"></script>
+  <script src="js/nsfdebugpl.js?v37"></script>
+  <script src="js/nsfdebug.js?v37"></script>
+  <script>
+
+    window.addEventListener('DOMContentLoaded', function () {
+      const statusBar = document.getElementById('statusBar');
+      const closeBtn = document.getElementById('statusBarClose');
+      if (statusBar) {
+        // Auto-hide after 15 seconds
+        const autoClose = setTimeout(() => {
+          statusBar.style.display = 'none';
+        }, 15000);
+        // Close status bar on X click
+        closeBtn.addEventListener('click', () => {
+          statusBar.style.display = 'none';
+          clearTimeout(autoClose);
+        });
+      }
+    });
+
+    // Debug panel show/hide logic
+    document.getElementById('debugPanelBtn').onclick = function () {
+      var wrapper = document.getElementById('wrapper');
+      // Disable debugger if ROM not loaded
+      if (!loaded) {
+        log("Please load a game before using the debug panel!", "debug");
+        wrapper.style.display = 'none';
+        return;
+      }
+      if (wrapper.style.display === 'none' || wrapper.style.display === '') {
+        wrapper.style.display = 'block';
+      } else {
+        wrapper.style.display = 'none';
+      }
+    };
+
+    function openAshackRom() {
+      this.nes.mapper._virtuaNESHack = true;
+      this.nes.reset();
+      log("Enabled and reloaded ROM automatically.", "hackMMC3");
+    }
+
+
+    document.getElementById('debugViewSelect').onchange = function () {
+      if (!loaded) return;
+      db.setView(parseInt(this.value));
+    };
+
+    // Menu interactivity
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuDropdown = document.getElementById('menu-dropdown');
+
+    menuToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Toggle menu
+      const isActive = menuToggle.classList.contains('active');
+      if (!isActive) {
+        menuToggle.classList.add('active');
+        menuDropdown.classList.add('show');
+      } else {
+        menuToggle.classList.remove('active');
+        menuDropdown.classList.remove('show');
+      }
+    });
+
+    // Prevent clicks inside the menu from closing it
+    menuDropdown.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  </script>
+</body>
+
+</html>
