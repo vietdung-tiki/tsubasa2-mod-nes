@@ -415,7 +415,7 @@ function ldAIData1(type) {
     for (var x = 0; x < 4; x++) {
       $('#AiEx_select_' + i + '_' + x).val(toHex16(NesHex[地址 + i * 4 + x]));
       $('#AiEx_' + i).html(
-        $('#AiEx_' + i).attr('af') + ' 地址:0x' + toHex16(地址 + i * 4, 5),
+        $('#AiEx_' + i).attr('af') + ' Addr:0x' + toHex16(地址 + i * 4, 5),
       );
     }
   }
@@ -446,7 +446,7 @@ function ldAIData2(type) {
     for (var x = 0; x < 4; x++) {
       $('#AiEx1_select_' + i + '_' + x).val(toHex16(NesHex[地址 + i * 4 + x]));
       $('#AiEx1_' + i).html(
-        $('#AiEx1_' + i).attr('af') + ' 地址:0x' + toHex16(地址 + i * 4, 5),
+        $('#AiEx1_' + i).attr('af') + ' Addr:0x' + toHex16(地址 + i * 4, 5),
       );
     }
   }
@@ -480,7 +480,7 @@ function ldAIData3(type) {
   outAiStr();
   $('#AiEx2_' + (type + 1)).html(
     $('#AiEx2_' + (type + 1)).attr('af') +
-      ' 地址:0x' +
+      ' Addr:0x' +
       toHex16(地址 + type * 4, 5),
   );
 }

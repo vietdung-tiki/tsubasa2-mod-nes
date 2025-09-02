@@ -51,7 +51,7 @@ function BulidHTML_ChrHTML() {
       '<span>View size:</span>' +
       '<select id="chrSizeSelect"><option value="128">128x128</option><option value="256" selected>256x256</option><option value="512">512x512</option></select><br>' +
       '<span id="tileInfo"></span><br>' +
-      '<span id="tileCode"></span><br>' +
+      '<textarea id="tileCode"></textarea><button onclick="changeTile()">Apply</button><br>' +
       '<span>Brush:</span><select id="penSelect"><option value="0"></option><option value="1"></option><option value="2"></option><option value="3"></option></select>&nbsp;' +
       '<canvas id="penCanvas" width="32" height="32"></canvas>&nbsp;' +
       '<span>Clipboard:</span><canvas id="PastTileCanvas" width="32" height="32"></canvas><br>' +
@@ -151,6 +151,13 @@ function BulidHTML_BG_View_Html() {
 }
 
 function BulidHTML_Team_Player() {
+  // Select stage
+  $('#Select_stage').empty();
+  $('#Select_stage').append(
+    $(`<span><input id="sel_stage" type="checkbox"> Can select stage </span>`),
+    $(`<button onclick="ChangeSelStage()">Apply</button>`),
+  );
+
   // Players
   $('#Team_player_list').empty();
   var Team_player_list =
@@ -874,7 +881,7 @@ function BulidInstructTabHtml() {
   htmlstr +=
     "<div><button onclick='ChangeInstruct();'>Apply Command Changes ↑</button></div></div>";
   htmlstr +=
-    "<div id='Instructedit_a_1'><div><span>Specials view/edit supports original & some hacks.</span></div><div><span>Special:</span><select id='SikllNameList' onchange='GetSkill();'>";
+    "<div id='Instructedit_a_1'><div><span>Specials view/edit supports original & some hacks.</span></div><div><span>Special:</span><select id='SikllNameList' onchange='LoadSkills();'>";
   htmlstr = fillSelectlist_S(htmlstr, PlayerName_Skill);
   htmlstr +=
     "</select><button id='SkillViewType' onclick='ChangeSkillView();'>Toggle Mode</button></div><span id='SkillStr'></span>";
@@ -907,7 +914,7 @@ function GetSkillEdit() {
   str += '</span></div>';
   var shootaddr = ramcheck(bdz, NesHex);
 
-  var Skilltype = SkillSTR2_.split(',');
+  var Skilltype = Skill_TYPE_.split(',');
   Skilltype[0] = 'Special Shot';
   var selectstr =
     "<div><span>Special type:</span><select id='skilladdtype' onchange='Changeskilladdtype();'>";
@@ -921,7 +928,7 @@ function GetSkillEdit() {
   for (var i = 0; i < skilllistshoot.length; i++) {
     let sub = '#ulshoot' + i;
     selectstr +=
-      "<li style='display:block;'><button af='ulshoot' onclick='DelSkillsub(this);'>Del</button><span>" +
+      "<li style='display:block;'><button af='ulshoot' onclick='DelSkillsub(this);'>Del (Shot)</button><span>" +
       skilllistshoot[i] +
       '</span></li>';
   }
@@ -931,13 +938,13 @@ function GetSkillEdit() {
   for (var i = 0; i < skilllistother.length; i++) {
     let sub = '#ulother' + i;
     selectstr +=
-      "<li style='display:block;'><button af='ulother' onclick='DelSkillsub(this);'>Del</button><span>" +
-      skilllistother[i] +
+      `<li style='display:block;'><button af='ulother' onclick='DelSkillsub(this);'>Del (${skilllistother[i][1]})</button><span>` +
+      skilllistother[i][0] +
       '</span></li>';
   }
   selectstr += '</ul>';
   selectstr +=
-    "<button onclick='Add_Skills();'>Apply Special Changes</button><span> Force new free space → <input id='usenewaddr' type='checkbox'>(avoid unless needed)</span><br>";
+    "<button onclick='Save_Skills();'>Apply Special Changes</button><span> Force new free space → <input id='usenewaddr' type='checkbox'>(avoid unless needed)</span><br>";
   selectstr +=
     '<div><span>Special add notes<br>The 7-class skill index uses 2*7=0x0E bytes; Special Shot max uses 0x12 bytes.<br>A generic non-shot special index uses 0x0A bytes.' +
     '<br>Single-person special max uses 0x1C bytes (for duo special, write 0xFF in the 2nd byte).<br>Forcing generic index may crash the game.<br>Generic index bytes: 01 02 03 04 05 06 81 82 83 84 00' +

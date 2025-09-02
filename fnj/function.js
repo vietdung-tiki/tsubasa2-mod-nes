@@ -233,13 +233,13 @@ function CAddTeam() {
 
     $('#Add_Team_Select').css('display', 'inline');
     $('#addteam').css('display', 'inline');
-    $('#showadteambtn').html('队伍编辑');
+    $('#showadteambtn').html('Team Edit');
   } else {
     $('#playerlistdiv').css('display', 'inline');
     if ($('#Team_Select').get(0).selectedIndex == 2) {
       $('#replayerlistdiv').css('display', 'inline');
     }
-    $('#showadteambtn').html('球星添加');
+    $('#showadteambtn').html('Add Star Player');
     $('#Team_Select').css('display', 'inline');
     if ($('#Team_Select').get(0).selectedIndex >= 3) {
       $('#Team_AKDFdiv').css('display', 'inline');
@@ -423,9 +423,38 @@ function addteamclick() {
 
 var 阵型addr = 0;
 
+function ChangeSelStage() {
+  var isSel = $('#sel_stage').is(':checked');
+  if (isSel) {
+    NesHex[0x127] = 0xa9;
+    NesHex[0x12e] = 0xa9;
+  } else {
+    NesHex[0x127] = 0xa2;
+    NesHex[0x12e] = 0xa0;
+  }
+  alertMsg('#isfileload', 'green', 'Team data updated successfully!');
+}
+
+function ApplyPatch() {
+  var codes = $('#patch_code').val().replace(/;.*/g, '').trim().split('\n');
+  codes.forEach((code) => {
+    var addr = Number('0x' + code.split('=')[0]);
+    var vals = code.split('=')[1].trim().split(' ');
+    for (var i = 0; i < vals.length; i++) {
+      NesHex[addr + i] = vals[i];
+    }
+  });
+  alertMsg('#isfileload', 'green', 'Patch updated successfully!');
+}
+
 function TeamSelectChange() {
   $('#replayerlistdiv').css('display', 'none');
   // Team_player_list
+
+  // Select stage
+  var isSelStage =
+    NesHex[0x127].toString(16) == 'a9' && NesHex[0x12e].toString(16) == 'a9';
+  $('#sel_stage').attr('checked', isSelStage);
 
   try {
     var selectitems = document
@@ -634,7 +663,8 @@ function fillSelectlist_S(str, listdbs) {
 //拼接option字符串 指定长度按16进制字符串
 function fillSelectlist_S_16(str, len) {
   for (var i = 0; i < len; i++) {
-    str += '<option value= "' + i + '">' + toHex16(i) + '</option>';
+    // str += '<option value= "' + i + '">' + toHex16(i) + '</option>';
+    str += '<option value= "' + i + '">' + i + '</option>';
   }
   return str;
 }
