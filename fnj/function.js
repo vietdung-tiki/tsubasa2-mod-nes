@@ -9,40 +9,33 @@ var Is1v32 = false;
 //Start---------保存文件相关
 var filenamenes = '';
 
-function fake_click(obj) {
-  var ev = document.createEvent('MouseEvents');
-  ev.initMouseEvent(
-    'click',
-    true,
-    false,
-    window,
-    0,
-    0,
-    0,
-    0,
-    0,
-    false,
-    false,
-    false,
-    false,
-    0,
-    null,
-  );
-  obj.dispatchEvent(ev);
-}
-
-function export_raw(name, data) {
-  var urlObject = window.URL || window.webkitURL || window;
-  var ui8 = Uint8Array.from(data); //10进制数组进行转换
-  var export_blob = new Blob([ui8]);
-  var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
-  save_link.href = urlObject.createObjectURL(export_blob);
-  save_link.download = name;
-  fake_click(save_link);
-}
-
-function savefile() {
-  export_raw(gettimenow() + filenamenes, NesHex);
+async function savefile() {
+  var ui8 = Uint8Array.from(NesHex);
+  if (window.showSaveFilePicker) {
+    const handle = await window.showSaveFilePicker({
+      suggestedName: filenamenes,
+      types: [
+        {
+          description: 'Binary',
+          accept: { 'application/octet-stream': ['.bin', '.nes'] },
+        },
+      ],
+    });
+    const w = await handle.createWritable();
+    await w.write(ui8); // Uint8Array is fine
+    await w.close();
+  } else {
+    const blob = new Blob([ui8], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = Object.assign(document.createElement('a'), {
+      href: url,
+      download: filenamenes,
+    });
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
 }
 
 function gettimenow() {
