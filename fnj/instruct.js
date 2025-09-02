@@ -42,9 +42,9 @@ function GetInstruct() {
   $('#InstructW').val(威力);
   $('#InstructT').val(体力);
   $('#InstructTempText').html(
-    '指令数据地址:0x' +
+    'Instruction data address:0x' +
       toHex16(指令数据Addr, 5) +
-      ' 肖像数据地址:0x' +
+      ' Portrait data address:0x' +
       toHex16(肖像数据地址, 5),
   );
 }
@@ -54,17 +54,17 @@ function GetInstruct() {
 function CheckInstructB() {
   if ($('#InstructB').get(0).selectedIndex % 4 == 3) {
     $('#InstructTempText').html(
-      '余数为3的暴力值将造成未知BUG,请更改暴力值.' +
-        '<br>指令数据地址:0x' +
+      'A Brutality value with a remainder of 3 will cause an unknown bug. Please change the Brutality value.' +
+        '<br>Instruction data address: 0x' +
         toHex16(指令数据Addr, 5) +
-        ' 肖像数据地址:0x' +
+        ' Portrait data address: 0x' +
         toHex16(肖像数据地址, 5),
     );
   } else {
     $('#InstructTempText').html(
-      '指令数据地址:0x' +
+      'Instruction data address: 0x' +
         toHex16(指令数据Addr, 5) +
-        ' 肖像数据地址:0x' +
+        ' Portrait data address: 0x' +
         toHex16(肖像数据地址, 5),
     );
   }
@@ -135,7 +135,7 @@ function CheckInstructT() {
 var skilllistshoot = [];
 var skilllistother = [];
 
-function GetSkill() {
+function LoadSkills() {
   skilllistshoot = [];
   skilllistother = [];
   var xdz = $('#SikllNameList').get(0).selectedIndex * 2 + 球员必杀索引;
@@ -159,24 +159,26 @@ function GetSkill() {
       ' ';
   }
   var shootaddr = ramcheck(bdz, NesHex); //继续跳转索引;0x30000 + NesHex[bdz + 1] * 0x100 + NesHex[bdz] + 0x10; //ramcheck(bdz, NesHex);
-  var SkillSTR2 = SkillSTR2_.split(',');
-  var Skill0 = Skill0_.split(',');
-  var Skill1 = Skill1_.split(',');
-  var Skill2 = Skill2_.split(',');
-  var Skill3 = Skill3_.split(',');
-  var Skill4 = Skill4_.split(',');
-  var Skill5 = Skill5_.split(',');
-  var Skill6 = Skill6_.split(',');
+  var lstSTYPE = Skill_TYPE_.split(',');
+  var lstSHOT = Skill_SHOT_.split(',');
+  var lstPASS = Skill_PASS_.split(',');
+  var lstDRIBB = Skill_DRIBBLE_.split(',');
+  var lstCOMBO = Skill_COMBO_.split(',');
+  var lstBLOCK = Skill_BLOCK_.split(',');
+  var lstTACKLE = Skill_TACKLE_.split(',');
+  var lstICEPT = Skill_ICEPT_.split(',');
+  var lstGK = Skill_GK_.split(',');
 
-  BindSkillStrO(Skill1, SkillSTR2, 1, bdz + 2, bdz + 3); //传/过人/二过一等
-  BindSkillStrO(Skill2, SkillSTR2, 2, bdz + 4, bdz + 5);
-  BindSkillStrO(Skill3, SkillSTR2, 3, bdz + 6, bdz + 7);
-  BindSkillStrO(Skill4, SkillSTR2, 4, bdz + 8, bdz + 9);
-  BindSkillStrO(Skill5, SkillSTR2, 5, bdz + 10, bdz + 11);
-  BindSkillStrO(Skill6, SkillSTR2, 6, bdz + 12, bdz + 13);
+  BindSkillStrO(lstPASS, lstSTYPE, 1, bdz + 2, bdz + 3, 'Pass'); //传/过人/二过一等
+  BindSkillStrO(lstDRIBB, lstSTYPE, 2, bdz + 4, bdz + 5, 'Dribble');
+  BindSkillStrO(lstCOMBO, lstSTYPE, 3, bdz + 6, bdz + 7, 'Combo');
+  BindSkillStrO(lstBLOCK, lstSTYPE, 4, bdz + 8, bdz + 9, 'Block');
+  BindSkillStrO(lstTACKLE, lstSTYPE, 5, bdz + 10, bdz + 11, 'Tackle');
+  BindSkillStrO(lstICEPT, lstSTYPE, 6, bdz + 12, bdz + 13, 'Intercept');
+  BindSkillStrO(lstGK, lstSTYPE, 7, bdz + 14, bdz + 15, 'GK');
 
   if (NesHex[bdz] == 0x00 && NesHex[bdz + 1] == 0x00) {
-    SkillSTR2[0] = SkillSTR2[0] + '必杀射门 : 无<br>';
+    lstSTYPE[0] = lstSTYPE[0] + 'Special Shot: none<br>';
   } else {
     var 射门索引低位 = NesHex[bdz];
     var 射门索引高位 = NesHex[bdz + 1];
@@ -187,14 +189,14 @@ function GetSkill() {
       if (NesHex[shootaddr + i] == 0xff) {
         i++;
       }
-      for (var x = 0; x < Skill0.length; x++) {
+      for (var x = 0; x < lstSHOT.length; x++) {
         if (skilllistshoot.length > 7) {
           break;
         }
-        if (parseInt(Skill0[x].substr(0, 2), 16) == NesHex[shootaddr + i]) {
+        if (parseInt(lstSHOT[x].substr(0, 2), 16) == NesHex[shootaddr + i]) {
           if (i == 0) {
-            SkillSTR2[0] =
-              SkillSTR2[0] +
+            lstSTYPE[0] =
+              lstSTYPE[0] +
               'Special Shot:            Index ' +
               toHex16(射门索引低位) +
               ' ' +
@@ -202,18 +204,18 @@ function GetSkill() {
               ' <br>Special Shot:            Address 0x' +
               toHex16(shootaddr, 5) +
               ':' +
-              Skill0[x] +
+              lstSHOT[x] +
               '<br>';
           } else {
-            SkillSTR2[0] =
-              SkillSTR2[0] +
+            lstSTYPE[0] =
+              lstSTYPE[0] +
               'Special Shot:            Address 0x' +
               toHex16(shootaddr + i, 5) +
               ':' +
-              Skill0[x] +
+              lstSHOT[x] +
               '<br>';
           }
-          skilllistshoot.push(Skill0[x]);
+          skilllistshoot.push(lstSHOT[x]);
           //SkillSTR2[0] = SkillSTR2[0] + Skill0[x] + "<br>";
         }
       }
@@ -237,29 +239,29 @@ function GetSkill() {
     }
   }
   str += '<br>';
-  str += SkillSTR2[0];
-  for (var i = 1; i < SkillSTR2.length; i++) {
-    str += SkillSTR2[i] + '<br>';
+  str += lstSTYPE[0];
+  for (var i = 1; i < lstSTYPE.length; i++) {
+    str += lstSTYPE[i] + '<br>';
   }
   $('#SkillStr').html(str);
   GetSkillEdit();
   Changeskilladdtype();
 }
 
-function BindSkillStrO(strx1, strx2, ix, bd1, bd2) {
+function BindSkillStrO(lstSkills, lstTypes, ix, bd1, bd2, nm) {
   if (NesHex[bd1] == 0x00 && NesHex[bd2] == 0x00) {
-    strx2[ix] = strx2[ix] + ': none';
-    skilllistother.push('none');
+    lstTypes[ix] = lstTypes[ix] + ': none';
+    skilllistother.push(['none', nm]);
   } else {
-    BindSkillStr(strx1, strx2, ix, bd1, bd2);
+    BindSkillStr(lstSkills, lstTypes, ix, bd1, bd2, nm);
   }
 }
 
-function BindSkillStr(strx1, strx2, ix, bd1, bd2) {
-  for (var i = 0; i < strx1.length; i++) {
-    if (strx1[i].substr(0, 2) == toHex16(NesHex[ramcheck(bd1, NesHex)])) {
-      strx2[ix] =
-        strx2[ix] +
+function BindSkillStr(lstSkills, lstTypes, ix, bd1, bd2, nm) {
+  for (var i = 0; i < lstSkills.length; i++) {
+    if (lstSkills[i].substr(0, 2) == toHex16(NesHex[ramcheck(bd1, NesHex)])) {
+      lstTypes[ix] =
+        lstTypes[ix] +
         ': Index ' +
         toHex16(NesHex[bd1]) +
         ' ' +
@@ -267,8 +269,8 @@ function BindSkillStr(strx1, strx2, ix, bd1, bd2) {
         ' Address 0x' +
         toHex16(ramcheck(bd1, NesHex), 5) +
         ':' +
-        strx1[i];
-      skilllistother.push(strx1[i]);
+        lstSkills[i];
+      skilllistother.push([lstSkills[i], nm]);
     }
   }
 }
@@ -359,7 +361,7 @@ function CheckTempaddr2(dz) {
   return dz - 0x10;
 }
 
-function Add_Skills() {
+function Save_Skills() {
   var 总索引 = $('#SikllNameList').get(0).selectedIndex * 2 + 球员必杀索引;
   var 开关索引1 = 0;
   var 开关索引2 = 0;
@@ -367,16 +369,18 @@ function Add_Skills() {
   var skillothers = [
     0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x81, 0x82, 0x83, 0x84, 0x00,
   ];
-  var x_01 = [0xe5, 0xff];
-  var x_02 = [0xe6, 0xff];
-  var x_03 = [0xe7, 0xff];
-  var x_04 = [0xe8, 0xff];
-  var x_05 = [0xe9, 0xff];
-  var x_06 = [0xea, 0xff];
-  var x_81 = [0xeb, 0xff];
-  var x_82 = [0xec, 0xff];
-  var x_83 = [0xed, 0xff];
-  var x_84 = [0xee, 0xff];
+  var xx = {
+    '01': [0xe5, 0xff, 0x01],
+    '02': [0xe6, 0xff],
+    '03': [0xe7, 0xff],
+    '04': [0xe8, 0xff],
+    '05': [0xe9, 0xff],
+    '06': [0xea, 0xff],
+    81: [0xeb, 0xff, 0x01],
+    82: [0xec, 0xff, 0x03],
+    83: [0xed, 0xff, 0x0a],
+    84: [0xee, 0xff, 0x20],
+  };
   var dz = 0; //总索引;// ramcheck(总索引, NesHex);
 
   var usenew = $('#usenewaddr').is(':checked');
@@ -394,16 +398,18 @@ function Add_Skills() {
     for (var i = 0; i < skillothers.length; i++) {
       NesHex[0x78015 + i] = skillothers[i];
     }
-    x_01 = [0x05, 0x50];
-    x_02 = [0x06, 0x50];
-    x_03 = [0x07, 0x50];
-    x_04 = [0x08, 0x50];
-    x_05 = [0x09, 0x50];
-    x_06 = [0x0a, 0x50];
-    x_81 = [0x0b, 0x50];
-    x_82 = [0x0c, 0x50];
-    x_83 = [0x0d, 0x50];
-    x_84 = [0x0e, 0x50];
+    xx = {
+      '01': [0x05, 0x50],
+      '02': [0x06, 0x50],
+      '03': [0x07, 0x50],
+      '04': [0x08, 0x50],
+      '05': [0x09, 0x50],
+      '06': [0x0a, 0x50],
+      81: [0x0b, 0x50],
+      82: [0x0c, 0x50],
+      83: [0x0d, 0x50],
+      84: [0x0e, 0x50],
+    };
     //空地址
     if (
       NesHex[总索引 + 1] == 0x50 ||
@@ -469,16 +475,18 @@ function Add_Skills() {
   }
 
   if (Is1v32 == true) {
-    x_01 = [0xe5, 0x7f];
-    x_02 = [0xe6, 0x7f];
-    x_03 = [0xe7, 0x7f];
-    x_04 = [0xe8, 0x7f];
-    x_05 = [0xe9, 0x7f];
-    x_06 = [0xea, 0x7f];
-    x_81 = [0xeb, 0x7f];
-    x_82 = [0xec, 0x7f];
-    x_83 = [0xed, 0x7f];
-    x_84 = [0xee, 0x7f];
+    xx = {
+      '01': [0xe5, 0x7f],
+      '02': [0xe6, 0x7f],
+      '03': [0xe7, 0x7f],
+      '04': [0xe8, 0x7f],
+      '05': [0xe9, 0x7f],
+      '06': [0xea, 0x7f],
+      81: [0xeb, 0x7f],
+      82: [0xec, 0x7f],
+      83: [0xed, 0x7f],
+      84: [0xee, 0x7f],
+    };
     for (var i = 0; i < skillothers.length; i++) {
       NesHex[0x7ff5 + i] = skillothers[i];
     }
@@ -521,7 +529,7 @@ function Add_Skills() {
 
   NesHex[dz] = parseInt(toHex16(dz + 14 - 0x10, 4).substr(2, 2), 16);
   NesHex[dz + 1] = parseInt(toHex16(dz + 14 - 0x10, 4).substr(0, 2), 16);
-  //必杀射门数据/是否写入新的空地址
+  // Special Shot/Whether to write to a new empty address
   if (rewrite == true && usenew == false) {
     var ck = ramcheck(总索引, NesHex) - 0x10;
     NesHex[总索引] = parseInt(toHex16(ck - 0x10, 4).substr(2, 2), 16);
@@ -568,177 +576,70 @@ function Add_Skills() {
   }
   SkillByte = [];
   var addrtemp = 2;
-  //传球
-  if ($('#ulother').children().eq(0).find('span').text() == '无') {
+  // Special Pass
+  if ($('#ulother').children().eq(0).find('span').text() == 'none') {
     NesHex[dz + addrtemp] = NesHex[dz + addrtemp + 1] = 0x00;
   } else {
-    switch ($('#ulother').children().eq(0).find('span').text().substr(1, 1)) {
-      case '1':
-        NesHex[dz + addrtemp] = x_01[0];
-        NesHex[dz + addrtemp + 1] = x_01[1];
-        break;
-      case '2':
-        NesHex[dz + addrtemp] = x_02[0];
-        NesHex[dz + addrtemp + 1] = x_02[1];
-        break;
-      case '3':
-        NesHex[dz + addrtemp] = x_03[0];
-        NesHex[dz + addrtemp + 1] = x_03[1];
-        break;
-    }
+    var cd = $('#ulother').children().eq(0).find('span').text().substr(0, 2);
+    NesHex[dz + addrtemp] = xx[cd]?.[0] || 0;
+    NesHex[dz + addrtemp + 1] = xx[cd]?.[1] || 0;
   }
   addrtemp += 2;
-  //过人
-  if ($('#ulother').children().eq(1).find('span').text() == '无') {
+  // Special Dribble
+  if ($('#ulother').children().eq(1).find('span').text() == 'none') {
     NesHex[dz + addrtemp] = NesHex[dz + addrtemp + 1] = 0x00;
   } else {
-    switch ($('#ulother').children().eq(1).find('span').text().substr(1, 1)) {
-      case '1':
-        NesHex[dz + addrtemp] = x_01[0];
-        NesHex[dz + addrtemp + 1] = x_01[1];
-        break;
-      case '2':
-        NesHex[dz + addrtemp] = x_02[0];
-        NesHex[dz + addrtemp + 1] = x_02[1];
-        break;
-      case '3':
-        NesHex[dz + addrtemp] = x_03[0];
-        NesHex[dz + addrtemp + 1] = x_03[1];
-        break;
-      case '4':
-        NesHex[dz + addrtemp] = x_04[0];
-        NesHex[dz + addrtemp + 1] = x_04[1];
-        break;
-      case '5':
-        NesHex[dz + addrtemp] = x_05[0];
-        NesHex[dz + addrtemp + 1] = x_05[1];
-        break;
-      case '6':
-        NesHex[dz + addrtemp] = x_06[0];
-        NesHex[dz + addrtemp + 1] = x_06[1];
-        break;
-    }
+    var cd = $('#ulother').children().eq(1).find('span').text().substr(0, 2);
+    NesHex[dz + addrtemp] = xx[cd]?.[0] || 0;
+    NesHex[dz + addrtemp + 1] = xx[cd]?.[1] || 0;
   }
   addrtemp += 2;
-  //二过一
-  if ($('#ulother').children().eq(2).find('span').text() == '无') {
+  // Special 1-2
+  if ($('#ulother').children().eq(2).find('span').text() == 'none') {
     NesHex[dz + addrtemp] = NesHex[dz + addrtemp + 1] = 0x00;
   } else {
-    switch ($('#ulother').children().eq(2).find('span').text().substr(0, 2)) {
-      case '01':
-        NesHex[dz + addrtemp] = x_01[0];
-        NesHex[dz + addrtemp + 1] = x_01[1];
-        break;
-      case '02':
-        NesHex[dz + addrtemp] = x_02[0];
-        NesHex[dz + addrtemp + 1] = x_02[1];
-        break;
-      case '03':
-        NesHex[dz + addrtemp] = x_03[0];
-        NesHex[dz + addrtemp + 1] = x_03[1];
-        break;
-      case '81':
-        NesHex[dz + addrtemp] = x_81[0];
-        NesHex[dz + addrtemp + 1] = x_81[1];
-        break;
-      case '82':
-        NesHex[dz + addrtemp] = x_82[0];
-        NesHex[dz + addrtemp + 1] = x_82[1];
-        break;
-      case '83':
-        NesHex[dz + addrtemp] = x_83[0];
-        NesHex[dz + addrtemp + 1] = x_83[1];
-        break;
-      case '83':
-        NesHex[dz + addrtemp] = x_84[0];
-        NesHex[dz + addrtemp + 1] = x_84[1];
-        break;
-    }
+    var cd = $('#ulother').children().eq(2).find('span').text().substr(0, 2);
+    NesHex[dz + addrtemp] = xx[cd]?.[0] || 0;
+    NesHex[dz + addrtemp + 1] = xx[cd]?.[1] || 0;
   }
   addrtemp += 2;
-  //挡球
-  if ($('#ulother').children().eq(3).find('span').text() == '无') {
+  // Special Block
+  if ($('#ulother').children().eq(3).find('span').text() == 'none') {
     NesHex[dz + addrtemp] = NesHex[dz + addrtemp + 1] = 0x00;
   } else {
-    switch ($('#ulother').children().eq(3).find('span').text().substr(0, 2)) {
-      case '81':
-        NesHex[dz + addrtemp] = x_81[0];
-        NesHex[dz + addrtemp + 1] = x_81[1];
-        break;
-      case '02':
-        NesHex[dz + addrtemp] = x_02[0];
-        NesHex[dz + addrtemp + 1] = x_02[1];
-        break;
-      case '82':
-        NesHex[dz + addrtemp] = x_82[0];
-        NesHex[dz + addrtemp + 1] = x_82[1];
-        break;
-      case '83':
-        NesHex[dz + addrtemp] = x_83[0];
-        NesHex[dz + addrtemp + 1] = x_83[1];
-        break;
-    }
+    var cd = $('#ulother').children().eq(3).find('span').text().substr(0, 2);
+    NesHex[dz + addrtemp] = xx[cd]?.[0] || 0;
+    NesHex[dz + addrtemp + 1] = xx[cd]?.[1] || 0;
   }
   addrtemp += 2;
-  //铲球
-  if ($('#ulother').children().eq(4).find('span').text() == '无') {
+  // Special Tackle
+  if ($('#ulother').children().eq(4).find('span').text() == 'none') {
     NesHex[dz + addrtemp] = NesHex[dz + addrtemp + 1] = 0x00;
   } else {
-    switch ($('#ulother').children().eq(4).find('span').text().substr(0, 2)) {
-      case '01':
-        NesHex[dz + addrtemp] = x_01[0];
-        NesHex[dz + addrtemp + 1] = x_01[1];
-        NesHex[
-          防守必杀效果代码 + $('#SikllNameList').get(0).selectedIndex
-        ] = 0x01; //防守效果代码
-        break;
-      case '81':
-        NesHex[dz + addrtemp] = x_81[0];
-        NesHex[dz + addrtemp + 1] = x_81[1];
-        NesHex[
-          防守必杀效果代码 + $('#SikllNameList').get(0).selectedIndex
-        ] = 0x01; //同上
-        break;
-      case '82':
-        NesHex[dz + addrtemp] = x_82[0];
-        NesHex[dz + addrtemp + 1] = x_82[1];
-        NesHex[
-          防守必杀效果代码 + $('#SikllNameList').get(0).selectedIndex
-        ] = 0x03;
-        break;
-      case '83':
-        NesHex[dz + addrtemp] = x_83[0];
-        NesHex[dz + addrtemp + 1] = x_83[1];
-        NesHex[
-          防守必杀效果代码 + $('#SikllNameList').get(0).selectedIndex
-        ] = 0x0a;
-        break;
-      case '84':
-        NesHex[dz + addrtemp] = x_84[0];
-        NesHex[dz + addrtemp + 1] = x_84[1];
-        NesHex[
-          防守必杀效果代码 + $('#SikllNameList').get(0).selectedIndex
-        ] = 0x20;
-        break;
-    }
+    var cd = $('#ulother').children().eq(4).find('span').text().substr(0, 2);
+    NesHex[dz + addrtemp] = xx[cd]?.[0] || 0;
+    NesHex[dz + addrtemp + 1] = xx[cd]?.[1] || 0;
+    NesHex[防守必杀效果代码 + $('#SikllNameList').get(0).selectedIndex] =
+      xx[cd]?.[2] || 0; //Defense effect code
   }
   addrtemp += 2;
-  //断球
-  if ($('#ulother').children().eq(5).find('span').text() == '无') {
+  // Special Intercept
+  if ($('#ulother').children().eq(5).find('span').text() == 'none') {
     NesHex[dz + addrtemp] = NesHex[dz + addrtemp + 1] = 0x00;
   } else {
-    switch ($('#ulother').children().eq(5).find('span').text().substr(0, 2)) {
-      case '01':
-        NesHex[dz + addrtemp] = x_01[0];
-        NesHex[dz + addrtemp + 1] = x_01[1];
-        break;
-      case '81':
-        NesHex[dz + addrtemp] = x_81[0];
-        NesHex[dz + addrtemp + 1] = x_81[1];
-        break;
-    }
+    var cd = $('#ulother').children().eq(5).find('span').text().substr(0, 2);
+    NesHex[dz + addrtemp] = xx[cd]?.[0] || 0;
+    NesHex[dz + addrtemp + 1] = xx[cd]?.[1] || 0;
   }
-  GetSkill();
+  // Special GK
+  if ($('#ulother').children().eq(6).find('span').text() == 'none') {
+    NesHex[dz + addrtemp] = NesHex[dz + addrtemp + 1] = 0x00;
+  } else {
+    var cd = $('#ulother').children().eq(6).find('span').text().substr(0, 2);
+    NesHex[dz + addrtemp] = xx[cd]?.[0] || 0;
+    NesHex[dz + addrtemp + 1] = xx[cd]?.[1] || 0;
+  }
+  LoadSkills();
   alertMsg('#isfileload', 'green', 'Special move updated successfully!');
 }
 
@@ -746,7 +647,7 @@ function DelSkillsub(id) {
   if ($(id).attr('af') == 'ulshoot') {
     $(id).parent().remove();
   } else {
-    $(id).next().html('无');
+    $(id).next().html('none');
   }
 }
 
@@ -762,7 +663,7 @@ function addSkillsub() {
       );
     } else {
       var selectstr =
-        "<li style='display:block;'><button af='ulshoot' onclick='DelSkillsub(this);'>Del</button><span>" +
+        "<li style='display:block;'><button af='ulshoot' onclick='DelSkillsub(this);'>Del (Shot)</button><span>" +
         text +
         '</span></li>';
       $(selectstr).appendTo($('#ulshoot'));
@@ -782,25 +683,28 @@ function Changeskilladdtype() {
   var Skillitem = [];
   switch (类型) {
     case 0:
-      Skillitem = Skill0_.split(',');
+      Skillitem = Skill_SHOT_.split(',');
       break;
     case 1:
-      Skillitem = Skill1_.split(',');
+      Skillitem = Skill_PASS_.split(',');
       break;
     case 2:
-      Skillitem = Skill2_.split(',');
+      Skillitem = Skill_DRIBBLE_.split(',');
       break;
     case 3:
-      Skillitem = Skill3_.split(',');
+      Skillitem = Skill_COMBO_.split(',');
       break;
     case 4:
-      Skillitem = Skill4_.split(',');
+      Skillitem = Skill_BLOCK_.split(',');
       break;
     case 5:
-      Skillitem = Skill5_.split(',');
+      Skillitem = Skill_TACKLE_.split(',');
       break;
     case 6:
-      Skillitem = Skill6_.split(',');
+      Skillitem = Skill_ICEPT_.split(',');
+      break;
+    case 7:
+      Skillitem = Skill_GK_.split(',');
       break;
   }
   var obj = document.getElementById('skillsub');

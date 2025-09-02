@@ -3,10 +3,10 @@ var Formation_Str = [
   '4:3:3 ',
   '4:4:2',
   '3:5:2',
-  '巴西阵型',
-  '普通',
-  '紧逼',
-  '防守反击',
+  'Brazilian Formation',
+  'Normal',
+  'Pressing',
+  'Counterattack',
 ];
 var team_da = [
   '00',
@@ -175,6 +175,7 @@ var Aiplayerstr = (
   ',' +
   playerstrtemp3
 ).split(',');
+
 var Ai_Ack_1str = [
   'AI #00 (Balanced) Liberio',
   'AI #01 (Cautious combo attack) Tachibana Brothers',
@@ -1174,22 +1175,24 @@ var GK指令数据 = 0x395c2;
 var 防守必杀效果代码 = 0x2077b;
 var 球员必杀索引 = 0x38e2d;
 var 肖像数据地址 = 0x22b63;
-var SkillSTR2_ =
+var Skill_TYPE_ =
   ',Special Pass ,Special Dribble ,Special 1-2 ,Special Block ,Special Tackle ,Special Intercept ';
-var Skill0_ =
+var Skill_SHOT_ =
   '0C Spinning Shot (Low),0D Spinning Shot (Mid),0E Spinning Shot (High),10 Spinning Overhead (Low),11 Spinning Overhead (Mid),12 Spinning Overhead (High),14 Falcon Shot (Low),15 Falcon Shot (Mid),16 Falcon Shot (High),18 Falcon Volley (Low),19 Falcon Volley (Mid),1A Falcon Volley (High),1C Razor Shot (Low),1D Razor Shot (Mid),1E Razor Shot (High),20 Tornado (Aerial) (Low),21 Tornado (Aerial) (Mid),22 Tornado (Aerial) (High),24 Twin Shot (Low),25 Twin Shot (Mid),26 Twin Shot (High),28 Twin Tornado (Low),29 Twin Tornado (Mid),2A Twin Tornado (High),2C Falcon Drive (Low),2D Falcon Drive (Mid),2E Falcon Drive (High),30 Tiger Shot (Low),31 Tiger Shot (Mid),32 Tiger Shot (High),34 New Tiger Shot (Low),35 New Tiger Shot (Mid),36 New Tiger Shot (High),38 Overhead Kick (Low),39 Overhead Kick (Mid),3A Overhead Kick (High),3C Misugi Power Overhead (Low),3D Misugi Power Overhead (Mid),3E Misugi Power Overhead (High),40 Misaki Jump Volley (Low),41 Misaki Jump Volley (Mid),42 Misaki Jump Volley (High),44 Drive Tiger Shot (Low),45 Drive Tiger Shot (Mid),46 Drive Tiger Shot (High),48 Super Curve (Low),49 Super Curve (Mid),4A Super Curve (High),4C Sano Combo Shot (Low),4D Sano Combo Shot (Mid),4E Sano Combo Shot (High),50 Banana Shot (Low),51 Banana Shot (Mid),52 Banana Shot (High),54 Nei Union Shot (Low),55 Nei Union Shot (Mid),56 Nei Union Shot (High),58 Golden Eagle (Low),59 Golden Eagle (Mid),5A Golden Eagle (High),5C Magic Cannon (Low),5D Magic Cannon (Mid),5E Magic Cannon (High),60 Snake Shot (Low),61 Snake Shot (Mid),62 Snake Shot (High),64 Curve Shot (Low),65 Curve Shot (Mid),66 Curve Shot (High),68 Cannon Shot (Low),69 Cannon Shot (Mid),6A Cannon Shot (High),6C Flame Shot (Low),6D Flame Shot (Mid),6E Flame Shot (High),70 Shining Header (Low),71 Shining Header (Mid),72 Shining Header (High),74 Power Header (Low),75 Power Header (Mid),76 Power Header (High),78 Rocket Header (Low),79 Rocket Header (Mid),7A Rocket Header (High),7C Rising Dragon Kick (Low),7D Rising Dragon Kick (Mid),7E Rising Dragon Kick (High),80 Backheel Shot (Low),81 Backheel Shot (Mid),82 Backheel Shot (High),84 Horizontal Cannon (Low),85 Horizontal Cannon (Mid),86 Horizontal Cannon (High),88 Zagallo Power Shot (Low),89 Zagallo Power Shot (Mid),8A Zagallo Power Shot (High)';
-var Skill1_ =
+var Skill_PASS_ =
   '01 Spinning Pass (Tsubasa),02 Razor Pass (Soda),03 High Pass (Mantou)';
-var Skill2_ =
+var Skill_DRIBBLE_ =
   '01 Chip Dribble (Tsubasa),02 Straight Break (Hyuga),03 Phantom Dribble (Nei),04 Curtain of Aurora (Santana),05 Meteor Break (Islas),06 Hedgehog Dribble (Kaltz)';
-var Skill3_ =
+var Skill_COMBO_ =
   '81 Golden Combo,82 Toho Combo,83 Twin Combo,84 Eiffel Attack (France),01 Golden Combo (Not recommended),02 Toho Combo (Not recommended),03 Twin Combo (Not recommended)';
-var Skill4_ =
+var Skill_BLOCK_ =
   '81 Face Block (Ishizaki),82 High Block (Tachibana),83 Power Block (Jito),02 High Block (Not recommended)';
-var Skill5_ =
+var Skill_TACKLE_ =
   '81 High Tackle (Tachibana),82 Razor Tackle (Soda),83 Power Tackle (Jito),84 Tiger Tackle (Hyuga),01 High Tackle (Not recommended)';
-var Skill6_ =
+var Skill_ICEPT_ =
   '81 High Intercept (Tachibana),01 High Intercept (Not recommended)';
+var Skill_GK_ = '01 Spinning Save,02 Clone Save,03 Grand Rotation Save';
+Skill_TYPE_ += ',Goalkeeper (GK) ';
 
 //128*128 256*256 40*40
 var IMG_ChrIMG = [
@@ -1746,15 +1749,15 @@ var Portrait_List = [
 ];
 
 var Portrait_List_GK = [
-  '01 Renato {GK}',
-  '02 Yuzo Morisaki {GK}',
-  '03 Genzo Wakabayashi {GK}',
-  '04 Ken Wakashimazu {GK}',
-  '92 Renato {GK}',
-  '97 Yuzo Morisaki {GK}',
-  '9C Genzo Wakabayashi {GK}',
+  '01 Renato [GK]',
+  '02 Yuzo Morisaki [GK]',
+  '03 Genzo Wakabayashi [GK]',
+  '04 Ken Wakashimazu [GK]',
+  '92 Renato [GK]',
+  '97 Yuzo Morisaki [GK]',
+  '9C Genzo Wakabayashi [GK]',
   'A1 Ken Wakashimazu (Toho)',
-  '7F Mannone {GK}',
+  '7F Mannone [GK]',
 ];
 
 var IMG_VS_Pic = [

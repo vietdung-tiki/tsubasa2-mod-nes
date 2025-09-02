@@ -42,6 +42,7 @@
 				<li class="ctab">Music</li>
 				<li class="ctab">HEX</li>
 				<li class="ctab">CHR</li>
+				<li class="ctab">Addon</li>
 				<li class="tabFocus ctab">About</li>
 			</ul>
 			<ul id="content">
@@ -55,6 +56,7 @@
 							<div id="Teamedit_a_0">
 								<div id="Team_list"> </div>
 								<div id="Team_player_list"> </div>
+								<div id="Select_stage"> </div>
 							</div>
 							<div id="Teamedit_a_1" style="display: none;">Team Socks</div>
 						</div>
@@ -131,6 +133,12 @@
 							<div id="SpriteView" style="display: none;"></div>
 						</div>
 					</div>
+				</li>
+				<li class="ctab" style="pointer-events: auto;">
+					<span>Input patch code:</span><br>
+					<textarea id="patch_code" style="width: 100%; resize: none; height: 120px;">;Can select stage on start
+127=A9;
+12E=A9;</textarea><br><button onclick="ApplyPatch()">Apply</button>
 				</li>
 				<li class="c ctab" style="pointer-events: auto;">
 					<span>On mobile, it’s recommended to use Chrome or Microsoft Edge.<br>Switching your phone to landscape
