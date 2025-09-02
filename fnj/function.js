@@ -42,7 +42,24 @@ function export_raw(name, data) {
 }
 
 function savefile() {
-  export_raw(gettimenow() + filenamenes, NesHex);
+  // export_raw(filenamenes, NesHex);
+  var ui8 = Uint8Array.from(NesHex);
+  saveWithPicker(filenamenes, ui8);
+}
+
+async function saveWithPicker(suggestedName, arr) {
+  const handle = await window.showSaveFilePicker({
+    suggestedName,
+    types: [
+      {
+        description: 'Binary',
+        accept: { 'application/octet-stream': ['.bin', '.nes'] },
+      },
+    ],
+  });
+  const w = await handle.createWritable();
+  await w.write(arr); // Uint8Array is fine
+  await w.close();
 }
 
 function gettimenow() {
