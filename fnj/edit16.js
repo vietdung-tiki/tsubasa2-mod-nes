@@ -155,9 +155,12 @@ function BulidEdit16TabHtml() {
   edit16html += '<div>';
   edit16html += "<div id='HexPreView' style='font-size:12px;'></div>";
   edit16html +=
-    "<span>Target Address:</span><input type='text' style='width:60px;'  editindex=0  id='ShowEditIndex' > <button onclick='EditSeValue()'>Find</button><div id='EditSEdivSe'></div>";
+    "<span>Target Address:</span><input type='text' style='width:60px;'  editindex=0  id='ShowEditIndex' ><br>";
   edit16html +=
-    "<span>Data:</span> <span id='EditAlertSpan' style='color:red;'></span><br><textarea  id='ShowEditValue' cols='25' rows='5'></textarea><br>";
+    "<button onclick='EditSeValue()'>Find</button> <span>Data:</span> <span id='EditAlertSpan' style='color:red;'></span>";
+  edit16html += "<span id='EditSEdivSe'></span>";
+  edit16html +=
+    "<br><textarea  id='ShowEditValue' cols='25' rows='5'></textarea><br>";
   edit16html += "<button onclick='WriteEdit16()'>Write Data</button>";
   edit16html +=
     "<div><span>Warning: do not search for long runs of 00 or FF — it can <span style='color:red;'>really really really</span> freeze your browser!</span><br>";
@@ -250,12 +253,15 @@ function EditSeValue() {
     return;
   }
   var Editselecthtml = '';
-  Editselecthtml += "<select id='EditselectId'>";
+  Editselecthtml += "<select id='EditselectId' onchange='JumpEdit()'>";
   for (var i = 0; i < unix.length; i++) {
     Editselecthtml +=
       "<option value='" + unix[i] + "'>" + unix[i].toString(16) + '</option>';
   }
-  Editselecthtml += "</select><button onclick='JumpEdit()'>Go</button>";
+  Editselecthtml += '</select>';
+  if (unix.length) {
+    setTimeout(JumpEdit, 200);
+  }
   $('#EditSEdivSe').html(Editselecthtml);
   $('#EditAlertSpan').html('Found ' + unix.length + ' matches.');
   $('#EditAlertSpan').css('color', 'green');
@@ -264,6 +270,7 @@ function EditSeValue() {
 function JumpEdit() {
   var vls = parseInt($('#EditselectId').val());
   $('#offEditNo').val(vls.toString(16).toUpperCase());
+  $('#ShowEditIndex').val(vls.toString(16).toUpperCase());
   LoadHex16();
 }
 
@@ -285,6 +292,7 @@ function WriteEdit16() {
       NesHex[edindex + i] = hex2int(edvalue[i]);
     }
   }
+  LoadHex16();
   alertMsg('#isfileload', 'green', 'Write successful!');
 }
 

@@ -77,6 +77,7 @@ function IntoChrPage() {
     currentTileData = currentData.slice(tileOffset, tileOffset + 16);
     ShowTileCode();
     drawSelectedTile(currentTileData);
+    drawClickedTile(currentTileData, tileIndex);
   });
 
   chrCanvas.addEventListener('contextmenu', (e) => {
@@ -189,6 +190,73 @@ function drawChrPage(data, chrDataOffset, pageIndex) {
   }
 }
 
+var clickedData = [];
+var clickedTile = [];
+function clearClicked() {
+  clickedData = [];
+  clickedTile = [];
+  drawClickedTile();
+}
+function drawClickedTile(tileData, tileIndex) {
+  const canvas = document.getElementById('clickedCanvas');
+  const ctx = canvas.getContext('2d');
+
+  if (!tileData) {
+    canvas.width = clickedCanvas.height = 0;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    return;
+  }
+  clickedTile.push(tileIndex.toString(16));
+  $('#arrTile').val(clickedTile.join(' '));
+  clickedData.push(tileData);
+
+  const SCALE = 4;
+  const TILE = 8;
+  const BYTES_PER_TILE = 16;
+
+  const tileCount = clickedData.length;
+  canvas.width = tileCount * TILE * SCALE;
+  canvas.height = TILE * SCALE;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let t = 0; t < tileCount; t++) {
+    const td = clickedData[t];
+    if (!td || td.length < BYTES_PER_TILE) continue;
+
+    for (let y = 0; y < TILE; y++) {
+      const lowByte = td[y];
+      const highByte = td[y + 8];
+
+      for (let x = 0; x < TILE; x++) {
+        const bitLow = (lowByte >> (7 - x)) & 1;
+        const bitHigh = (highByte >> (7 - x)) & 1;
+        const colorIndex = (bitHigh << 1) | bitLow;
+
+        const gray = chrcolor[colorIndex];
+        ctx.fillStyle = ReturnNesColor(gray);
+        ctx.fillRect((t * TILE + x) * SCALE, y * SCALE, SCALE, SCALE);
+      }
+    }
+  }
+}
+function changeArrTile() {
+  clearClicked();
+  var str = $('#arrTile').val().trim();
+  if (!str) {
+    return;
+  }
+  var tts = str.split(' ');
+  for (var i = 0; i < tts.length; i++) {
+    var tileIndex = Number('0x' + tts[i]);
+    const tileOffset = (currentTileAddr =
+      currentChrDataOffset +
+      parseInt(chrPageSelect.value) * 0x1000 +
+      tileIndex * 16);
+    currentTileData = currentData.slice(tileOffset, tileOffset + 16);
+    drawClickedTile(currentTileData, tileIndex);
+  }
+}
+
 function drawSelectedTile(tileData) {
   const selectedTileCanvas = document.getElementById('selectedTileCanvas');
   const selectedTileCtx = selectedTileCanvas.getContext('2d');
@@ -207,6 +275,7 @@ function drawSelectedTile(tileData) {
     }
   }
 }
+
 function selectedTileCanvas_Click(event) {
   if (event.buttons === 1) {
     const x = Math.floor(event.offsetX / 16);
