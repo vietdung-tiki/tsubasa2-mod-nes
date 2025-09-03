@@ -590,52 +590,52 @@ var cheats_ct2 = [
   },
   {
     enabled: false,
-    name: 'Our No.02 Selection',
+    name: 'Our 02 Selection',
     codes: [{ address: 0x030c, value: 0x15 }],
   },
   {
     enabled: false,
-    name: 'Our No.03 Selection',
+    name: 'Our 03 Selection',
     codes: [{ address: 0x0318, value: 0x15 }],
   },
   {
     enabled: false,
-    name: 'Our No.04 Selection',
+    name: 'Our 04 Selection',
     codes: [{ address: 0x0324, value: 0x15 }],
   },
   {
     enabled: false,
-    name: 'Our No.05 Selection',
+    name: 'Our 05 Selection',
     codes: [{ address: 0x0330, value: 0x15 }],
   },
   {
     enabled: false,
-    name: 'Our No.06 Selection',
+    name: 'Our 06 Selection',
     codes: [{ address: 0x033c, value: 0x15 }],
   },
   {
     enabled: false,
-    name: 'Our No.07 Selection',
+    name: 'Our 07 Selection',
     codes: [{ address: 0x0348, value: 0x15 }],
   },
   {
     enabled: false,
-    name: 'Our No.08 Selection',
+    name: 'Our 08 Selection',
     codes: [{ address: 0x0354, value: 0x15 }],
   },
   {
     enabled: false,
-    name: 'Our No.09 Selection',
+    name: 'Our 09 Selection',
     codes: [{ address: 0x0360, value: 0x15 }],
   },
   {
     enabled: false,
-    name: 'Our No.10 Selection',
+    name: 'Our 10 Selection',
     codes: [{ address: 0x036c, value: 0x15 }],
   },
   {
     enabled: false,
-    name: 'Our No.11 Selection',
+    name: 'Our 11 Selection',
     codes: [{ address: 0x0378, value: 0x15 }],
   },
 ];

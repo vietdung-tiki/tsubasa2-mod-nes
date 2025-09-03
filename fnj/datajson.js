@@ -62,11 +62,11 @@ var nespal = [
 var playerstrtemp0 = '00 NPC';
 //01-75
 var playerstrtemp1 =
-  '01 Tsubasa Ozora(São Paulo),02 Renato(São Paulo)[Goalkeeper],03 Lima(São Paulo),04 Marini(São Paulo),05 Amaral(São Paulo),06 Doutor(São Paulo),07 Batista(São Paulo),08 Tahamata(São Paulo),09 Babinton(São Paulo),0A Giu(São Paulo),0B Platon(São Paulo),0C Hanji Urabe(Nankatsu),0D Takeshi Kishida(Nankatsu),0E Masao Nakayama(Nankatsu),0F Yuzo Morisaki(Nankatsu)[Goalkeeper],10 Shingo Takasugi(Nankatsu),11 Taro Misaki(Nankatsu),12 Mamoru Izawa(Nankatsu),13 Hajime Taki(Nankatsu),14 Ryo Ishizaki(Nankatsu),15 Shun Nitta(Nankatsu),16 Teppei Kisugi(Nankatsu),17 Masao Tachibana(Akita Shogyo),18 Kazuo Tachibana(Akita Shogyo),19 Mitsuru Sano(Nankatsu),1A Kojiro Hyuga(Toho),1B Makoto Soda(Roppongi),1C Hiroshi Jito(Kunimi),1D Hikaru Matsuyama(Furano),1E Kazuki Sorimachi(Toho),1F Takeshi Sawada(Toho),20 Jun Misugi(Musashi),21 Genzo Wakabayashi(Japan)[Goalkeeper],22 Ken Wakashimazu(Toho)[Goalkeeper],23 Sartorustic(Argentina),24 Libério(Brazil),25 Da Silva(Brazil),26 Mannone(Roma)[Goalkeeper],27 Toninho(Brazil),28 Nei(Brazil),29 Zagalo(Brazil),2A Diuseu(Brazil),2B Carlos(Brazil),2C Santamaria(Brazil),2D Jetorio(Brazil),2E Hiroshi Jito(Kunimi),2F Mitsuru Sano(Kunimi),30 Masao Tachibana(Akita Shogyo),31 Kazuo Tachibana(Akita Shogyo),32 Makoto Soda(Roppongi),33 Taichi Nakanishi(Nankatsu)[Goalkeeper],34 Jun Misugi(Musashi),35 Hikaru Matsuyama(Furano),36 Kojiro Hyuga(Toho),37 Kazuki Sorimachi(Toho),38 Takeshi Sawada(Toho),39 Ken Wakashimazu(Toho)[Goalkeeper],3A Lampião(Italy),3B Ramón Victorino(Uruguay),3C Da Silva(Uruguay),3D Capellmann(West Germany),3E Kaltz(West Germany),3F Metz(West Germany),40 Genzo Wakabayashi(Hamburg)[Goalkeeper],41 Kojiro Hyuga(NPC Japan),42 Shun Nitta(NPC Japan),43 Mitsuru Sano(NPC Japan),44 Taro Misaki(NPC Japan),45 Jun Misugi(NPC Japan),46 Masao Tachibana(NPC Japan),47 Kazuo Tachibana(NPC Japan),48 Hiroshi Jito(NPC Japan),49 Ryo Ishizaki(NPC Japan),4A Makoto Soda(NPC Japan),4B Hikaru Matsuyama(NPC Japan),4C Ken Wakashimazu(NPC Japan)[Goalkeeper],4D Li Hannei(China),4E Li Hankun(China),4F Xia(China),50 Jim(England),51 Maiha(Poland),52 Zaic(Poland)[Goalkeeper],53 Lolima(England),54 Robertson(England),55 Belev(Soviet),56 Rashin(Soviet)[Goalkeeper],57 Napoleon(France),58 Pierre(France),59 Espanha(Spain),5A Lampião(Italy),5B Hernandez(Mexico)[Goalkeeper],5C Islas(Argentina)[Goalkeeper],5D Libuta(Argentina),5E Pascal(Argentina),5F Sartorustic(Argentina),60 Diaz(Argentina),61 Babinton(Argentina),62 Galvan(Argentina),63 Schneider(West Germany),64 Margas(West Germany),65 Kaltz(West Germany),66 Metz(West Germany),67 Shester(West Germany),68 Cabello(West Germany),69 Müller(West Germany)[Goalkeeper],6A Carlos(Brazil),6B Zagalo(Brazil),6C Libério(Brazil),6D Nei(Brazil),6E Santamaria(Brazil),6F Toninho(Brazil),70 Doutor(Brazil),71 Amaral(Brazil),72 Diuseu(Brazil),73 Jetorio(Brazil),74 Geldis(Brazil)[Goalkeeper],75 Coimbra(Brazil)[Goalkeeper]';
+  '01 Tsubasa(SPL),02 Lennart(SPL)[GK],03 Lima(SPL),04 Marini(SPL),05 Amaral(SPL),06 Dottil(SPL),07 Batista(SPL),08 Tahamata(SPL),09 Babinton(SPL),0A Giu(SPL),0B Platton(SPL),0C Urabe(Nank),0D Kishida(Nank),0E Nakayama(Nank),0F Morisaki(Nank)[GK],10 Takasugi(Nank),11 Misaki(Nank),12 Izawa(Nank),13 Taki(Nank),14 Ishizaki(Nank),15 Nitta(Nank),16 Kisugi(Nank),17 Masao(Japan),18 Kazuo(Japan),19 Sano(Japan),1A Hyuga(Japan),1B Soda(Japan),1C Jitou(Japan),1D Matsuyama(Japan),1E Sorimachi(Japan),1F Sawada(Japan),20 Misugi(Japan),21 Genzo(Japan)[GK],22 Ken(Japan)[GK],23 Sartorustic(Corinthians),24 Libério(Corinthians),25 Da Silva(Gremio),26 Mannone(Gremio)[GK],27 Toninho(Palmeiras),28 Ney(Palmeiras),29 Zagalo(Santos),2A Diuseu(Santos),2B Carlos(Flamengo),2C Santamaria(Flamengo),2D Jetorio(Flamengo),2E Jitou(Kunimi),2F Sano(Kunimi),30 Masao(Akita),31 Kazuo(Akita),32 Soda(Tatsu),33 Nakanishi(Tatsu)[GK],34 Misugi(Musashi),35 Matsuyama(Furano),36 Hyuga(Toho),37 Sorimachi(Toho),38 Sawada(Toho),39 Ken(Toho)[GK],3A Lampion(Italy),3B Victorino(Uruguay),3C Silva(Uruguay),3D Kapellomann(Hamburg),3E Kaltz(Hamburg),3F Metz(Hamburg),40 Genzo(Hamburg)[GK],41 Hyuga(NPC Japan),42 Nitta(NPC Japan),43 Sano(NPC Japan),44 Misaki(NPC Japan),45 Misugi(NPC Japan),46 Masao(NPC Japan),47 Kazuo(NPC Japan),48 Jitou(NPC Japan),49 Ishizaki(NPC Japan),4A Soda(NPC Japan),4B Matsuyama(NPC Japan),4C Ken(NPC Japan)[GK],4D Hannei(China),4E Bankun(China),4F Cha(South Korea),50 Kim(South Korea),51 Macher(Poland),52 Dzajic(Poland)[GK],53 Lorimer(England),54 Robson(England),55 Belyaev(USSR),56 Lashin(USSR)[GK],57 Napoleon(France),58 Pierre(France),59 Espana(Mexico),5A Lampion(Italy),5B Fernandez(Mexico)[GK],5C Islas(Netherlands)[GK],5D Libuta(Netherlands),5E Pascal(Argentina),5F Sartorustic(Argentina),60 Diaz(Argentina),61 Babinton(Argentina),62 Galvan(Argentina),63 Schneider(West Germany),64 Margas(West Germany),65 Kaltz(West Germany),66 Metza(West Germany),67 Shester(West Germany),68 Kapellomann(West Germany),69 Muller(West Germany)[GK],6A Carlos(Brazil),6B Zagallo(Brazil),6C Riberio(Brazil),6D Ney(Brazil),6E Santamaria(Brazil),6F Toninho(Brazil),70 Doutor(Brazil),71 Amaral(Brazil),72 Dilceu(Brazil),73 Getorio(Brazil),74 Gertis(Brazil)[GK],75 Coimbra(Brazil)[GK]';
 
 //76-C7
 var playerstrtemp2 =
-  '76 Fluminense Goalkeeper,77 Fluminense Defender,78 Fluminense CB/Forward,79 Corinthians Goalkeeper,7A Corinthians Defender,7B Corinthians CB/Forward,7C Grêmio Defender,7D Grêmio CB/Forward,7E Palmeiras Goalkeeper,7F Palmeiras Defender,80 Palmeiras CB/Forward,81 Santos Goalkeeper,82 Santos Defender,83 Santos CB/Forward,84 Flamengo Goalkeeper,85 Flamengo Defender,86 Flamengo CB/Forward,87 Kunimi Goalkeeper,88 Kunimi Defender,89 Kunimi CB/Forward,8A Akita Shogyo Goalkeeper,8B Akita Shogyo Defender,8C Akita Shogyo CB/Forward,8D Roppongi Defender,8E Roppongi CB/Forward,8F Musashi Goalkeeper,90 Musashi Defender,91 Musashi CB/Forward,92 Furano Goalkeeper,93 Furano Defender,94 Furano CB/Forward,95 Toho Defender,96 Toho CB/Forward,97 Roma Goalkeeper,98 Roma Defender,99 Roma CB/Forward,9A Uruguay Goalkeeper,9B Uruguay Defender,9C Uruguay CB/Forward,9D Hamburg Defender,9E Hamburg CB/Forward,9F Syria Goalkeeper,A0 Syria Defender,A1 Syria CB/Forward,A2 China Goalkeeper,A3 China Defender,A4 China CB/Forward,A5 Iran Goalkeeper,A6 Iran Defender/Forward,A7 Iran CB,A8 North Korea Goalkeeper,A9 North Korea Defender,AA North Korea CB/Forward,AB Saudi Arabia Goalkeeper,AC Saudi Arabia Defender,AD Saudi Arabia CB/Forward,AE South Korea Goalkeeper,AF South Korea Defender,B0 South Korea CB/Forward,B1 Vasco da Gama Goalkeeper,B2 Vasco da Gama Forward/CB,B3 Poland Defender,B4 Poland CB/Forward,B5 England Goalkeeper,B6 England Defender,B7 England CB/Forward,B8 Soviet Union Defender,B9 Soviet Union CB/Forward,BA France Goalkeeper,BB France Defender,BC France CB/Forward,BD Mexico Goalkeeper,BE Mexico Defender,BF Mexico CB/Forward,C0 Italy Defender,C1 Italy CB/Forward,C2 Netherlands Goalkeeper,C3 Netherlands Defender,C4 Netherlands CB/Forward,C5 Argentina Goalkeeper,C6 Argentina Common,C7 West Germany Common';
+  '76 Fluminense GK,77 Fluminense Defender,78 Fluminense CB/Forward,79 Corinthians GK,7A Corinthians Defender,7B Corinthians CB/Forward,7C Grêmio Defender,7D Grêmio CB/Forward,7E Palmeiras GK,7F Palmeiras Defender,80 Palmeiras CB/Forward,81 Santos GK,82 Santos Defender,83 Santos CB/Forward,84 Flamengo GK,85 Flamengo Defender,86 Flamengo CB/Forward,87 Kunimi GK,88 Kunimi Defender,89 Kunimi CB/Forward,8A Akita GK,8B Akita Defender,8C Akita CB/Forward,8D Roppongi Defender,8E Roppongi CB/Forward,8F Musashi GK,90 Musashi Defender,91 Musashi CB/Forward,92 Furano GK,93 Furano Defender,94 Furano CB/Forward,95 Toho Defender,96 Toho CB/Forward,97 Roma GK,98 Roma Defender,99 Roma CB/Forward,9A Uruguay GK,9B Uruguay Defender,9C Uruguay CB/Forward,9D Hamburg Defender,9E Hamburg CB/Forward,9F Syria GK,A0 Syria Defender,A1 Syria CB/Forward,A2 China GK,A3 China Defender,A4 China CB/Forward,A5 Iran GK,A6 Iran Defender/Forward,A7 Iran CB,A8 North Korea GK,A9 North Korea Defender,AA North Korea CB/Forward,AB Saudi Arabia GK,AC Saudi Arabia Defender,AD Saudi Arabia CB/Forward,AE South Korea GK,AF South Korea Defender,B0 South Korea CB/Forward,B1 Vasco da Gama GK,B2 Vasco da Gama Forward/CB,B3 Poland Defender,B4 Poland CB/Forward,B5 England GK,B6 England Defender,B7 England CB/Forward,B8 Soviet Union Defender,B9 Soviet Union CB/Forward,BA France GK,BB France Defender,BC France CB/Forward,BD Mexico GK,BE Mexico Defender,BF Mexico CB/Forward,C0 Italy Defender,C1 Italy CB/Forward,C2 Netherlands GK,C3 Netherlands Defender,C4 Netherlands CB/Forward,C5 Argentina GK,C6 Argentina Common,C7 West Germany Common';
 
 // AI C8-CB
 var playerstrtemp3 =
@@ -74,13 +74,13 @@ var playerstrtemp3 =
 
 //76-C0
 var playerstrtemp4 =
-  '76 Tsubasa Ozora (Japan),77 Yuzo Morisaki (Japan),78 Shingo Takasugi (Japan),79 Taro Misaki (Japan),7A Mamoru Izawa (Japan),7B Hajime Taki (Japan),7C Ryo Ishizaki (Japan),7D Shun Nitta (Japan),7E Teppei Kisugi (Japan),7F Stage 1 Common,80 Stage 2 Common,81 Stage 3 Common,82 Stage 4 Common,83 Stage 5 Common,84 Stage 6 Common,85 Stage 7 Common,86 Stage 8 Common,87 Stage 9 Common,88 Stage 10 Common,89 Stage 11 Common,8A Stage 12 Common,8B Stage 13 Common,8C Stage 14 Common,8D Stage 15 Common,8E (Invalid) Stage 16 Common,8F Stage 17 Common,90 Stage 18 Common,91 Stage 19 Common,92 Stage 20 Common,93 Stage 21 Common,94 Stage 22 Common,95 Stage 23 Common,96 Stage 24 Common,97 Stage 25 Common,98 Stage 26 Common,99 Stage 27 Common,9A Stage 28 Common,9B Stage 29 Common,9C Stage 30 Common,9D Stage 31 Common,9E Stage 32 Common,9F Stage 1 GK,A0 Stage 2 GK,A1 Stage 3 GK,A2 Stage 4 GK,A3 Stage 5 GK,A4 Stage 6 GK,A5 Stage 7 GK,A6 Stage 8 GK,A7 Stage 9 GK,A8 Stage 10 GK,A9 Stage 11 GK,AA Stage 12 GK,AB Stage 13 GK,AC Stage 14 GK,AD Stage 15 GK,AE Stage 16 GK,AF Stage 17 GK,B0 Stage 18 GK,B1 Stage 19 GK,B2 Stage 20 GK,B3 Stage 21 GK,B4 Stage 22 GK,B5 Stage 23 GK,B6 Stage 24 GK,B7 Stage 25 GK,B8 Stage 26 GK,B9 Stage 27 GK,BA Stage 28 GK,BB Stage 29 GK,BC Stage 30 GK,BD Stage 31 GK,BE Stage 32 GK,BF Stage 33 GK,C0 Stage 34 GK';
+  '76 Tsubasa (Japan),77 Morisaki (Japan)[GK],78 Takasugi (Japan),79 Misaki (Japan),7A Izawa (Japan),7B Taki (Japan),7C Ishizaki (Japan),7D Nitta (Japan),7E Kisugi (Japan),7F Stage 1 Common,80 Stage 2 Common,81 Stage 3 Common,82 Stage 4 Common,83 Stage 5 Common,84 Stage 6 Common,85 Stage 7 Common,86 Stage 8 Common,87 Stage 9 Common,88 Stage 10 Common,89 Stage 11 Common,8A Stage 12 Common,8B Stage 13 Common,8C Stage 14 Common,8D Stage 15 Common,8E (Invalid) Stage 16 Common,8F Stage 17 Common,90 Stage 18 Common,91 Stage 19 Common,92 Stage 20 Common,93 Stage 21 Common,94 Stage 22 Common,95 Stage 23 Common,96 Stage 24 Common,97 Stage 25 Common,98 Stage 26 Common,99 Stage 27 Common,9A Stage 28 Common,9B Stage 29 Common,9C Stage 30 Common,9D Stage 31 Common,9E Stage 32 Common,9F Stage 1 GK,A0 Stage 2 GK,A1 Stage 3 GK,A2 Stage 4 GK,A3 Stage 5 GK,A4 Stage 6 GK,A5 Stage 7 GK,A6 Stage 8 GK,A7 Stage 9 GK,A8 Stage 10 GK,A9 Stage 11 GK,AA Stage 12 GK,AB Stage 13 GK,AC Stage 14 GK,AD Stage 15 GK,AE Stage 16 GK,AF Stage 17 GK,B0 Stage 18 GK,B1 Stage 19 GK,B2 Stage 20 GK,B3 Stage 21 GK,B4 Stage 22 GK,B5 Stage 23 GK,B6 Stage 24 GK,B7 Stage 25 GK,B8 Stage 26 GK,B9 Stage 27 GK,BA Stage 28 GK,BB Stage 29 GK,BC Stage 30 GK,BD Stage 31 GK,BE Stage 32 GK,BF Stage 33 GK,C0 Stage 34 GK';
 
 var playerstrtemp5 =
-  '00 Lima/Batista/Masao Nakayama,01 Tsubasa Ozora,02 Taro Misaki,03 Shun Nitta,04 Teppei Kisugi (Giu),05 Platon (Hajime Taki),06 Tahamata,07 Babinton,08 Numa,09 Doutor,0A Hanji Urabe,0B Marini (Kishida),0C Shingo Takasugi,0D Mamoru Izawa,0E Ryo Ishizaki,0F Tachibana Brothers,10 Mitsuru Sano,11 Kojiro Hyuga,12 Makoto Soda,13 Hiroshi Jito,14 Hikaru Matsuyama,15 Kazuki Sorimachi,16 Takeshi Sawada,17 Jun Misugi,18 Stage 1 Defender,19 Stage 1 Forward,1A Stage 2 Defender,1B Stage 2 Forward,1C Sartoris,1D Libério,1E Stage 3 Defender,1F Stage 3 Forward,20 Da Silva,21 Stage 4 Defender,22 Stage 4 Forward,23 Toninho,24 Nei,25 Stage 5 Defender,26 Stage 5 Forward,27 Zagalo,28 Diuseu,29 Stage 6 Defender,2A Stage 6 Forward,2B Santana,2C Santamarino,2D Jetorio,2E Kunimi Defender,2F Kunimi Forward,30 Jito,31 Soya,32 Akita Defender,33 Akita Forward,34 Tachibana,35 Roppongi Defender,36 Roppongi Forward,37 Soda,38 Musashi Defender,39 Musashi Forward,3A Misugi,3B Furano Defender,3C Furano Forward,3D Matsuyama,3E Toho Defender,3F Toho Forward,40 Hyuga,41 Sorimachi,42 Sawada,43 Roma Defender,44 Roma Forward,45 Lampião,46 Uruguay Defender,47 Uruguay Forward,48 Victorino,49 Da Silva,4A Hamburg Defender,4B Hamburg Forward,4C Cabello,4D Kaltz,4E Mantu,4F Hyuga,50 Nitta,51 Soya,52 Misaki,53 Misugi,54 Tachibana Brothers,55 Jito,56 Ishizaki,57 Soda,58 Matsuyama,59 Syria Defender,5A Syria Forward,5B China Defender,5C China Forward,5D Li Brothers,5E Iran Defender,5F Iran Forward,60 North Korea Defender,61 North Korea Forward,62 Saudi Arabia Defender,63 Saudi Arabia Forward,64 South Korea Defender,65 South Korea Forward,66 Cha Incheon,67 Lee Longyun,68 Vasco da Gama Common,69 Poland Defender,6A Poland Forward,6B Maiha,6C England Defender,6D England Forward,6E Lolima,6F Robertson,70 Soviet Union Defender,71 Soviet Union Forward,72 Belev,73 France Defender,74 France Forward,75 Napoleon,76 Pierre,77 Mexico Defender,78 Mexico Forward,79 Espanha,7A Italy Defender,7B Italy Forward,7C Lampião,7D Netherlands Defender,7E Netherlands Forward,7F Islas,80 Libuta,81 Argentina Common,82 Pascal,83 Sartoris,84 Diaz,85 Babinton,86 Galvan,87 West Germany Common,88 Schneider,89 Margas,8A Kaltz,8B Mantu,8C Shester,8D Cabello,8E Santana,8F Zagalo,90 Libério,91 Nei,92 Santamarino,93 Toninho,94 Doutor,95 Numa,96 Diuseu,97 Jetorio,98 Coimbra,99 Avalanche Matsuyama,9A Berserk Diaz,9B Berserk Schneider,9C Avalanche Furano Common';
+  '00 Lima/Batista/Nakayama,01 Tsubasa,02 Misaki,03 Nitta,04 Kisugi,05 Platton,06 Tahamata,07 Babinton,08 Numa,09 Dottil,0A Urabe,0B Marini,0C Takasugi,0D Izawa,0E Ishizaki,0F Tachibana Brothers,10 Sano,11 Hyuga,12 Soda,13 Jitou,14 Matsuyama,15 Sorimachi,16 Sawada,17 Misugi,18 Stage 1 Defender,19 Stage 1 Forward,1A Stage 2 Defender,1B Stage 2 Forward,1C Sartoris,1D Libério,1E Stage 3 Defender,1F Stage 3 Forward,20 Da Silva,21 Stage 4 Defender,22 Stage 4 Forward,23 Toninho,24 Nei,25 Stage 5 Defender,26 Stage 5 Forward,27 Zagalo,28 Diuseu,29 Stage 6 Defender,2A Stage 6 Forward,2B Santana,2C Santamarino,2D Jetorio,2E Kunimi Defender,2F Kunimi Forward,30 Jito,31 Soya,32 Akita Defender,33 Akita Forward,34 Tachibana,35 Roppongi Defender,36 Roppongi Forward,37 Soda,38 Musashi Defender,39 Musashi Forward,3A Misugi,3B Furano Defender,3C Furano Forward,3D Matsuyama,3E Toho Defender,3F Toho Forward,40 Hyuga,41 Sorimachi,42 Sawada,43 Roma Defender,44 Roma Forward,45 Lampião,46 Uruguay Defender,47 Uruguay Forward,48 Victorino,49 Da Silva,4A Hamburg Defender,4B Hamburg Forward,4C Cabello,4D Kaltz,4E Mantu,4F Hyuga,50 Nitta,51 Soya,52 Misaki,53 Misugi,54 Tachibana Brothers,55 Jito,56 Ishizaki,57 Soda,58 Matsuyama,59 Syria Defender,5A Syria Forward,5B China Defender,5C China Forward,5D Li Brothers,5E Iran Defender,5F Iran Forward,60 North Korea Defender,61 North Korea Forward,62 Saudi Arabia Defender,63 Saudi Arabia Forward,64 South Korea Defender,65 South Korea Forward,66 Cha Incheon,67 Lee Longyun,68 Vasco da Gama Common,69 Poland Defender,6A Poland Forward,6B Maiha,6C England Defender,6D England Forward,6E Lolima,6F Robertson,70 Soviet Union Defender,71 Soviet Union Forward,72 Belev,73 France Defender,74 France Forward,75 Napoleon,76 Pierre,77 Mexico Defender,78 Mexico Forward,79 Espanha,7A Italy Defender,7B Italy Forward,7C Lampião,7D Netherlands Defender,7E Netherlands Forward,7F Islas,80 Libuta,81 Argentina Common,82 Pascal,83 Sartoris,84 Diaz,85 Babinton,86 Galvan,87 West Germany Common,88 Schneider,89 Margas,8A Kaltz,8B Mantu,8C Shester,8D Cabello,8E Santana,8F Zagalo,90 Libério,91 Nei,92 Santamarino,93 Toninho,94 Doutor,95 Numa,96 Diuseu,97 Jetorio,98 Coimbra,99 Avalanche Matsuyama,9A Berserk Diaz,9B Berserk Schneider,9C Avalanche Furano Common';
 
 var playerstrtemp6 =
-  '9D Renato(São Paulo),9E Morisaki (Japan),9F Ken Wakashimazu(Toho),A0 Genzo Wakabayashi(Japan),A1 Stage 1 GK,A2 Stage 2 GK,A3 Mannone,A4 Stage 4 GK,A5 Stage 5 GK,A6 Stage 6 GK,A7 Kunimi GK,A8 Akita GK,A9 Taichi Nakanishi,AA Musashi GK,AB Furano GK,AC Ken Wakashimazu,AD Roma GK,AE Uruguay GK,AF Genzo Wakabayashi,B0 Ken Wakashimazu,B1 Syria GK,B2 China GK,B3 Iran GK,B4 North Korea GK,B5 Saudi Arabia GK,B6 South Korea GK,B7 Vasco da Gama GK,B8 Gisecce,B9 England GK,BA Rashin,BB France GK,BC Mexico GK,BD Hernandez,BE Netherlands GK,BF Argentina GK,C0 Müller,C1 Grudis';
+  '9D Lennart(SPL),9E Morisaki(Japan),9F Ken(Toho),A0 Genzo(Japan),A1 Stage 1 GK,A2 Stage 2 GK,A3 Mannone,A4 Stage 4 GK,A5 Stage 5 GK,A6 Stage 6 GK,A7 Kunimi GK,A8 Akita GK,A9 Nakanishi,AA Musashi GK,AB Furano GK,AC Ken,AD Roma GK,AE Uruguay GK,AF Genzo,B0 Ken,B1 Syria GK,B2 China GK,B3 Iran GK,B4 North Korea GK,B5 Saudi Arabia GK,B6 South Korea GK,B7 Vasco da Gama GK,B8 Gisecce,B9 England GK,BA Rashin,BB France GK,BC Mexico GK,BD Hernandez,BE Netherlands GK,BF Argentina GK,C0 Muller,C1 Gertis';
 
 var PlayerName_Skill = playerstrtemp1.split(',');
 
@@ -128,8 +128,8 @@ var abilitGKStr = [
   'High Claim:',
 ];
 var teamlist = [
-  'T1 São Paulo',
-  'T2 Nankatsu',
+  'T1 SPL',
+  'T2 Nank',
   'T3 Japan',
   'Stage 01 Fluminense',
   'Stage 02 Corinthians',
@@ -206,7 +206,7 @@ var Ai_Ack_1str = [
   'AI #1A (All-rounder) Schneider',
   'AI #1B (All-round offense) Berserk Schneider',
   'AI #1C (Super striker) Coimbra',
-  'AI #1D (Assist teammates) Musashi Jun Misugi',
+  'AI #1D (Assist teammates) Musashi Misugi',
   'AI #1E (Rage Hyuga) Hidden',
   'AI #1F ???',
 ];
@@ -295,19 +295,19 @@ var Ai_GK_3str = [
 var Ai_Run = [
   '00   NPC type',
   '01   Amara',
-  '02   Shun Nitta / Mitsuru Sano',
-  '03   Tsubasa Ozora / Taro Misaki',
+  '02   Nitta / Sano',
+  '03   Tsubasa / Misaki',
   '04   Babinton',
-  '05   Hajime Taki',
+  '05   Taki',
   '06   Jito & other forwards',
   '07   Puraton',
-  '08   Hanji Urabe',
-  '09   Mamoru Soda / Hikaru Matsuyama',
+  '08   Urabe',
+  '09   Mamoru Soda / Matsuyama',
   '0A   Schneider',
   '0B   Jetorio',
   '0C   Akita Tachibana Brothers',
   '0D   ??',
-  '0E   NPC Kojiro Hyuga',
+  '0E   NPC Hyuga',
   '0F   Victorino',
   '10   Japan NPC Defenders',
   '11   NPC Tachibana Brothers',
@@ -322,7 +322,7 @@ var Ai_Run = [
   '1A   Karl-Heinz Kaltz (W.Ger.)',
   '1B   Coimbra',
   '1C   Santana (BRA)',
-  '1D   Jun Misugi',
+  '1D   Misugi',
   '1E   ??',
   '1F   ??',
 ];
@@ -396,24 +396,24 @@ var Edit_playerColor = 0x2b821; //明星颜色
 var Edit_NpcColor = 0x2b6d7; //杂鱼颜色
 var Edit_ModType = 0x28901; //头型
 var PlayModList = [
-  '00 Tsubasa Ozora',
+  '00 Tsubasa',
   '01 Babinton',
   '02 Giu',
-  '03 Hajime Taki',
+  '03 Taki',
   '04 Marini',
-  '05 Doutor',
+  '05 Dottil',
   '06 Lima',
-  '07 Kojiro Hyuga',
+  '07 Hyuga',
   '08 Common',
-  '09 Hanji Urabe',
+  '09 Urabe',
   '0A Lee Longyun',
   '0B Coimbra',
   '0C Wakabayashi',
   '0D Müller',
   '0E Wakashimazu',
-  '0F Renato, Mannone, Rashin, Hernandez',
-  '10 Yuzo Morisaki',
-  '11 Gisecce, Taichi Nakanishi',
+  '0F Lennart, Mannone, Rashin, Hernandez',
+  '10 Morisaki',
+  '11 Gisecce, Nakanishi',
 ];
 
 var s5000 = [
@@ -1192,7 +1192,7 @@ var Skill_TACKLE_ =
 var Skill_ICEPT_ =
   '81 High Intercept (Tachibana),01 High Intercept (Not recommended)';
 var Skill_GK_ = '01 Spinning Save,02 Clone Save,03 Grand Rotation Save';
-Skill_TYPE_ += ',Goalkeeper (GK) ';
+Skill_TYPE_ += ',GK (GK) ';
 
 //128*128 256*256 40*40
 var IMG_ChrIMG = [
@@ -1624,12 +1624,12 @@ var Skill_o_addr = [
 ];
 var Skill_o_txt = [
   '91 Tsubasa',
-  '93 Renato',
+  '93 Lennart',
   '94 Morisaki',
   '96 Misaki',
   '97 Misaki',
-  '98 Ryo Ishizaki',
-  '99 Ryo Ishizaki',
+  '98 Ishizaki',
+  '99 Ishizaki',
   '9A Nitta',
   '9B Nitta',
   '9C Japan Tachibana',
@@ -1664,35 +1664,35 @@ var Skill_o_txt = [
 ];
 
 var IMG_Name_Portrait = [
-  ['Renato', 0x2baff, 0x2bb00, 0x2bb01, 0x2bb0a, 0x2bb03],
-  ['Yuzo Morisaki (Nankatsu)', 0x2bb0f, 0x2bb10, 0x2bb1a, 0x2bb1d],
-  ['Yuzo Morisaki (Japan)', 0x2bb1f, 0x2bb20, 0x2bb2a, 0x2bb2d],
-  ['Genzo Wakabayashi (Japan, Hamburg)', 0x2bc2f, 0x2bc30, 0x2bc3a],
-  ['Ken Wakashimazu (Toho)', 0x3fd0c, 0x3fd0d, 0x3fd14, 0x3fd0f, 0x3fd13],
-  ['Ken Wakashimazu (Japan)', 0x3fc10, 0x3fc11, 0x3fd14, 0x3fc13, 0x3fc17],
+  ['Lennart', 0x2baff, 0x2bb00, 0x2bb01, 0x2bb0a, 0x2bb03],
+  ['Morisaki (Nank)', 0x2bb0f, 0x2bb10, 0x2bb1a, 0x2bb1d],
+  ['Morisaki (Japan)', 0x2bb1f, 0x2bb20, 0x2bb2a, 0x2bb2d],
+  ['Genzo (Japan, Hamburg)', 0x2bc2f, 0x2bc30, 0x2bc3a],
+  ['Ken (Toho)', 0x3fd0c, 0x3fd0d, 0x3fd14, 0x3fd0f, 0x3fd13],
+  ['Ken (Japan)', 0x3fc10, 0x3fc11, 0x3fd14, 0x3fc13, 0x3fc17],
   ['Mannone', 0x2bc5f, 0x2bc60, 0x2bc61, 0x2bc6a, 0x2bc6d],
-  ['Tsubasa Ozora (São Paulo)', 0x2badf, 0x2bae0, 0x2bae8, 0x2bae9],
-  ['Tsubasa Ozora (Japan)', 0x2baef, 0x2baf0, 0x2baf8, 0x2baf9],
-  ['Taro Misaki (Nankatsu)', 0x2bb2f, 0x2bb30, 0x2bb31, 0x2bb39, 0x2bb38],
-  ['Taro Misaki (Japan)', 0x2bb3f, 0x2bb40, 0x2bb41, 0x2bb49, 0x2bb48],
-  ['Ryo Ishizaki (Nankatsu)', 0x2bb4f, 0x2bb50, 0x2bb58, 0x2bb59],
-  ['Ryo Ishizaki (Japan)', 0x2bb6f, 0x2bb70, 0x2bb78, 0x2bb79],
-  ['Shun Nitta (Nankatsu)', 0x2bb8f, 0x2bb90, 0x2bb91, 0x2bb99, 0x2bb98],
-  ['Shun Nitta (Japan)', 0x2bb9f, 0x2bba0, 0x2bba1, 0x2bba9, 0x2bba8],
+  ['Tsubasa (SPL)', 0x2badf, 0x2bae0, 0x2bae8, 0x2bae9],
+  ['Tsubasa (Japan)', 0x2baef, 0x2baf0, 0x2baf8, 0x2baf9],
+  ['Misaki (Nank)', 0x2bb2f, 0x2bb30, 0x2bb31, 0x2bb39, 0x2bb38],
+  ['Misaki (Japan)', 0x2bb3f, 0x2bb40, 0x2bb41, 0x2bb49, 0x2bb48],
+  ['Ishizaki (Nank)', 0x2bb4f, 0x2bb50, 0x2bb58, 0x2bb59],
+  ['Ishizaki (Japan)', 0x2bb6f, 0x2bb70, 0x2bb78, 0x2bb79],
+  ['Nitta (Nank)', 0x2bb8f, 0x2bb90, 0x2bb91, 0x2bb99, 0x2bb98],
+  ['Nitta (Japan)', 0x2bb9f, 0x2bba0, 0x2bba1, 0x2bba9, 0x2bba8],
   ['Tachibana Twins (Akita)', 0x2bc8f, 0x2bc90, 0x2bc98, 0x2bc99],
   ['Tachibana Twins (Japan)', 0x2bbaf, 0x2bbb0, 0x2bbb8, 0x2bbb9],
-  ['Kojiro Hyuga (Toho)', 0x2bcdf, 0x2bce0, 0x2bce8, 0x2bce9],
-  ['Kojiro Hyuga (Japan)', 0x2bbcf, 0x2bbd0, 0x2bbd8, 0x2bbd9],
-  ['Makoto Soda (Roppongi)', 0x2bcaf, 0x2bcb0, 0x2bcb6, 0x2bcb9, 0x2bcb8],
-  ['Makoto Soda (Japan)', 0x2bbdf, 0x2bbe0, 0x2bbe6, 0x2bbe9, 0x2bbe8],
-  ['Hiroshi Jito (Kunimi)', 0x2bc7f, 0x2bc80, 0x2bc86, 0x2bc89, 0x2bc88],
-  ['Hiroshi Jito (Japan)', 0x2bbef, 0x2bbf0, 0x2bbf6, 0x2bbf9, 0x2bbf8],
-  ['Hikaru Matsuyama (Furano)', 0x2bccf, 0x2bcd0, 0x2bcd6, 0x2bcd9, 0x2bcd8],
-  ['Hikaru Matsuyama (Japan)', 0x2bbff, 0x2bc00, 0x2bc06, 0x2bc09, 0x2bc08],
+  ['Hyuga (Toho)', 0x2bcdf, 0x2bce0, 0x2bce8, 0x2bce9],
+  ['Hyuga (Japan)', 0x2bbcf, 0x2bbd0, 0x2bbd8, 0x2bbd9],
+  ['Soda (Roppongi)', 0x2bcaf, 0x2bcb0, 0x2bcb6, 0x2bcb9, 0x2bcb8],
+  ['Soda (Japan)', 0x2bbdf, 0x2bbe0, 0x2bbe6, 0x2bbe9, 0x2bbe8],
+  ['Jitou (Kunimi)', 0x2bc7f, 0x2bc80, 0x2bc86, 0x2bc89, 0x2bc88],
+  ['Jitou (Japan)', 0x2bbef, 0x2bbf0, 0x2bbf6, 0x2bbf9, 0x2bbf8],
+  ['Matsuyama (Furano)', 0x2bccf, 0x2bcd0, 0x2bcd6, 0x2bcd9, 0x2bcd8],
+  ['Matsuyama (Japan)', 0x2bbff, 0x2bc00, 0x2bc06, 0x2bc09, 0x2bc08],
   ['Isamu Sawada (Toho)', 0x2bcef, 0x2bcf0, 0x2bcf8, 0x2bcf9],
   ['Isamu Sawada (Japan)', 0x2bc0f, 0x2bc10, 0x2bc18, 0x2bc19],
-  ['Jun Misugi (Musashi)', 0x2bcbf, 0x2bcc0, 0x2bcc1, 0x2bcc9, 0x2bcc8],
-  ['Jun Misugi (Japan)', 0x2bc1f, 0x2bc20, 0x2bc21, 0x2bc29, 0x2bc28],
+  ['Misugi (Musashi)', 0x2bcbf, 0x2bcc0, 0x2bcc1, 0x2bcc9, 0x2bcc8],
+  ['Misugi (Japan)', 0x2bc1f, 0x2bc20, 0x2bc21, 0x2bc29, 0x2bc28],
   ['Ramon Victorino', 0x2bd0f, 0x2bd10, 0x2bd11, 0x2bd19, 0x2bd18],
   ['Napoleon', 0x2be0f, 0x2be10, 0x2be11, 0x2be19, 0x2be18],
   ['Pierre', 0x2be1f, 0x2be20, 0x2be21, 0x2be29, 0x2be28],
@@ -1713,25 +1713,25 @@ var IMG_VS_PicNB = [
 ];
 var Portrait_List = [
   '00 No VS portrait',
-  '01 Tsubasa Ozora (Special)',
-  '02 Taro Misaki (Special)',
-  '03 Taro Misaki (Japan)',
-  '04 Kojiro Hyuga (Japan)',
-  '05 Kojiro Hyuga (Toho)',
-  '06 Jun Misugi (Japan)',
-  '07 Jun Misugi (Musashi)',
-  '08 Hikaru Matsuyama (Japan)',
-  '09 Hikaru Matsuyama (Furano)',
-  '0A Ryo Ishizaki (Special)',
-  '0B Ryo Ishizaki (Japan)',
-  '0C Makoto Soda (Japan)',
-  '0D Makoto Soda (Roppongi)',
-  '0E Hiroshi Jito (Japan)',
-  '0F Hiroshi Jito (Kunimi)',
+  '01 Tsubasa (Special)',
+  '02 Misaki (Special)',
+  '03 Misaki (Japan)',
+  '04 Hyuga (Japan)',
+  '05 Hyuga (Toho)',
+  '06 Misugi (Japan)',
+  '07 Misugi (Musashi)',
+  '08 Matsuyama (Japan)',
+  '09 Matsuyama (Furano)',
+  '0A Ishizaki (Special)',
+  '0B Ishizaki (Japan)',
+  '0C Soda (Japan)',
+  '0D Soda (Roppongi)',
+  '0E Jitou (Japan)',
+  '0F Jitou (Kunimi)',
   '10 Tachibana Twins (Japan)',
   '11 Tachibana Twins (Akita)',
-  '12 Shun Nitta (Special)',
-  '13 Shun Nitta (Japan)',
+  '12 Nitta (Special)',
+  '13 Nitta (Japan)',
   '14 Isamu Sawada (Japan)',
   '15 Isamu Sawada (Toho)',
   '16 Coimbra',
@@ -1749,14 +1749,14 @@ var Portrait_List = [
 ];
 
 var Portrait_List_GK = [
-  '01 Renato [GK]',
-  '02 Yuzo Morisaki [GK]',
-  '03 Genzo Wakabayashi [GK]',
-  '04 Ken Wakashimazu [GK]',
-  '92 Renato [GK]',
-  '97 Yuzo Morisaki [GK]',
-  '9C Genzo Wakabayashi [GK]',
-  'A1 Ken Wakashimazu (Toho)',
+  '01 Lennart [GK]',
+  '02 Morisaki [GK]',
+  '03 Genzo [GK]',
+  '04 Ken [GK]',
+  '92 Lennart [GK]',
+  '97 Morisaki [GK]',
+  '9C Genzo [GK]',
+  'A1 Ken (Toho)',
   '7F Mannone [GK]',
 ];
 

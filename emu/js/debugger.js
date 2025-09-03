@@ -67,19 +67,28 @@ function Debugger(nes, ctx) {
       let success = this.nes.loadRom(rom);
       return done(success);
     }
-  }
+  };
 
   // 执行断点
   this.cycle = function () {
     this.nes.cycle();
-    if (this.nes.cpu.cyclesLeft === 0 && !this.nes.inDma && (this.nes.cycles % 3) === 0) {
+    if (
+      this.nes.cpu.cyclesLeft === 0 &&
+      !this.nes.inDma &&
+      this.nes.cycles % 3 === 0
+    ) {
       let adr = this.nes.cpu.br[0];
       if (adr < 0x2000) {
         this.ramAccessType[adr & 0x7ff] = 3;
       }
       for (let breakpoint of this.breakpoints) {
         if (breakpoint.adr === adr && breakpoint.exec) {
-          log(i18n('log.default.breakpoint_execute', { adr: this.nes.getWordRep(adr) }), "default");
+          log(
+            i18n('log.default.breakpoint_execute', {
+              adr: this.nes.getWordRep(adr),
+            }),
+            'default',
+          );
           this.bpFired = true;
         }
       }
@@ -95,7 +104,7 @@ function Debugger(nes, ctx) {
     let b = this.bpFired;
     this.bpFired = false;
     return b;
-  }
+  };
 
   // runs a single instruction
   this.runInstruction = function () {
@@ -103,12 +112,18 @@ function Debugger(nes, ctx) {
     do {
       this.cycle();
       if (this.checkCommentBreakpoint(this.nes.cpu.br[0])) {
-        log("注释断点触发: " + this.nes.getWordRep(this.nes.cpu.br[0]), "default");
+        log(
+          '注释断点触发: ' + this.nes.getWordRep(this.nes.cpu.br[0]),
+          'default',
+        );
         this.isPaused = true;
         finished = true;
         break;
       }
-      finished = (this.nes.cpu.cyclesLeft === 0 && !this.nes.inDma && (this.nes.cycles % 3) === 0);
+      finished =
+        this.nes.cpu.cyclesLeft === 0 &&
+        !this.nes.inDma &&
+        this.nes.cycles % 3 === 0;
     } while (!finished);
     this.isPaused = true;
 
@@ -118,18 +133,19 @@ function Debugger(nes, ctx) {
       this.updateDebugView();
     }
     if (window.updatePauseBtnOverlayState) window.updatePauseBtnOverlayState();
-  }
+  };
 
   // 新增：持续运行直到暂停/断点，并恢复主循环/音频
   this.runContinue = function () {
     setPausedState(false);
-  }
+  };
 
   // returns false if we ran the whole frame, true if we broke at a breakpoint
   // in which case the emulator should pause itself
   this.runFrame = function () {
     this.frames++;
-    let b, count = 0;
+    let b,
+      count = 0;
 
     do {
       if (this.isPaused) return true;
@@ -138,7 +154,11 @@ function Debugger(nes, ctx) {
       count++;
 
       // 合并断点/注释断点/runCount 达到
-      if (b || this.checkCommentBreakpoint(this.nes.cpu.br[0]) || (this.runCount > 0 && count >= this.runCount)) {
+      if (
+        b ||
+        this.checkCommentBreakpoint(this.nes.cpu.br[0]) ||
+        (this.runCount > 0 && count >= this.runCount)
+      ) {
         setPausedState(true);
         this.runCount = 0;
         if (this.selectedView === 3) {
@@ -148,19 +168,33 @@ function Debugger(nes, ctx) {
         }
         // 只在断点/注释断点时 log
         if (b) {
-          log(i18n('log.default.breakpoint_execute', { adr: this.nes.getWordRep(this.nes.cpu.br[0]) }), "default");
+          log(
+            i18n('log.default.breakpoint_execute', {
+              adr: this.nes.getWordRep(this.nes.cpu.br[0]),
+            }),
+            'default',
+          );
         } else if (this.checkCommentBreakpoint(this.nes.cpu.br[0])) {
-          log("注释断点触发: " + this.nes.getWordRep(this.nes.cpu.br[0]), "default");
+          log(
+            '注释断点触发: ' + this.nes.getWordRep(this.nes.cpu.br[0]),
+            'default',
+          );
         }
-        if (window.updatePauseBtnOverlayState) window.updatePauseBtnOverlayState();
+        if (window.updatePauseBtnOverlayState)
+          window.updatePauseBtnOverlayState();
         return true;
       }
 
       // 在 runFrame 里
-      if (this.nes.ppu.line === this.updateLine && this.nes.ppu.dot === 0 && (this.frames & this.updateAnd) === 0) {
+      if (
+        this.nes.ppu.line === this.updateLine &&
+        this.nes.ppu.dot === 0 &&
+        (this.frames & this.updateAnd) === 0
+      ) {
         // 只有在未停止刷新且调试器界面显示时才刷新
-        let wrapper = el("wrapper");
-        let isWrapperVisible = wrapper && getComputedStyle(wrapper).display !== "none";
+        let wrapper = el('wrapper');
+        let isWrapperVisible =
+          wrapper && getComputedStyle(wrapper).display !== 'none';
         if (isWrapperVisible) {
           this.updateDebugView();
         }
@@ -170,7 +204,7 @@ function Debugger(nes, ctx) {
     return false;
   };
   this.addBreakpoint = function (adr, type) {
-    let bp = this.breakpoints.find(bp => bp.adr === adr);
+    let bp = this.breakpoints.find((bp) => bp.adr === adr);
     if (!bp) {
       bp = { adr, read: false, write: false, exec: false };
       this.breakpoints.push(bp);
@@ -187,9 +221,9 @@ function Debugger(nes, ctx) {
     this._uiInited = true;
 
     // Dissasembly 视图容器
-    let disasmDiv = document.createElement("div");
-    disasmDiv.id = "disasm_view";
-    disasmDiv.style.display = "none";
+    let disasmDiv = document.createElement('div');
+    disasmDiv.id = 'disasm_view';
+    disasmDiv.style.display = 'none';
     disasmDiv.innerHTML = `<style>
 
 
@@ -307,7 +341,7 @@ function Debugger(nes, ctx) {
   <span style="flex-basis:100%;height:0"></span>
   <span>PC为</span>
   <input id="bp_pc" type="text" maxlength="4">
-  <span>暂停</span>
+  <span>Pause</span>
   <button id="btn_bp_pc">确定</button>
   <span style="flex-basis:100%;height:0"></span>
   <span>访问</span>
@@ -317,7 +351,7 @@ function Debugger(nes, ctx) {
   <span style="flex-basis:100%;height:0"></span>
   <span>注释含</span>
 <input id="new_keyword" type="text" placeholder="添加关键词" style="width: 120px; margin-right: 8px;">
-  <span>暂停</span>
+  <span>Pause</span>
       <button id="add_keyword_btn">添加</button>
 </div>
 <div id="disasm_cpu" style="font-family:monospace;margin-bottom:4px;"></div>
@@ -341,19 +375,25 @@ function Debugger(nes, ctx) {
   <p id="breakpoints" class="state"></p>
 `;
 
-    el("wrapper").appendChild(disasmDiv);
-    db.setView(3);//默认 显示 调试器
+    el('wrapper').appendChild(disasmDiv);
+    db.setView(3); //默认 显示 调试器
 
     // 拖动支持（PC/移动端）
     (function () {
-      let wrapper = el("wrapper");
-      let dragbar = document.getElementById("disasm_dragbar");
-      let dragging = false, offsetX = 0, offsetY = 0, startX = 0, startY = 0, startLeft = 0, startTop = 0;
+      let wrapper = el('wrapper');
+      let dragbar = document.getElementById('disasm_dragbar');
+      let dragging = false,
+        offsetX = 0,
+        offsetY = 0,
+        startX = 0,
+        startY = 0,
+        startLeft = 0,
+        startTop = 0;
       if (!wrapper || !dragbar) return;
       function onDragStart(e) {
         dragging = true;
-        wrapper.classList.add("dragging");
-        if (e.type === "touchstart") {
+        wrapper.classList.add('dragging');
+        if (e.type === 'touchstart') {
           startX = e.touches[0].clientX;
           startY = e.touches[0].clientY;
         } else {
@@ -363,15 +403,15 @@ function Debugger(nes, ctx) {
         let rect = wrapper.getBoundingClientRect();
         startLeft = rect.left;
         startTop = rect.top;
-        document.addEventListener("mousemove", onDragMove);
-        document.addEventListener("mouseup", onDragEnd);
-        document.addEventListener("touchmove", onDragMove, { passive: false });
-        document.addEventListener("touchend", onDragEnd);
+        document.addEventListener('mousemove', onDragMove);
+        document.addEventListener('mouseup', onDragEnd);
+        document.addEventListener('touchmove', onDragMove, { passive: false });
+        document.addEventListener('touchend', onDragEnd);
       }
       function onDragMove(e) {
         if (!dragging) return;
         let x, y;
-        if (e.type === "touchmove") {
+        if (e.type === 'touchmove') {
           x = e.touches[0].clientX;
           y = e.touches[0].clientY;
         } else {
@@ -381,42 +421,45 @@ function Debugger(nes, ctx) {
         let newLeft = startLeft + (x - startX);
         let newTop = startTop + (y - startY);
         // 限制在窗口内
-        newLeft = Math.max(0, Math.min(window.innerWidth - wrapper.offsetWidth, newLeft));
+        newLeft = Math.max(
+          0,
+          Math.min(window.innerWidth - wrapper.offsetWidth, newLeft),
+        );
         newTop = Math.max(0, Math.min(window.innerHeight - 40, newTop));
-        wrapper.style.left = newLeft + "px";
-        wrapper.style.top = newTop + "px";
-        wrapper.style.right = "auto";
-        wrapper.style.bottom = "auto";
+        wrapper.style.left = newLeft + 'px';
+        wrapper.style.top = newTop + 'px';
+        wrapper.style.right = 'auto';
+        wrapper.style.bottom = 'auto';
         e.preventDefault && e.preventDefault();
       }
       function onDragEnd() {
         dragging = false;
-        wrapper.classList.remove("dragging");
-        document.removeEventListener("mousemove", onDragMove);
-        document.removeEventListener("mouseup", onDragEnd);
-        document.removeEventListener("touchmove", onDragMove);
-        document.removeEventListener("touchend", onDragEnd);
+        wrapper.classList.remove('dragging');
+        document.removeEventListener('mousemove', onDragMove);
+        document.removeEventListener('mouseup', onDragEnd);
+        document.removeEventListener('touchmove', onDragMove);
+        document.removeEventListener('touchend', onDragEnd);
       }
-      dragbar.addEventListener("mousedown", onDragStart);
-      dragbar.addEventListener("touchstart", onDragStart, { passive: false });
+      dragbar.addEventListener('mousedown', onDragStart);
+      dragbar.addEventListener('touchstart', onDragStart, { passive: false });
     })();
 
     // 事件绑定
-    el("btn_pause").onclick = () => setPausedState(true);
-    el("btn_run").onclick = () => setPausedState(false);
-    el("btn_step").onclick = () => this.runInstruction();
+    el('btn_pause').onclick = () => setPausedState(true);
+    el('btn_run').onclick = () => setPausedState(false);
+    el('btn_step').onclick = () => this.runInstruction();
 
-    el("btn_run_n").onclick = () => {
-      this.runCount = parseInt(el("run_n_count").value) || 1;
+    el('btn_run_n').onclick = () => {
+      this.runCount = parseInt(el('run_n_count').value) || 1;
       setPausedState(false);
     };
 
-    el("btn_bp_pc").onclick = () => {
-      let v = parseInt(el("bp_pc").value, 16);
+    el('btn_bp_pc').onclick = () => {
+      let v = parseInt(el('bp_pc').value, 16);
       if (!isNaN(v)) this.addBreakpoint(v, 2);
     };
-    el("btn_bp_mem").onclick = () => {
-      let v = parseInt(el("bp_mem").value, 16); // 你的原始输入框id
+    el('btn_bp_mem').onclick = () => {
+      let v = parseInt(el('bp_mem').value, 16); // 你的原始输入框id
       if (isNaN(v)) return;
       // 默认添加“读”类型（或你想要的类型，比如执行/写/读）
       let type = 1; // 0=读, 1=写, 2=执行
@@ -424,56 +467,58 @@ function Debugger(nes, ctx) {
     };
 
     // 添加关键词按钮事件
-    el("add_keyword_btn").onclick = () => {
-      const input = el("new_keyword");
+    el('add_keyword_btn').onclick = () => {
+      const input = el('new_keyword');
       const kw = input.value.trim().toUpperCase();
       if (kw && !this.commentBreakKeywords.includes(kw)) {
         this.commentBreakKeywords.push(kw);
-        input.value = "";
+        input.value = '';
         updateKeywordList();
       }
     };
 
     // 默认勾选“停止刷新”
-    el("cb_stop_refresh").checked = true;
+    el('cb_stop_refresh').checked = true;
     this.disasmStopRefresh = true;
 
-    el("cb_pause_on_start").onchange = (e) => { this.pauseOnStart = e.target.checked; };
-    el("cb_stop_refresh").onchange = (e) => { this.disasmStopRefresh = e.target.checked; };
+    el('cb_pause_on_start').onchange = (e) => {
+      this.pauseOnStart = e.target.checked;
+    };
+    el('cb_stop_refresh').onchange = (e) => {
+      this.disasmStopRefresh = e.target.checked;
+    };
 
     // 修复 Add breakpoint 按钮
-    let bpAddBtn = el("bpadd");
+    let bpAddBtn = el('bpadd');
     if (bpAddBtn) {
       bpAddBtn.onclick = () => {
-        let adr = parseInt(el("bpaddress").value, 16);
-        let t = parseInt(el("bptype").value, 10);
+        let adr = parseInt(el('bpaddress').value, 16);
+        let t = parseInt(el('bptype').value, 10);
         if (!isNaN(adr) && !isNaN(t)) {
           this.addBreakpoint(adr, t);
         }
       };
     }
 
-
-
     // 添加注释断点关键词管理区域
-    let keywordDiv = document.createElement("div");
-    keywordDiv.id = "comment_keywords";
-    keywordDiv.style.marginTop = "8px";
+    let keywordDiv = document.createElement('div');
+    keywordDiv.id = 'comment_keywords';
+    keywordDiv.style.marginTop = '8px';
     keywordDiv.innerHTML = `
     <b>注释关键词:</b>
     <ul id="keyword_list" style="list-style: none; padding: 0; margin: 8px 0;"></ul>
   `;
-    el("disasm_view").appendChild(keywordDiv);
+    el('disasm_view').appendChild(keywordDiv);
 
     // 更新关键词列表显示
     const updateKeywordList = () => {
-      const list = el("keyword_list");
-      list.innerHTML = "";
+      const list = el('keyword_list');
+      list.innerHTML = '';
       this.commentBreakKeywords.forEach((kw, idx) => {
-        const li = document.createElement("li");
-        li.style.display = "flex";
-        li.style.alignItems = "center";
-        li.style.gap = "8px";
+        const li = document.createElement('li');
+        li.style.display = 'flex';
+        li.style.alignItems = 'center';
+        li.style.gap = '8px';
         li.innerHTML = `
         <span>${kw}</span>
         <button data-idx="${idx}" style="color: red; cursor: pointer;">删除</button>
@@ -482,7 +527,7 @@ function Debugger(nes, ctx) {
       });
 
       // 删除关键词事件绑定
-      list.querySelectorAll("button").forEach(btn => {
+      list.querySelectorAll('button').forEach((btn) => {
         btn.onclick = () => {
           const idx = +btn.dataset.idx;
           this.commentBreakKeywords.splice(idx, 1);
@@ -490,8 +535,6 @@ function Debugger(nes, ctx) {
         };
       });
     };
-
-
 
     updateKeywordList();
 
@@ -505,20 +548,22 @@ function Debugger(nes, ctx) {
     this.selectedView = view;
 
     // 只切换显示状态
-    el("viewram").style.display = (view === 2) ? "block" : "none";
-    el("doutput").style.display = (view === 0 || view === 1) ? "block" : "none";
-    el("chrviewdiv").style.display = (view === 0) ? "block" : "none";
-    let disasmDiv = el("disasm_view");
-    if (disasmDiv) disasmDiv.style.display = (view === 3) ? "block" : "none";
+    el('viewram').style.display = view === 2 ? 'block' : 'none';
+    el('doutput').style.display = view === 0 || view === 1 ? 'block' : 'none';
+    el('chrviewdiv').style.display = view === 0 ? 'block' : 'none';
+    let disasmDiv = el('disasm_view');
+    if (disasmDiv) disasmDiv.style.display = view === 3 ? 'block' : 'none';
 
     // 只有切到反汇编才重置滚动
     if (view === 3) {
       this.disScroll = this.nes.cpu.br[0] - 16;
     }
     // 只刷新当前显示的内容
-    if ((view === 3 && disasmDiv && disasmDiv.style.display === "block") ||
-      (view === 2 && el("viewram").style.display === "block") ||
-      ((view === 0 || view === 1) && el("doutput").style.display === "block")) {
+    if (
+      (view === 3 && disasmDiv && disasmDiv.style.display === 'block') ||
+      (view === 2 && el('viewram').style.display === 'block') ||
+      ((view === 0 || view === 1) && el('doutput').style.display === 'block')
+    ) {
       this.updateDebugView();
     }
   };
@@ -542,7 +587,7 @@ function Debugger(nes, ctx) {
         this.updateDebugView();
       }
     }
-  }
+  };
 
   // 读断点
   this.onread = function (adr, val) {
@@ -551,7 +596,13 @@ function Debugger(nes, ctx) {
     }
     for (let breakpoint of this.breakpoints) {
       if (breakpoint.adr === adr && breakpoint.read) {
-        log(i18n('log.default.breakpoint_read', { val: this.nes.getByteRep(val), adr: this.nes.getWordRep(adr) }), "default");
+        log(
+          i18n('log.default.breakpoint_read', {
+            val: this.nes.getByteRep(val),
+            adr: this.nes.getWordRep(adr),
+          }),
+          'default',
+        );
         this.bpFired = true;
       }
     }
@@ -563,7 +614,13 @@ function Debugger(nes, ctx) {
     }
     for (let breakpoint of this.breakpoints) {
       if (breakpoint.adr === adr && breakpoint.write) {
-        log(i18n('log.default.breakpoint_write', { val: this.nes.getByteRep(val), adr: this.nes.getWordRep(adr) }), "default");
+        log(
+          i18n('log.default.breakpoint_write', {
+            val: this.nes.getByteRep(val),
+            adr: this.nes.getWordRep(adr),
+          }),
+          'default',
+        );
         this.bpFired = true;
       }
     }
@@ -574,15 +631,16 @@ function Debugger(nes, ctx) {
 
   // 重写 updateDebugView 减少开销
   this.updateDebugView = function () {
-
     if (!this._uiInited) this.initDebugUI();
 
     // 判断 disasm_view 和 wrapper 是否显示
-    let disasmDiv = el("disasm_view");
-    let isDisasmVisible = disasmDiv && getComputedStyle(disasmDiv).display !== "none";
+    let disasmDiv = el('disasm_view');
+    let isDisasmVisible =
+      disasmDiv && getComputedStyle(disasmDiv).display !== 'none';
     // 判断 wrapper 是否显示
-    let wrapper = el("wrapper");
-    let isWrapperVisible = wrapper && getComputedStyle(wrapper).display !== "none";
+    let wrapper = el('wrapper');
+    let isWrapperVisible =
+      wrapper && getComputedStyle(wrapper).display !== 'none';
 
     // 只检测断点，不刷新内容
     if (!isWrapperVisible || this.selectedView !== 3) {
@@ -590,7 +648,7 @@ function Debugger(nes, ctx) {
       let pc = this.nes.cpu && this.nes.cpu.br ? this.nes.cpu.br[0] : 0;
       for (let bp of this.breakpoints) {
         if (bp.exec && bp.adr === pc) {
-          log(`断点触发: ${this.nes.getWordRep(bp.adr)}`, "default");
+          log(`断点触发: ${this.nes.getWordRep(bp.adr)}`, 'default');
           this.isPaused = true;
         }
       }
@@ -607,70 +665,73 @@ function Debugger(nes, ctx) {
       return;
     }
 
-
     if (this.selectedView === 0) {
+      el('doutput').width = 256;
+      el('doutput').height = 160;
+      el('doutput').style.width = '256px';
+      el('doutput').style.height = '160px';
 
-      el("doutput").width = 256;
-      el("doutput").height = 160;
-      el("doutput").style.width = "256px";
-      el("doutput").style.height = "160px";
-
-      window.drawPatternsPals(this.nes, this.ctx)
+      window.drawPatternsPals(this.nes, this.ctx);
 
       adjustCanvasSize();
     } else if (this.selectedView === 1) {
-      el("doutput").width = 512;
-      el("doutput").height = 480;
-      el("doutput").style.width = "512px";
-      el("doutput").style.height = "480px";
-      window.drawNametables(this.nes, this.ctx)
+      el('doutput').width = 512;
+      el('doutput').height = 480;
+      el('doutput').style.width = '512px';
+      el('doutput').style.height = '480px';
+      window.drawNametables(this.nes, this.ctx);
       adjustCanvasSize();
     } else if (this.selectedView === 2) {
       window.drawRam(this);
     }
   };
 
-
   // 新增：显示CPU寄存器状态（VirtuaNES-debug风格，直接读取CPU寄存器数组）
   this.drawCpuStatus = function () {
     let cpu = this.nes.cpu;
     // VirtuaNES-debug风格：直接读取cpu.r和cpu.br
-    let a = (cpu && cpu.r && typeof cpu.r[0] === "number") ? cpu.r[0] : undefined;
-    let x = (cpu && cpu.r && typeof cpu.r[1] === "number") ? cpu.r[1] : undefined;
-    let y = (cpu && cpu.r && typeof cpu.r[2] === "number") ? cpu.r[2] : undefined;
-    let s = (cpu && cpu.r && typeof cpu.r[3] === "number") ? cpu.r[3] : undefined;
-    let pcval = (cpu && cpu.br && typeof cpu.br[0] === "number") ? cpu.br[0] : undefined;
+    let a = cpu && cpu.r && typeof cpu.r[0] === 'number' ? cpu.r[0] : undefined;
+    let x = cpu && cpu.r && typeof cpu.r[1] === 'number' ? cpu.r[1] : undefined;
+    let y = cpu && cpu.r && typeof cpu.r[2] === 'number' ? cpu.r[2] : undefined;
+    let s = cpu && cpu.r && typeof cpu.r[3] === 'number' ? cpu.r[3] : undefined;
+    let pcval =
+      cpu && cpu.br && typeof cpu.br[0] === 'number' ? cpu.br[0] : undefined;
     // flags
     let p = cpu ? cpu.getP(false) : 0;
-    let safe = v => (typeof v === "number" && !isNaN(v)) ? this.nes.getByteRep(v) : "??";
-    let safeWord = v => (typeof v === "number" && !isNaN(v)) ? this.nes.getWordRep(v) : "????";
+    let safe = (v) =>
+      typeof v === 'number' && !isNaN(v) ? this.nes.getByteRep(v) : '??';
+    let safeWord = (v) =>
+      typeof v === 'number' && !isNaN(v) ? this.nes.getWordRep(v) : '????';
     let flagStr = [
-      (p & 0x80) ? "N1" : "N0",
-      (p & 0x40) ? "V1" : "V0",
-      (p & 0x20) ? "R1" : "R0",
-      (p & 0x10) ? "B1" : "B0",
-      (p & 0x08) ? "D1" : "D0",
-      (p & 0x04) ? "I1" : "I0",
-      (p & 0x02) ? "Z1" : "Z0",
-      (p & 0x01) ? "C1" : "C0"
-    ].join(" ");
-    let sstr = `PC:${safeWord(pcval)} A:${safe(a)} X:${safe(x)} Y:${safe(y)}\r\nSP:${safe(s)} P[${flagStr}]`;
-    el("disasm_cpu").style.whiteSpace = "pre"; // 新增：保证换行显示
-    el("disasm_cpu").textContent = sstr.toUpperCase();
+      p & 0x80 ? 'N1' : 'N0',
+      p & 0x40 ? 'V1' : 'V0',
+      p & 0x20 ? 'R1' : 'R0',
+      p & 0x10 ? 'B1' : 'B0',
+      p & 0x08 ? 'D1' : 'D0',
+      p & 0x04 ? 'I1' : 'I0',
+      p & 0x02 ? 'Z1' : 'Z0',
+      p & 0x01 ? 'C1' : 'C0',
+    ].join(' ');
+    let sstr = `PC:${safeWord(pcval)} A:${safe(a)} X:${safe(x)} Y:${safe(
+      y,
+    )}\r\nSP:${safe(s)} P[${flagStr}]`;
+    el('disasm_cpu').style.whiteSpace = 'pre'; // 新增：保证换行显示
+    el('disasm_cpu').textContent = sstr.toUpperCase();
   };
 
   // 重写 drawDissasembly，VirtuaNES-debug风格，文本模式，带表头对齐
   this.drawDissasembly = function () {
     this.drawCpuStatus();
     // 表头
-    let header = el("disasm_header");
-    header.innerHTML = `<span class="asm-prefix">   </span>` +
+    let header = el('disasm_header');
+    header.innerHTML =
+      `<span class="asm-prefix">   </span>` +
       `<span class="asm-addr">地址</span> ` +
       `<span class="asm-code">机器码</span> ` +
       `<span class="asm-ins">ASM指令</span> ` +
       `<span class="asm-comment">注释</span> ` +
       `<span class="asm-static">静态地址</span>`;
-    let pre = el("disasm_pre");
+    let pre = el('disasm_pre');
     if (!pre) return;
     // 反汇编窗口显示32行，PC指令在最后一行
     let pc = this.nes.cpu && this.nes.cpu.br ? this.nes.cpu.br[0] : 0;
@@ -681,7 +742,7 @@ function Debugger(nes, ctx) {
     for (let i = 0; i < linesTotal - 1; i++) {
       let found = false;
       for (let back = 3; back >= 1; back--) {
-        let prev = (adr - back + 0x10000) & 0xFFFF;
+        let prev = (adr - back + 0x10000) & 0xffff;
         let op = this.nes.peak(prev);
         let oplen = this.opLengths[this.nes.cpu.addressingModes[op]];
         if (oplen === back) {
@@ -692,7 +753,7 @@ function Debugger(nes, ctx) {
         }
       }
       if (!found) {
-        adr = (adr - 1 + 0x10000) & 0xFFFF;
+        adr = (adr - 1 + 0x10000) & 0xffff;
         adrList.unshift(adr);
       }
     }
@@ -704,38 +765,51 @@ function Debugger(nes, ctx) {
       let adr = adrList[i];
       let op = this.nes.peak(adr);
       let oplen = this.opLengths[this.nes.cpu.addressingModes[op]];
-      let isOpcode = (adr < 0x8000) ? this.ramCdl[adr] : this.romCdl[this.nes.mapper.getRomAdr(adr)];
-      let pcNow = (adr === pc);
-      let isBp = this.breakpoints.some(bp => bp.adr === adr && bp.t === 2);
+      let isOpcode =
+        adr < 0x8000
+          ? this.ramCdl[adr]
+          : this.romCdl[this.nes.mapper.getRomAdr(adr)];
+      let pcNow = adr === pc;
+      let isBp = this.breakpoints.some((bp) => bp.adr === adr && bp.t === 2);
 
       // 地址
-      let addrStr = this.nes.getWordRep(adr).toUpperCase().padEnd(5, " ");
+      let addrStr = this.nes.getWordRep(adr).toUpperCase().padEnd(5, ' ');
       // 机器码
       let codeArr = [];
       for (let j = 0; j < oplen; j++) {
-        codeArr.push(this.nes.getByteRep(this.nes.peak((adr + j) & 0xFFFF)).toUpperCase());
+        codeArr.push(
+          this.nes.getByteRep(this.nes.peak((adr + j) & 0xffff)).toUpperCase(),
+        );
       }
-      let codeStr = codeArr.join(" ").padEnd(8, " ");
+      let codeStr = codeArr.join(' ').padEnd(8, ' ');
       // ASM指令
-      let asmStr = isOpcode ? this.instrStr(adr).toUpperCase().padEnd(12, " ") : (".DB $" + this.nes.getByteRep(op).toUpperCase()).padEnd(12, " ");
+      let asmStr = isOpcode
+        ? this.instrStr(adr).toUpperCase().padEnd(12, ' ')
+        : ('.DB $' + this.nes.getByteRep(op).toUpperCase()).padEnd(12, ' ');
       // 注释
       let commentStr = this.getVirtuaNESComment(adr, isOpcode);
 
       // 行前缀，始终3字符
-      let prefix = "   ";
-      if (pcNow && isBp) prefix = "*> ";
-      else if (pcNow) prefix = ">  ";
-      else if (isBp) prefix = " * ";
-      else prefix = "   ";
+      let prefix = '   ';
+      if (pcNow && isBp) prefix = '*> ';
+      else if (pcNow) prefix = '>  ';
+      else if (isBp) prefix = ' * ';
+      else prefix = '   ';
       // 合成行，所有字段严格空格对齐
-      let staticAddr = "-";
-      if (adr >= 0x8000 && this.nes.mapper && typeof this.nes.mapper.getRomAdr === "function") {
+      let staticAddr = '-';
+      if (
+        adr >= 0x8000 &&
+        this.nes.mapper &&
+        typeof this.nes.mapper.getRomAdr === 'function'
+      ) {
         let romAddr = this.nes.mapper.getRomAdr(adr);
         // 加上 header.base 偏移，得到ROM文件真实偏移
         let fileAddr = (this.nes.mapper.h.base || 16) + romAddr;
-        staticAddr = "0x" + fileAddr.toString(16).toUpperCase().padStart(6, "0");
+        staticAddr =
+          '0x' + fileAddr.toString(16).toUpperCase().padStart(6, '0');
       }
-      let line = `<span class="asm-prefix">${prefix}</span>` +
+      let line =
+        `<span class="asm-prefix">${prefix}</span>` +
         `<span class="asm-addr">${addrStr}</span>` +
         `<span class="asm-code">${codeStr}</span>` +
         `<span class="asm-ins">${asmStr}</span>` +
@@ -743,9 +817,7 @@ function Debugger(nes, ctx) {
         `<span class="asm-static">${staticAddr}</span>`;
       lines.push(line);
     }
-    pre.innerHTML = lines.join("");
-
-
+    pre.innerHTML = lines.join('');
 
     // 滚动到最下
     pre.scrollTop = pre.scrollHeight;
@@ -753,7 +825,7 @@ function Debugger(nes, ctx) {
 
   // VirtuaNES风格注释，尽量解读为赋值/跳转/比较等
   this.getVirtuaNESComment = function (adr, isOpcode) {
-    if (!isOpcode) return "";
+    if (!isOpcode) return '';
     let op = this.nes.peak(adr);
     let mode = this.nes.cpu.addressingModes[op];
     let opName = this.opNames[op];
@@ -761,7 +833,7 @@ function Debugger(nes, ctx) {
     let i2 = i1 | (this.nes.peak((adr + 2) & 0xffff) << 8);
 
     // 赋值类
-    if (opName === "lda") {
+    if (opName === 'lda') {
       if (mode === 1) return `A=${this.nes.getByteRep(i1)}`;
       if (mode === 2) return `A=[00${this.nes.getByteRep(i1)}]`;
       if (mode === 7) return `A=[${this.nes.getWordRep(i2)}]`;
@@ -773,7 +845,7 @@ function Debugger(nes, ctx) {
       if (mode === 6) return `A=[(${this.nes.getByteRep(i1)})+Y]`;
       if (mode === 11) return `A=[(${this.nes.getWordRep(i2)})]`;
     }
-    if (opName === "sta") {
+    if (opName === 'sta') {
       if (mode === 2) return `[00${this.nes.getByteRep(i1)}]=A`;
       if (mode === 7) return `[${this.nes.getWordRep(i2)}]=A`;
       if (mode === 3) return `[00${this.nes.getByteRep(i1)}+X]=A`;
@@ -784,119 +856,120 @@ function Debugger(nes, ctx) {
       if (mode === 6) return `[(${this.nes.getByteRep(i1)})+Y]=A`;
       if (mode === 11) return `[(${this.nes.getWordRep(i2)})]=A`;
     }
-    if (opName === "ldx") {
+    if (opName === 'ldx') {
       if (mode === 1) return `X=${this.nes.getByteRep(i1)}`;
       if (mode === 2) return `X=[00${this.nes.getByteRep(i1)}]`;
       if (mode === 7) return `X=[${this.nes.getWordRep(i2)}]`;
       if (mode === 4) return `X=[00${this.nes.getByteRep(i1)}+Y]`;
       if (mode === 9) return `X=[${this.nes.getWordRep(i2)}+Y]`;
     }
-    if (opName === "ldy") {
+    if (opName === 'ldy') {
       if (mode === 1) return `Y=${this.nes.getByteRep(i1)}`;
       if (mode === 2) return `Y=[00${this.nes.getByteRep(i1)}]`;
       if (mode === 7) return `Y=[${this.nes.getWordRep(i2)}]`;
       if (mode === 3) return `Y=[00${this.nes.getByteRep(i1)}+X]`;
       if (mode === 8) return `Y=[${this.nes.getWordRep(i2)}+X]`;
     }
-    if (opName === "stx") {
+    if (opName === 'stx') {
       if (mode === 2) return `[00${this.nes.getByteRep(i1)}]=X`;
       if (mode === 7) return `[${this.nes.getWordRep(i2)}]=X`;
       if (mode === 4) return `[00${this.nes.getByteRep(i1)}+Y]=X`;
     }
-    if (opName === "sty") {
+    if (opName === 'sty') {
       if (mode === 2) return `[00${this.nes.getByteRep(i1)}]=Y`;
       if (mode === 7) return `[${this.nes.getWordRep(i2)}]=Y`;
       if (mode === 3) return `[00${this.nes.getByteRep(i1)}+X]=Y`;
     }
-    if (opName === "tax") return "X=A";
-    if (opName === "txa") return "A=X";
-    if (opName === "tay") return "Y=A";
-    if (opName === "tya") return "A=Y";
-    if (opName === "tsx") return "X=SP";
-    if (opName === "txs") return "SP=X";
-    if (opName === "inx") return "X=X+1";
-    if (opName === "iny") return "Y=Y+1";
-    if (opName === "dex") return "X=X-1";
-    if (opName === "dey") return "Y=Y-1";
-    if (opName === "inc") return "[mem]=[mem]+1";
-    if (opName === "dec") return "[mem]=[mem]-1";
+    if (opName === 'tax') return 'X=A';
+    if (opName === 'txa') return 'A=X';
+    if (opName === 'tay') return 'Y=A';
+    if (opName === 'tya') return 'A=Y';
+    if (opName === 'tsx') return 'X=SP';
+    if (opName === 'txs') return 'SP=X';
+    if (opName === 'inx') return 'X=X+1';
+    if (opName === 'iny') return 'Y=Y+1';
+    if (opName === 'dex') return 'X=X-1';
+    if (opName === 'dey') return 'Y=Y-1';
+    if (opName === 'inc') return '[mem]=[mem]+1';
+    if (opName === 'dec') return '[mem]=[mem]-1';
 
     // 比较/跳转
-    if (opName === "cmp" && mode === 1) return `A与${this.nes.getByteRep(i1)}比较`;
-    if (opName === "cmp") return "A与M比较";
-    if (opName === "cpx") return "X与M比较";
-    if (opName === "cpy") return "Y与M比较";
-    if (opName === "bpl") return "N=0?跳转";
-    if (opName === "bmi") return "N=1?跳转";
-    if (opName === "bvc") return "V=0?跳转";
-    if (opName === "bvs") return "V=1?跳转";
-    if (opName === "bcc") {
+    if (opName === 'cmp' && mode === 1)
+      return `A与${this.nes.getByteRep(i1)}比较`;
+    if (opName === 'cmp') return 'A与M比较';
+    if (opName === 'cpx') return 'X与M比较';
+    if (opName === 'cpy') return 'Y与M比较';
+    if (opName === 'bpl') return 'N=0?跳转';
+    if (opName === 'bmi') return 'N=1?跳转';
+    if (opName === 'bvc') return 'V=0?跳转';
+    if (opName === 'bvs') return 'V=1?跳转';
+    if (opName === 'bcc') {
       let rel = i1 > 0x7f ? i1 - 0x100 : i1;
-      let target = (adr + 2 + rel) & 0xFFFF;
+      let target = (adr + 2 + rel) & 0xffff;
       return `C=0?跳转${this.nes.getWordRep(target)}`;
     }
-    if (opName === "bcs") {
+    if (opName === 'bcs') {
       let rel = i1 > 0x7f ? i1 - 0x100 : i1;
-      let target = (adr + 2 + rel) & 0xFFFF;
+      let target = (adr + 2 + rel) & 0xffff;
       return `C=1?跳转${this.nes.getWordRep(target)}`;
     }
-    if (opName === "beq") {
+    if (opName === 'beq') {
       let rel = i1 > 0x7f ? i1 - 0x100 : i1;
-      let target = (adr + 2 + rel) & 0xFFFF;
+      let target = (adr + 2 + rel) & 0xffff;
       return `Z=1?跳转${this.nes.getWordRep(target)}`;
     }
-    if (opName === "bne") {
+    if (opName === 'bne') {
       let rel = i1 > 0x7f ? i1 - 0x100 : i1;
-      let target = (adr + 2 + rel) & 0xFFFF;
+      let target = (adr + 2 + rel) & 0xffff;
       return `Z=0?跳转${this.nes.getWordRep(target)}`;
     }
-    if (opName === "jsr") return `调用${this.nes.getWordRep(i2)}`;
-    if (opName === "jmp") return `跳转${this.nes.getWordRep(i2)}`;
-    if (opName === "rts") return "子程序返回";
-    if (opName === "rti") return "中断返回";
+    if (opName === 'jsr') return `调用${this.nes.getWordRep(i2)}`;
+    if (opName === 'jmp') return `跳转${this.nes.getWordRep(i2)}`;
+    if (opName === 'rts') return '子程序返回';
+    if (opName === 'rti') return '中断返回';
 
     // 其它
-    if (opName === "php") return "P→栈";
-    if (opName === "plp") return "P=栈顶";
-    if (opName === "pha") return "A→栈";
-    if (opName === "pla") return "A=栈顶";
-    if (opName === "clc") return "C=0";
-    if (opName === "sec") return "C=1";
-    if (opName === "cld") return "D=0";
-    if (opName === "sed") return "D=1";
-    if (opName === "cli") return "I=0";
-    if (opName === "sei") return "I=1";
-    if (opName === "clv") return "V=0";
-    if (opName === "adc") return "A=A+M+C";
-    if (opName === "sbc") return "A=A-M-C";
-    if (opName === "and") return "A=A&M";
-    if (opName === "ora") return "A=A|M";
-    if (opName === "eor") return "A=A^M";
-    if (opName === "nop") return "无操作";
-    if (opName === "brk") return "中断";
-    if (opName === "kil") return "非法指令";
-    if (opName === "slo") return "非法指令";
-    if (opName === "rla") return "非法指令";
-    if (opName === "sre") return "非法指令";
-    if (opName === "rra") return "非法指令";
-    if (opName === "sax") return "非法指令";
-    if (opName === "lax") return "非法指令";
-    if (opName === "dcp") return "非法指令";
-    if (opName === "isc") return "非法指令";
-    if (opName === "arr") return "非法指令";
-    if (opName === "anc") return "非法指令";
-    if (opName === "alr") return "非法指令";
-    if (opName === "axs") return "非法指令";
-    if (opName === "ahx") return "非法指令";
-    if (opName === "shx") return "非法指令";
-    if (opName === "shy") return "非法指令";
-    if (opName === "tas") return "非法指令";
-    if (opName === "xaa") return "非法指令";
-    if (opName === "las") return "非法指令";
-    if (opName === "isb") return "非法指令";
-    if (opName === "jam") return "非法指令";
-    if (opName === "uni") return "未定义指令";
-    return "";
+    if (opName === 'php') return 'P→栈';
+    if (opName === 'plp') return 'P=栈顶';
+    if (opName === 'pha') return 'A→栈';
+    if (opName === 'pla') return 'A=栈顶';
+    if (opName === 'clc') return 'C=0';
+    if (opName === 'sec') return 'C=1';
+    if (opName === 'cld') return 'D=0';
+    if (opName === 'sed') return 'D=1';
+    if (opName === 'cli') return 'I=0';
+    if (opName === 'sei') return 'I=1';
+    if (opName === 'clv') return 'V=0';
+    if (opName === 'adc') return 'A=A+M+C';
+    if (opName === 'sbc') return 'A=A-M-C';
+    if (opName === 'and') return 'A=A&M';
+    if (opName === 'ora') return 'A=A|M';
+    if (opName === 'eor') return 'A=A^M';
+    if (opName === 'nop') return '无操作';
+    if (opName === 'brk') return '中断';
+    if (opName === 'kil') return '非法指令';
+    if (opName === 'slo') return '非法指令';
+    if (opName === 'rla') return '非法指令';
+    if (opName === 'sre') return '非法指令';
+    if (opName === 'rra') return '非法指令';
+    if (opName === 'sax') return '非法指令';
+    if (opName === 'lax') return '非法指令';
+    if (opName === 'dcp') return '非法指令';
+    if (opName === 'isc') return '非法指令';
+    if (opName === 'arr') return '非法指令';
+    if (opName === 'anc') return '非法指令';
+    if (opName === 'alr') return '非法指令';
+    if (opName === 'axs') return '非法指令';
+    if (opName === 'ahx') return '非法指令';
+    if (opName === 'shx') return '非法指令';
+    if (opName === 'shy') return '非法指令';
+    if (opName === 'tas') return '非法指令';
+    if (opName === 'xaa') return '非法指令';
+    if (opName === 'las') return '非法指令';
+    if (opName === 'isb') return '非法指令';
+    if (opName === 'jam') return '非法指令';
+    if (opName === 'uni') return '未定义指令';
+    return '';
   };
 
   this.instrStr = function (adr) {
@@ -909,69 +982,331 @@ function Debugger(nes, ctx) {
     let relVal = i1 > 0x7f ? i1 - 0x100 : i1;
     relVal += pc + 2;
     switch (adrMode) {
-      case 0: return `${opName}`;
-      case 1: return `${opName} #$${this.nes.getByteRep(i1)}`;
-      case 2: return `${opName} $${this.nes.getByteRep(i1)}`;
-      case 3: return `${opName} $${this.nes.getByteRep(i1)},x`;
-      case 4: return `${opName} $${this.nes.getByteRep(i1)},y`;
-      case 5: return `${opName} ($${this.nes.getByteRep(i1)},x)`;
-      case 6: return `${opName} ($${this.nes.getByteRep(i1)}),y`;
-      case 7: return `${opName} $${this.nes.getWordRep(i2)}`;
-      case 8: return `${opName} $${this.nes.getWordRep(i2)},x`;
-      case 9: return `${opName} $${this.nes.getWordRep(i2)},y`;
-      case 10: return `?`; // apparently this ended up being skipped?
-      case 11: return `${opName} ($${this.nes.getWordRep(i2)})`;
-      case 12: return `${opName} $${this.nes.getWordRep(relVal)}`;
-      case 13: return `${opName} ($${this.nes.getByteRep(i1)}),y`;
-      case 14: return `${opName} $${this.nes.getWordRep(i2)},x`;
-      case 15: return `${opName} $${this.nes.getWordRep(i2)},y`;
+      case 0:
+        return `${opName}`;
+      case 1:
+        return `${opName} #$${this.nes.getByteRep(i1)}`;
+      case 2:
+        return `${opName} $${this.nes.getByteRep(i1)}`;
+      case 3:
+        return `${opName} $${this.nes.getByteRep(i1)},x`;
+      case 4:
+        return `${opName} $${this.nes.getByteRep(i1)},y`;
+      case 5:
+        return `${opName} ($${this.nes.getByteRep(i1)},x)`;
+      case 6:
+        return `${opName} ($${this.nes.getByteRep(i1)}),y`;
+      case 7:
+        return `${opName} $${this.nes.getWordRep(i2)}`;
+      case 8:
+        return `${opName} $${this.nes.getWordRep(i2)},x`;
+      case 9:
+        return `${opName} $${this.nes.getWordRep(i2)},y`;
+      case 10:
+        return `?`; // apparently this ended up being skipped?
+      case 11:
+        return `${opName} ($${this.nes.getWordRep(i2)})`;
+      case 12:
+        return `${opName} $${this.nes.getWordRep(relVal)}`;
+      case 13:
+        return `${opName} ($${this.nes.getByteRep(i1)}),y`;
+      case 14:
+        return `${opName} $${this.nes.getWordRep(i2)},x`;
+      case 15:
+        return `${opName} $${this.nes.getWordRep(i2)},y`;
     }
-  }
+  };
 
   this.opLengths = [1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 0, 3, 2, 2, 3, 3];
 
   this.opNames = [
-    "brk", "ora", "kil", "slo", "nop", "ora", "asl", "slo", "php", "ora", "asl", "anc", "nop", "ora", "asl", "slo", //0x
-    "bpl", "ora", "kil", "slo", "nop", "ora", "asl", "slo", "clc", "ora", "nop", "slo", "nop", "ora", "asl", "slo", //1x
-    "jsr", "and", "kil", "rla", "bit", "and", "rol", "rla", "plp", "and", "rol", "anc", "bit", "and", "rol", "rla", //2x
-    "bmi", "and", "kil", "rla", "nop", "and", "rol", "rla", "sec", "and", "nop", "rla", "nop", "and", "rol", "rla", //3x
-    "rti", "eor", "kil", "sre", "nop", "eor", "lsr", "sre", "pha", "eor", "lsr", "alr", "jmp", "eor", "lsr", "sre", //4x
-    "bvc", "eor", "kil", "sre", "nop", "eor", "lsr", "sre", "cli", "eor", "nop", "sre", "nop", "eor", "lsr", "sre", //5x
-    "rts", "adc", "kil", "rra", "nop", "adc", "ror", "rra", "pla", "adc", "ror", "arr", "jmp", "adc", "ror", "rra", //6x
-    "bvs", "adc", "kil", "rra", "nop", "adc", "ror", "rra", "sei", "adc", "nop", "rra", "nop", "adc", "ror", "rra", //7x
-    "nop", "sta", "nop", "sax", "sty", "sta", "stx", "sax", "dey", "nop", "txa", "uni", "sty", "sta", "stx", "sax", //8x
-    "bcc", "sta", "kil", "uni", "sty", "sta", "stx", "sax", "tya", "sta", "txs", "uni", "uni", "sta", "uni", "uni", //9x
-    "ldy", "lda", "ldx", "lax", "ldy", "lda", "ldx", "lax", "tay", "lda", "tax", "uni", "ldy", "lda", "ldx", "lax", //ax
-    "bcs", "lda", "kil", "lax", "ldy", "lda", "ldx", "lax", "clv", "lda", "tsx", "uni", "ldy", "lda", "ldx", "lax", //bx
-    "cpy", "cmp", "nop", "dcp", "cpy", "cmp", "dec", "dcp", "iny", "cmp", "dex", "axs", "cpy", "cmp", "dec", "dcp", //cx
-    "bne", "cmp", "kil", "dcp", "nop", "cmp", "dec", "dcp", "cld", "cmp", "nop", "dcp", "nop", "cmp", "dec", "dcp", //dx
-    "cpx", "sbc", "nop", "isc", "cpx", "sbc", "inc", "isc", "inx", "sbc", "nop", "sbc", "cpx", "sbc", "inc", "isc", //ex
-    "beq", "sbc", "kil", "isc", "nop", "sbc", "inc", "isc", "sed", "sbc", "nop", "isc", "nop", "sbc", "inc", "isc", //fx
+    'brk',
+    'ora',
+    'kil',
+    'slo',
+    'nop',
+    'ora',
+    'asl',
+    'slo',
+    'php',
+    'ora',
+    'asl',
+    'anc',
+    'nop',
+    'ora',
+    'asl',
+    'slo', //0x
+    'bpl',
+    'ora',
+    'kil',
+    'slo',
+    'nop',
+    'ora',
+    'asl',
+    'slo',
+    'clc',
+    'ora',
+    'nop',
+    'slo',
+    'nop',
+    'ora',
+    'asl',
+    'slo', //1x
+    'jsr',
+    'and',
+    'kil',
+    'rla',
+    'bit',
+    'and',
+    'rol',
+    'rla',
+    'plp',
+    'and',
+    'rol',
+    'anc',
+    'bit',
+    'and',
+    'rol',
+    'rla', //2x
+    'bmi',
+    'and',
+    'kil',
+    'rla',
+    'nop',
+    'and',
+    'rol',
+    'rla',
+    'sec',
+    'and',
+    'nop',
+    'rla',
+    'nop',
+    'and',
+    'rol',
+    'rla', //3x
+    'rti',
+    'eor',
+    'kil',
+    'sre',
+    'nop',
+    'eor',
+    'lsr',
+    'sre',
+    'pha',
+    'eor',
+    'lsr',
+    'alr',
+    'jmp',
+    'eor',
+    'lsr',
+    'sre', //4x
+    'bvc',
+    'eor',
+    'kil',
+    'sre',
+    'nop',
+    'eor',
+    'lsr',
+    'sre',
+    'cli',
+    'eor',
+    'nop',
+    'sre',
+    'nop',
+    'eor',
+    'lsr',
+    'sre', //5x
+    'rts',
+    'adc',
+    'kil',
+    'rra',
+    'nop',
+    'adc',
+    'ror',
+    'rra',
+    'pla',
+    'adc',
+    'ror',
+    'arr',
+    'jmp',
+    'adc',
+    'ror',
+    'rra', //6x
+    'bvs',
+    'adc',
+    'kil',
+    'rra',
+    'nop',
+    'adc',
+    'ror',
+    'rra',
+    'sei',
+    'adc',
+    'nop',
+    'rra',
+    'nop',
+    'adc',
+    'ror',
+    'rra', //7x
+    'nop',
+    'sta',
+    'nop',
+    'sax',
+    'sty',
+    'sta',
+    'stx',
+    'sax',
+    'dey',
+    'nop',
+    'txa',
+    'uni',
+    'sty',
+    'sta',
+    'stx',
+    'sax', //8x
+    'bcc',
+    'sta',
+    'kil',
+    'uni',
+    'sty',
+    'sta',
+    'stx',
+    'sax',
+    'tya',
+    'sta',
+    'txs',
+    'uni',
+    'uni',
+    'sta',
+    'uni',
+    'uni', //9x
+    'ldy',
+    'lda',
+    'ldx',
+    'lax',
+    'ldy',
+    'lda',
+    'ldx',
+    'lax',
+    'tay',
+    'lda',
+    'tax',
+    'uni',
+    'ldy',
+    'lda',
+    'ldx',
+    'lax', //ax
+    'bcs',
+    'lda',
+    'kil',
+    'lax',
+    'ldy',
+    'lda',
+    'ldx',
+    'lax',
+    'clv',
+    'lda',
+    'tsx',
+    'uni',
+    'ldy',
+    'lda',
+    'ldx',
+    'lax', //bx
+    'cpy',
+    'cmp',
+    'nop',
+    'dcp',
+    'cpy',
+    'cmp',
+    'dec',
+    'dcp',
+    'iny',
+    'cmp',
+    'dex',
+    'axs',
+    'cpy',
+    'cmp',
+    'dec',
+    'dcp', //cx
+    'bne',
+    'cmp',
+    'kil',
+    'dcp',
+    'nop',
+    'cmp',
+    'dec',
+    'dcp',
+    'cld',
+    'cmp',
+    'nop',
+    'dcp',
+    'nop',
+    'cmp',
+    'dec',
+    'dcp', //dx
+    'cpx',
+    'sbc',
+    'nop',
+    'isc',
+    'cpx',
+    'sbc',
+    'inc',
+    'isc',
+    'inx',
+    'sbc',
+    'nop',
+    'sbc',
+    'cpx',
+    'sbc',
+    'inc',
+    'isc', //ex
+    'beq',
+    'sbc',
+    'kil',
+    'isc',
+    'nop',
+    'sbc',
+    'inc',
+    'isc',
+    'sed',
+    'sbc',
+    'nop',
+    'isc',
+    'nop',
+    'sbc',
+    'inc',
+    'isc', //fx
   ];
 
   // 重写 updateBreakpointList，合并到 disasm_breakpoints
   this.updateBreakpointList = function () {
-    let bl = el("disasm_breakpoints");
+    let bl = el('disasm_breakpoints');
     if (!bl) return;
-    bl.innerHTML = "<b>断点列表:</b><br>";
+    bl.innerHTML = '<b>断点列表:</b><br>';
     this.breakpoints.forEach((bp, i) => {
-      let line = document.createElement("div");
-      line.style.display = "flex";
-      line.style.alignItems = "center";
-      line.style.gap = "6px";
-      line.innerHTML =
-        `<span>${this.nes.getWordRep(bp.adr)}</span>
-        <label><input type="checkbox" ${bp.read ? "checked" : ""} data-type="read" data-idx="${i}">读</label>
-        <label><input type="checkbox" ${bp.write ? "checked" : ""} data-type="write" data-idx="${i}">写</label>
-        <label><input type="checkbox" ${bp.exec ? "checked" : ""} data-type="exec" data-idx="${i}">执行</label>
+      let line = document.createElement('div');
+      line.style.display = 'flex';
+      line.style.alignItems = 'center';
+      line.style.gap = '6px';
+      line.innerHTML = `<span>${this.nes.getWordRep(bp.adr)}</span>
+        <label><input type="checkbox" ${
+          bp.read ? 'checked' : ''
+        } data-type="read" data-idx="${i}">Read</label>
+        <label><input type="checkbox" ${
+          bp.write ? 'checked' : ''
+        } data-type="write" data-idx="${i}">Write</label>
+        <label><input type="checkbox" ${
+          bp.exec ? 'checked' : ''
+        } data-type="exec" data-idx="${i}">Execute</label>
         <button data-idx="${i}">移除</button>`;
       bl.appendChild(line);
     });
 
     // 事件绑定
-    bl.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    bl.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
       cb.onchange = (e) => {
-        let idx = +cb.dataset.idx, type = cb.dataset.type;
+        let idx = +cb.dataset.idx,
+          type = cb.dataset.type;
         let bp = this.breakpoints[idx];
         bp[type] = cb.checked;
         // 如果全部取消则移除
@@ -981,7 +1316,7 @@ function Debugger(nes, ctx) {
         this.updateBreakpointList();
       };
     });
-    bl.querySelectorAll('button').forEach(btn => {
+    bl.querySelectorAll('button').forEach((btn) => {
       btn.onclick = () => {
         let idx = +btn.dataset.idx;
         this.breakpoints.splice(idx, 1);
@@ -995,14 +1330,15 @@ function Debugger(nes, ctx) {
     if (!this.commentBreakKeywords.length) return false;
     let asm = this.instrStr(adr);
     let comment = this.getVirtuaNESComment(adr, true);
-    let text = asm + " " + comment;
-    return this.commentBreakKeywords.some(kw => text.includes(kw));
+    let text = asm + ' ' + comment;
+    return this.commentBreakKeywords.some((kw) => text.includes(kw));
   };
 }
 
 // 节流函数，避免resize高频调用
 function throttle(fn, delay) {
-  let last = 0, timer = null;
+  let last = 0,
+    timer = null;
   return function (...args) {
     const now = Date.now();
     if (now - last < delay) {
@@ -1033,7 +1369,6 @@ function adjustCanvasSize() {
   canvas.style.height = Math.floor(h * ratio) + 'px';
 }
 
-
 // 在initDebugUI或drawDissasembly等渲染后调用
 function adjustDebuggerPanel() {
   const panel = document.getElementById('disasm_view');
@@ -1045,18 +1380,19 @@ function adjustDebuggerPanel() {
   panel.style.maxHeight = maxH + 'px';
   panel.style.overflow = 'auto';
 
-
-
   // 图片等比缩放
   const imgs = panel.querySelectorAll('img');
-  imgs.forEach(img => {
-    img.style.maxWidth = (maxW - 40) + 'px';
-    img.style.maxHeight = (maxH - 120) + 'px';
+  imgs.forEach((img) => {
+    img.style.maxWidth = maxW - 40 + 'px';
+    img.style.maxHeight = maxH - 120 + 'px';
     img.style.height = 'auto';
     img.style.width = 'auto';
     // 等比缩放
     if (img.naturalWidth > maxW - 40 || img.naturalHeight > maxH - 120) {
-      const ratio = Math.min((maxW - 40) / img.naturalWidth, (maxH - 120) / img.naturalHeight);
+      const ratio = Math.min(
+        (maxW - 40) / img.naturalWidth,
+        (maxH - 120) / img.naturalHeight,
+      );
       img.style.width = Math.floor(img.naturalWidth * ratio) + 'px';
       img.style.height = Math.floor(img.naturalHeight * ratio) + 'px';
     }

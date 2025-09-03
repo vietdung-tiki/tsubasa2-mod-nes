@@ -55,6 +55,8 @@ function BulidHTML_ChrHTML() {
       '<span>Brush:</span><select id="penSelect"><option value="0"></option><option value="1"></option><option value="2"></option><option value="3"></option></select>&nbsp;' +
       '<canvas id="penCanvas" width="32" height="32"></canvas>&nbsp;' +
       '<span>Clipboard:</span><canvas id="PastTileCanvas" width="32" height="32"></canvas><br>' +
+      '<span>Clicked:</span><canvas id="clickedCanvas" width="32" height="32"></canvas><button onclick="clearClicked()">Clear</button><br>' +
+      '<textarea id="arrTile"></textarea><button onclick="changeArrTile()">Apply</button><br>' +
       '<canvas id="selectedTileCanvas" width="128" height="128"></canvas><br>' +
       '<button onclick="writeTileData()">Apply Tile Changes</button><br>' +
       '<span>CHR large view: right-click to open Copy/Paste menu.<br>' +

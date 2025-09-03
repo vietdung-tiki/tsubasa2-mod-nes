@@ -4,7 +4,7 @@ let logToastOrder = [];
 
 // log函数必须在logToastMap定义后声明
 let logLastTime = 0;
-function log(text, source = "default") {
+function log(text, source = 'default') {
   let now = Date.now();
   if (now - logLastTime < 30) return; // 30ms节流
   logLastTime = now;
@@ -29,8 +29,9 @@ function log(text, source = "default") {
     toast.style.pointerEvents = 'none';
     toast.style.transition = 'opacity 0.4s';
     toast.style.maxWidth = '98vw';
-    toast.style.overflowWrap = 'break-word'; 
-    var container = document.getElementById('fullscreenContainer') || document.body;
+    toast.style.overflowWrap = 'break-word';
+    var container =
+      document.getElementById('fullscreenContainer') || document.body;
     container.appendChild(toast);
     logToastMap[source] = toast;
     logToastOrder.push(source);
@@ -75,16 +76,15 @@ function log(text, source = "default") {
       for (let i = 0; i < logToastOrder.length; i++) {
         let s = logToastOrder[i];
         let t = logToastMap[s];
-        if (t) t.style.bottom = (baseBottom + i * 30) + 'px';
+        if (t) t.style.bottom = baseBottom + i * 30 + 'px';
       }
     }, 400);
   }, 3000);
 
   // 6. 追加到log区域
-  el("log").innerHTML += text + "<br>";
-  el("log").scrollTop = el("log").scrollHeight;
+  el('log').innerHTML += text + '<br>';
+  el('log').scrollTop = el('log').scrollHeight;
 }
-
 
 let nes = new Nes();
 let audioHandler = new AudioHandler();
@@ -92,29 +92,29 @@ let paused = false;
 let loaded = false;
 let pausedInBg = false;
 let loopId = 0;
-let loadedName = "";
+let loadedName = '';
 
 let dpr = window.devicePixelRatio || 1;
-let c = el("output");
+let c = el('output');
 c.width = 256;
 c.height = 240;
 // 设置画布样式防止模糊
-c.style.width = "256px";
-c.style.height = "240px";
-c.style.imageRendering = "pixelated";
-c.style.imageRendering = "crisp-edges"; // 兼容部分浏览器
-let ctx = c.getContext("2d");
+c.style.width = '256px';
+c.style.height = '240px';
+c.style.imageRendering = 'pixelated';
+c.style.imageRendering = 'crisp-edges'; // 兼容部分浏览器
+let ctx = c.getContext('2d');
 let imgData = ctx.createImageData(256, 240);
 
-let dc = el("doutput");
+let dc = el('doutput');
 dc.width = 512;
 dc.height = 480;
 // 设置调试画布样式防止模糊
-dc.style.width = "512px";
-dc.style.height = "480px";
-dc.style.imageRendering = "pixelated";
-dc.style.imageRendering = "crisp-edges"; // 兼容部分浏览器
-let dctx = dc.getContext("2d");
+dc.style.width = '512px';
+dc.style.height = '480px';
+dc.style.imageRendering = 'pixelated';
+dc.style.imageRendering = 'crisp-edges'; // 兼容部分浏览器
+let dctx = dc.getContext('2d');
 
 let db = new Debugger(nes, dctx);
 
@@ -126,8 +126,8 @@ let controlsP1 = {
   f: nes.INPUT.START,
   g: nes.INPUT.SELECT, // ← 用 g 作为 SELECT
   k: nes.INPUT.B,
-  j: nes.INPUT.A
-}
+  j: nes.INPUT.A,
+};
 let controlsP2 = {
   arrowright: nes.INPUT.RIGHT,
   arrowleft: nes.INPUT.LEFT,
@@ -136,24 +136,24 @@ let controlsP2 = {
   num8: nes.INPUT.START,
   num7: nes.INPUT.SELECT,
   num5: nes.INPUT.B,
-  num4: nes.INPUT.A
-}
+  num4: nes.INPUT.A,
+};
 
-
-zip.workerScriptsPath = "lib/";
+zip.workerScriptsPath = 'lib/';
 zip.useWebWorkers = false;
 
 // 加速功能变量
 window.turboSpeed = 1; // 1=正常，2/3=加速
 window.setTurboSpeed = function (speed) {
-  if (typeof speed === "boolean") {
+  if (typeof speed === 'boolean') {
     window.turboSpeed = speed ? 2 : 1;
-  } else if (typeof speed === "number") {
+  } else if (typeof speed === 'number') {
     window.turboSpeed = speed;
   }
   // 可选：在UI上显示当前倍速
   if (document.getElementById('turboBtnLabel')) {
-    document.getElementById('turboBtnLabel').textContent = window.turboSpeed + 'X';
+    document.getElementById('turboBtnLabel').textContent =
+      window.turboSpeed + 'X';
   }
 };
 
@@ -163,83 +163,95 @@ window.isNsfMode = false;
 // 定义常用模拟器调色板，增加 default 选项
 const NES_PALETTES = {
   default: {
-    name: "PPU原生",
+    name: 'PPU原生',
     data: [
-      0x656565, 0x002D69, 0x131F7F, 0x3B1377, 0x600B63, 0x730A36, 0x710F07, 0x531900,
-      0x2F2500, 0x0A3400, 0x003C00, 0x003D10, 0x003840, 0x000000, 0x000000, 0x000000,
-      0xAEAEAE, 0x0C48EF, 0x444CEF, 0x8200F6, 0xB900B6, 0xE00858, 0xE01400, 0xC02D00,
-      0x8B5000, 0x2D7400, 0x007C00, 0x007C44, 0x007288, 0x000000, 0x000000, 0x000000,
-      0xFFFFFF, 0x3B82FF, 0x6F8AFF, 0xA366FF, 0xF249FF, 0xFF40A6, 0xFF5431, 0xFF6F00,
-      0xC49300, 0x6BCB00, 0x26D700, 0x00D24D, 0x00C9AA, 0x393939, 0x000000, 0x000000,
-      0xFFFFFF, 0xA6CEFF, 0xB3CFFF, 0xCABFFF, 0xF7B3FF, 0xFFB6D6, 0xFFC4B7, 0xFFCCAE,
-      0xF7D8A5, 0xD7E895, 0xA6F7AF, 0xA2F2DA, 0xA0E8F2, 0xA0A0A0, 0x000000, 0x000000
-    ]
+      0x656565, 0x002d69, 0x131f7f, 0x3b1377, 0x600b63, 0x730a36, 0x710f07,
+      0x531900, 0x2f2500, 0x0a3400, 0x003c00, 0x003d10, 0x003840, 0x000000,
+      0x000000, 0x000000, 0xaeaeae, 0x0c48ef, 0x444cef, 0x8200f6, 0xb900b6,
+      0xe00858, 0xe01400, 0xc02d00, 0x8b5000, 0x2d7400, 0x007c00, 0x007c44,
+      0x007288, 0x000000, 0x000000, 0x000000, 0xffffff, 0x3b82ff, 0x6f8aff,
+      0xa366ff, 0xf249ff, 0xff40a6, 0xff5431, 0xff6f00, 0xc49300, 0x6bcb00,
+      0x26d700, 0x00d24d, 0x00c9aa, 0x393939, 0x000000, 0x000000, 0xffffff,
+      0xa6ceff, 0xb3cfff, 0xcabfff, 0xf7b3ff, 0xffb6d6, 0xffc4b7, 0xffccae,
+      0xf7d8a5, 0xd7e895, 0xa6f7af, 0xa2f2da, 0xa0e8f2, 0xa0a0a0, 0x000000,
+      0x000000,
+    ],
   },
   fceux: {
-    name: "FCEUX",
+    name: 'FCEUX',
     data: [
-      0x7C7C7C, 0x0000FC, 0x0000BC, 0x4428BC, 0x940084, 0xA80020, 0xA81000, 0x881400,
-      0x503000, 0x007800, 0x006800, 0x005800, 0x004058, 0x000000, 0x000000, 0x000000,
-      0xBCBCBC, 0x0078F8, 0x0058F8, 0x6844FC, 0xD800CC, 0xE40058, 0xF83800, 0xE45C10,
-      0xAC7C00, 0x00B800, 0x00A800, 0x00A844, 0x008888, 0x000000, 0x000000, 0x000000,
-      0xF8F8F8, 0x3CBCFC, 0x6888FC, 0x9878F8, 0xF878F8, 0xF85898, 0xF87858, 0xFCA044,
-      0xF8B800, 0xB8F818, 0x58D854, 0x58F898, 0x00E8D8, 0x787878, 0x000000, 0x000000,
-      0xFCFCFC, 0xA4E4FC, 0xB8B8F8, 0xD8B8F8, 0xF8B8F8, 0xF8A4C0, 0xF0D0B0, 0xFCE0A8,
-      0xF8D878, 0xD8F878, 0xB8F8B8, 0xB8F8D8, 0x00FCFC, 0xF8D8F8, 0x000000, 0x000000
-    ]
+      0x7c7c7c, 0x0000fc, 0x0000bc, 0x4428bc, 0x940084, 0xa80020, 0xa81000,
+      0x881400, 0x503000, 0x007800, 0x006800, 0x005800, 0x004058, 0x000000,
+      0x000000, 0x000000, 0xbcbcbc, 0x0078f8, 0x0058f8, 0x6844fc, 0xd800cc,
+      0xe40058, 0xf83800, 0xe45c10, 0xac7c00, 0x00b800, 0x00a800, 0x00a844,
+      0x008888, 0x000000, 0x000000, 0x000000, 0xf8f8f8, 0x3cbcfc, 0x6888fc,
+      0x9878f8, 0xf878f8, 0xf85898, 0xf87858, 0xfca044, 0xf8b800, 0xb8f818,
+      0x58d854, 0x58f898, 0x00e8d8, 0x787878, 0x000000, 0x000000, 0xfcfcfc,
+      0xa4e4fc, 0xb8b8f8, 0xd8b8f8, 0xf8b8f8, 0xf8a4c0, 0xf0d0b0, 0xfce0a8,
+      0xf8d878, 0xd8f878, 0xb8f8b8, 0xb8f8d8, 0x00fcfc, 0xf8d8f8, 0x000000,
+      0x000000,
+    ],
   },
   mesen: {
-    name: "Mesen",
+    name: 'Mesen',
     data: [
-      0x757575, 0x271B8F, 0x0000AB, 0x47009F, 0x8F0077, 0xAB0013, 0xA70000, 0x7F0B00,
-      0x432F00, 0x004700, 0x005100, 0x003F17, 0x1B3F5F, 0x000000, 0x000000, 0x000000,
-      0xBCBCBC, 0x0073EF, 0x233BEF, 0x8300F3, 0xBF00BF, 0xE7005B, 0xDB2B00, 0xCB4F0F,
-      0x8B7300, 0x009700, 0x00AB00, 0x00933B, 0x00838B, 0x000000, 0x000000, 0x000000,
-      0xFFFFFF, 0x3FBFFF, 0x5F73FF, 0xA78BFD, 0xF77BFF, 0xFF77B7, 0xFF7763, 0xFF9B3B,
-      0xF3BF3F, 0x83D313, 0x4FDF4B, 0x58F898, 0x00EBDB, 0x757575, 0x000000, 0x000000,
-      0xFFFFFF, 0xABE7FF, 0xC7D7FF, 0xD7CBFF, 0xFFC7FF, 0xFFC7DB, 0xFFBFA3, 0xFFDBAB,
-      0xFFE7A3, 0xE3FFA3, 0xABF3BF, 0xB3FFCF, 0x9FFFF3, 0xBCBCBC, 0x000000, 0x000000
-    ]
+      0x757575, 0x271b8f, 0x0000ab, 0x47009f, 0x8f0077, 0xab0013, 0xa70000,
+      0x7f0b00, 0x432f00, 0x004700, 0x005100, 0x003f17, 0x1b3f5f, 0x000000,
+      0x000000, 0x000000, 0xbcbcbc, 0x0073ef, 0x233bef, 0x8300f3, 0xbf00bf,
+      0xe7005b, 0xdb2b00, 0xcb4f0f, 0x8b7300, 0x009700, 0x00ab00, 0x00933b,
+      0x00838b, 0x000000, 0x000000, 0x000000, 0xffffff, 0x3fbfff, 0x5f73ff,
+      0xa78bfd, 0xf77bff, 0xff77b7, 0xff7763, 0xff9b3b, 0xf3bf3f, 0x83d313,
+      0x4fdf4b, 0x58f898, 0x00ebdb, 0x757575, 0x000000, 0x000000, 0xffffff,
+      0xabe7ff, 0xc7d7ff, 0xd7cbff, 0xffc7ff, 0xffc7db, 0xffbfa3, 0xffdbab,
+      0xffe7a3, 0xe3ffa3, 0xabf3bf, 0xb3ffcf, 0x9ffff3, 0xbcbcbc, 0x000000,
+      0x000000,
+    ],
   },
   nintendulator: {
-    name: "Nintendulator",
+    name: 'Nintendulator',
     data: [
-      0x6B6B6B, 0x001E7B, 0x0F0F8B, 0x47009F, 0x8F0077, 0xA70013, 0xA70000, 0x7F0B00,
-      0x432F00, 0x004700, 0x005100, 0x003F17, 0x1B3F5F, 0x000000, 0x000000, 0x000000,
-      0xBFBFBF, 0x0073EF, 0x233BEF, 0x8300F3, 0xBF00BF, 0xE7005B, 0xDB2B00, 0xCB4F0F,
-      0x8B7300, 0x009700, 0x00AB00, 0x00933B, 0x00838B, 0x000000, 0x000000, 0x000000,
-      0xFFFFFF, 0x3FBFFF, 0x5F73FF, 0xA78BFD, 0xF77BFF, 0xFF77B7, 0xFF7763, 0xFF9B3B,
-      0xF3BF3F, 0x83D313, 0x4FDF4B, 0x58F898, 0x00EBDB, 0x757575, 0x000000, 0x000000,
-      0xFFFFFF, 0xABE7FF, 0xC7D7FF, 0xD7CBFF, 0xFFC7FF, 0xFFC7DB, 0xFFBFA3, 0xFFDBAB,
-      0xFFE7A3, 0xE3FFA3, 0xABF3BF, 0xB3FFCF, 0x9FFFF3, 0xBCBCBC, 0x000000, 0x000000
-    ]
+      0x6b6b6b, 0x001e7b, 0x0f0f8b, 0x47009f, 0x8f0077, 0xa70013, 0xa70000,
+      0x7f0b00, 0x432f00, 0x004700, 0x005100, 0x003f17, 0x1b3f5f, 0x000000,
+      0x000000, 0x000000, 0xbfbfbf, 0x0073ef, 0x233bef, 0x8300f3, 0xbf00bf,
+      0xe7005b, 0xdb2b00, 0xcb4f0f, 0x8b7300, 0x009700, 0x00ab00, 0x00933b,
+      0x00838b, 0x000000, 0x000000, 0x000000, 0xffffff, 0x3fbfff, 0x5f73ff,
+      0xa78bfd, 0xf77bff, 0xff77b7, 0xff7763, 0xff9b3b, 0xf3bf3f, 0x83d313,
+      0x4fdf4b, 0x58f898, 0x00ebdb, 0x757575, 0x000000, 0x000000, 0xffffff,
+      0xabe7ff, 0xc7d7ff, 0xd7cbff, 0xffc7ff, 0xffc7db, 0xffbfa3, 0xffdbab,
+      0xffe7a3, 0xe3ffa3, 0xabf3bf, 0xb3ffcf, 0x9ffff3, 0xbcbcbc, 0x000000,
+      0x000000,
+    ],
   },
   virtuanes: {
-    name: "VirtuaNES",
+    name: 'VirtuaNES',
     data: [
-      0x7C7C7C, 0x0000FC, 0x0000BC, 0x4428BC, 0x940084, 0xA80020, 0xA81000, 0x881400,
-      0x503000, 0x007800, 0x006800, 0x005800, 0x004058, 0x000000, 0x000000, 0x000000,
-      0xBCBCBC, 0x0078F8, 0x0058F8, 0x6844FC, 0xD800CC, 0xE40058, 0xF83800, 0xE45C10,
-      0xAC7C00, 0x00B800, 0x00A800, 0x00A844, 0x008888, 0x000000, 0x000000, 0x000000,
-      0xF8F8F8, 0x3CBCFC, 0x6888FC, 0x9878F8, 0xF878F8, 0xF85898, 0xF87858, 0xFCA044,
-      0xF8B800, 0xB8F818, 0x58D854, 0x58F898, 0x00E8D8, 0x787878, 0x000000, 0x000000,
-      0xFCFCFC, 0xA4E4FC, 0xB8B8F8, 0xD8B8F8, 0xF8B8F8, 0xF8A4C0, 0xF0D0B0, 0xFCE0A8,
-      0xF8D878, 0xD8F878, 0xB8F8B8, 0xB8F8D8, 0x00FCFC, 0xF8D8F8, 0x000000, 0x000000
-    ]
+      0x7c7c7c, 0x0000fc, 0x0000bc, 0x4428bc, 0x940084, 0xa80020, 0xa81000,
+      0x881400, 0x503000, 0x007800, 0x006800, 0x005800, 0x004058, 0x000000,
+      0x000000, 0x000000, 0xbcbcbc, 0x0078f8, 0x0058f8, 0x6844fc, 0xd800cc,
+      0xe40058, 0xf83800, 0xe45c10, 0xac7c00, 0x00b800, 0x00a800, 0x00a844,
+      0x008888, 0x000000, 0x000000, 0x000000, 0xf8f8f8, 0x3cbcfc, 0x6888fc,
+      0x9878f8, 0xf878f8, 0xf85898, 0xf87858, 0xfca044, 0xf8b800, 0xb8f818,
+      0x58d854, 0x58f898, 0x00e8d8, 0x787878, 0x000000, 0x000000, 0xfcfcfc,
+      0xa4e4fc, 0xb8b8f8, 0xd8b8f8, 0xf8b8f8, 0xf8a4c0, 0xf0d0b0, 0xfce0a8,
+      0xf8d878, 0xd8f878, 0xb8f8b8, 0xb8f8d8, 0x00fcfc, 0xf8d8f8, 0x000000,
+      0x000000,
+    ],
   },
   nestopia: {
-    name: "Nestopia",
+    name: 'Nestopia',
     data: [
-      0x6B6B6B, 0x001E7B, 0x0F0F8B, 0x47009F, 0x8F0077, 0xA70013, 0xA70000, 0x7F0B00,
-      0x432F00, 0x004700, 0x005100, 0x003F17, 0x1B3F5F, 0x000000, 0x000000, 0x000000,
-      0xBFBFBF, 0x0073EF, 0x233BEF, 0x8300F3, 0xBF00BF, 0xE7005B, 0xDB2B00, 0xCB4F0F,
-      0x8B7300, 0x009700, 0x00AB00, 0x00933B, 0x00838B, 0x000000, 0x000000, 0x000000,
-      0xFFFFFF, 0x3FBFFF, 0x5F73FF, 0xA78BFD, 0xF77BFF, 0xFF77B7, 0xFF7763, 0xFF9B3B,
-      0xF3BF3F, 0x83D313, 0x4FDF4B, 0x58F898, 0x00EBDB, 0x757575, 0x000000, 0x000000,
-      0xFFFFFF, 0xABE7FF, 0xC7D7FF, 0xD7CBFF, 0xFFC7FF, 0xFFC7DB, 0xFFBFA3, 0xFFDBAB,
-      0xFFE7A3, 0xE3FFA3, 0xABF3BF, 0xB3FFCF, 0x9FFFF3, 0xBCBCBC, 0x000000, 0x000000
-    ]
-  }
+      0x6b6b6b, 0x001e7b, 0x0f0f8b, 0x47009f, 0x8f0077, 0xa70013, 0xa70000,
+      0x7f0b00, 0x432f00, 0x004700, 0x005100, 0x003f17, 0x1b3f5f, 0x000000,
+      0x000000, 0x000000, 0xbfbfbf, 0x0073ef, 0x233bef, 0x8300f3, 0xbf00bf,
+      0xe7005b, 0xdb2b00, 0xcb4f0f, 0x8b7300, 0x009700, 0x00ab00, 0x00933b,
+      0x00838b, 0x000000, 0x000000, 0x000000, 0xffffff, 0x3fbfff, 0x5f73ff,
+      0xa78bfd, 0xf77bff, 0xff77b7, 0xff7763, 0xff9b3b, 0xf3bf3f, 0x83d313,
+      0x4fdf4b, 0x58f898, 0x00ebdb, 0x757575, 0x000000, 0x000000, 0xffffff,
+      0xabe7ff, 0xc7d7ff, 0xd7cbff, 0xffc7ff, 0xffc7db, 0xffbfa3, 0xffdbab,
+      0xffe7a3, 0xe3ffa3, 0xabf3bf, 0xb3ffcf, 0x9ffff3, 0xbcbcbc, 0x000000,
+      0x000000,
+    ],
+  },
 };
 
 // 动态填充调色板下拉框
@@ -247,14 +259,14 @@ function fillPaletteSelect() {
   const sel = document.getElementById('palettes');
   if (!sel) return;
   sel.innerHTML = '';
-  Object.keys(NES_PALETTES).forEach(key => {
+  Object.keys(NES_PALETTES).forEach((key) => {
     const opt = document.createElement('option');
     opt.value = key;
     opt.textContent = NES_PALETTES[key].name;
     sel.appendChild(opt);
   });
   // 默认选中 default
-  sel.value = "default";
+  sel.value = 'default';
 }
 
 // 切换调色板事件
@@ -262,9 +274,18 @@ function setNesPaletteBySelect() {
   const sel = document.getElementById('palettes');
   if (!sel) return;
   const key = sel.value;
-  if (NES_PALETTES[key] && nes && nes.ppu && nes.loadRom && typeof nes.ppu.setPalette === 'function') {
+  if (
+    NES_PALETTES[key] &&
+    nes &&
+    nes.ppu &&
+    nes.loadRom &&
+    typeof nes.ppu.setPalette === 'function'
+  ) {
     nes.ppu.setPalette(NES_PALETTES[key].data);
-    log(i18n('log.palette.loaded_palette', { name: NES_PALETTES[key].name }), "palette");
+    log(
+      i18n('log.palette.loaded_palette', { name: NES_PALETTES[key].name }),
+      'palette',
+    );
   }
 }
 
@@ -273,8 +294,7 @@ window.addEventListener('DOMContentLoaded', function () {
   fillPaletteSelect();
   setNesPaletteBySelect();
   if (window.resizeCanvasToFitWindow) window.resizeCanvasToFitWindow();
-  if (window.updateCtxAfterResize) window.updateCtxAfterResize(); 
-
+  if (window.updateCtxAfterResize) window.updateCtxAfterResize();
 
   const sel = document.getElementById('palettes');
   if (sel) sel.onchange = setNesPaletteBySelect;
@@ -282,11 +302,11 @@ window.addEventListener('DOMContentLoaded', function () {
   // 新增：点击 nesornsf 切换NSF/NES模式
   const nesornsf = document.getElementById('nesornsf');
   if (nesornsf) {
-    nesornsf.style.cursor = "pointer";
-    nesornsf.title = "点击切换NSF/NES模式";
+    nesornsf.style.cursor = 'pointer';
+    nesornsf.title = '点击切换NSF/NES模式';
     nesornsf.onclick = function (e) {
       // 如果点击的是关闭按钮，不切换模式
-      if (e.target && e.target.id === "statusBarClose") return;
+      if (e.target && e.target.id === 'statusBarClose') return;
       stopnesnsf();
       // 切换模式
       if (window.isNsfMode) {
@@ -306,19 +326,19 @@ window.addEventListener('DOMContentLoaded', function () {
 function stopnesnsf() {
   // 先销毁已有 NES/NSF 线程和资源
   // 停止 NES 主循环和音频
-  if (typeof loopId !== "undefined" && loopId) {
+  if (typeof loopId !== 'undefined' && loopId) {
     cancelAnimationFrame(loopId);
     loopId = 0;
   }
-  if (typeof audioHandler !== "undefined" && audioHandler) {
+  if (typeof audioHandler !== 'undefined' && audioHandler) {
     audioHandler.stop();
   }
   // 停止 NSF 主循环和音频
-  if (typeof nsfLoopId !== "undefined" && nsfLoopId) {
+  if (typeof nsfLoopId !== 'undefined' && nsfLoopId) {
     cancelAnimationFrame(nsfLoopId);
     nsfLoopId = 0;
   }
-  if (typeof nsfAudioHandler !== "undefined" && nsfAudioHandler) {
+  if (typeof nsfAudioHandler !== 'undefined' && nsfAudioHandler) {
     nsfAudioHandler.stop();
   }
   window.nsfPlayer = null;
@@ -332,59 +352,83 @@ function stopnesnsf() {
 // 新增：统一zip解压方法，返回Promise
 function extractRomFromZip(blob) {
   return new Promise((resolve, reject) => {
-    zip.createReader(new zip.BlobReader(blob), function (reader) {
-      reader.getEntries(function (entries) {
-        if (!entries.length) {
-          reject(i18n('log.zip.empty'));
-          return;
-        }
-        let found = false;
-        for (let i = 0; i < entries.length; i++) {
-          let name = entries[i].filename;
-          if (name.slice(-4).toLowerCase() === ".nes" || name.slice(-4).toLowerCase() === ".nsf") {
-            found = true;
-            entries[i].getData(new zip.BlobWriter(), function (blob) {
-              let breader = new FileReader();
-              breader.onload = function () {
-                let rbuf = breader.result;
-                let arr = new Uint8Array(rbuf);
-                resolve({ arr, name });
-                reader.close(function () { });
-              };
-              breader.readAsArrayBuffer(blob);
-            }, function () { });
-            break;
+    zip.createReader(
+      new zip.BlobReader(blob),
+      function (reader) {
+        reader.getEntries(function (entries) {
+          if (!entries.length) {
+            reject(i18n('log.zip.empty'));
+            return;
           }
-        }
-        if (!found) {
-          reject(i18n('log.zip.no_nes'));
-        }
-      });
-    }, function (err) {
-      reject(i18n('log.zip.failed', { err }));
-    });
+          let found = false;
+          for (let i = 0; i < entries.length; i++) {
+            let name = entries[i].filename;
+            if (
+              name.slice(-4).toLowerCase() === '.nes' ||
+              name.slice(-4).toLowerCase() === '.nsf'
+            ) {
+              found = true;
+              entries[i].getData(
+                new zip.BlobWriter(),
+                function (blob) {
+                  let breader = new FileReader();
+                  breader.onload = function () {
+                    let rbuf = breader.result;
+                    let arr = new Uint8Array(rbuf);
+                    resolve({ arr, name });
+                    reader.close(function () {});
+                  };
+                  breader.readAsArrayBuffer(blob);
+                },
+                function () {},
+              );
+              break;
+            }
+          }
+          if (!found) {
+            reject(i18n('log.zip.no_nes'));
+          }
+        });
+      },
+      function (err) {
+        reject(i18n('log.zip.failed', { err }));
+      },
+    );
   });
 }
 
 // 修改 loadRom 入口，支持 zip 自动解压
 function loadRom(romOrArr, name) {
   // 如果是 File/Blob 且是 zip，先解压
-  if (typeof romOrArr === "object" && romOrArr instanceof Blob && name && name.slice(-4).toLowerCase() === ".zip") {
-    extractRomFromZip(romOrArr).then(({ arr, name }) => {
-      loadRom(arr, name);
-    }).catch(err => {
-      log(err, "zip");
-    });
+  if (
+    typeof romOrArr === 'object' &&
+    romOrArr instanceof Blob &&
+    name &&
+    name.slice(-4).toLowerCase() === '.zip'
+  ) {
+    extractRomFromZip(romOrArr)
+      .then(({ arr, name }) => {
+        loadRom(arr, name);
+      })
+      .catch((err) => {
+        log(err, 'zip');
+      });
     return;
   }
   // 如果是 Uint8Array 且文件名是 zip，尝试转为 Blob 解压
-  if (romOrArr instanceof Uint8Array && name && name.slice(-4).toLowerCase() === ".zip") {
+  if (
+    romOrArr instanceof Uint8Array &&
+    name &&
+    name.slice(-4).toLowerCase() === '.zip'
+  ) {
     let blob = new Blob([romOrArr]);
-    extractRomFromZip(blob).then(({ arr, name }) => {
-      loadRom(arr, name);
-    }).catch(err => {
-      log(err, "zip");
-    });
+    extractRomFromZip(blob)
+      .then(({ arr, name }) => {
+        loadRom(arr, name);
+      })
+      .catch((err) => {
+        log(err, 'zip');
+      });
     return;
   }
   // NES 正常流程
@@ -401,7 +445,7 @@ function loadRom(romOrArr, name) {
     hideNesUiForNsf();
     showNsfUI();
     if (!window.NsfPlayer) {
-      log("未加载NSF支持脚本", "nsf");
+      log('未加载NSF支持脚本', 'nsf');
       return;
     }
     nsfPlayer = new NsfPlayer();
@@ -424,11 +468,11 @@ function loadRom(romOrArr, name) {
   saveBatteryForRom();
   db.loadRom(romOrArr, function (success) {
     if (!success) return;
-    let data = localStorage.getItem(name + "_battery");
+    let data = localStorage.getItem(name + '_battery');
     if (data) {
       let obj = JSON.parse(data);
       db.nes.setBattery(obj);
-      log(i18n('log.save.loaded_battery'), "save");
+      log(i18n('log.save.loaded_battery'), 'save');
     }
     if (!loaded && !paused) {
       loopId = requestAnimationFrame(update);
@@ -467,7 +511,7 @@ function loadRom(romOrArr, name) {
 window.loadRom = loadRom;
 
 // 修改 el("rom").onchange，直接传递 File/Blob 给 loadRom
-el("rom").onchange = function (e) {
+el('rom').onchange = function (e) {
   audioHandler.resume();
   let file = e.target.files[0];
   let fileName = file.name;
@@ -476,7 +520,7 @@ el("rom").onchange = function (e) {
   freader.onload = function () {
     let buf = freader.result;
     // zip 直接传 Blob，否则传 Uint8Array
-    if (fileName.slice(-4).toLowerCase() === ".zip") {
+    if (fileName.slice(-4).toLowerCase() === '.zip') {
       loadRom(file, fileName);
     } else {
       let arr = new Uint8Array(buf);
@@ -486,23 +530,23 @@ el("rom").onchange = function (e) {
   freader.readAsArrayBuffer(file);
 };
 
-el("pause").onclick = function (e) {
+el('pause').onclick = function (e) {
   if (paused && loaded) {
     setPausedState(false);
   } else {
     setPausedState(true);
   }
-}
+};
 
-el("reset").onclick = function (e) {
+el('reset').onclick = function (e) {
   db.nes.reset(false);
   db.updateDebugView();
-}
+};
 
-el("hardreset").onclick = function (e) {
+el('hardreset').onclick = function (e) {
   db.nes.reset(true);
   db.updateDebugView();
-}
+};
 
 document.onvisibilitychange = function (e) {
   if (document.hidden) {
@@ -517,11 +561,11 @@ document.onvisibilitychange = function (e) {
       pausedInBg = false;
     }
   }
-}
+};
 
 window.onpagehide = function (e) {
   saveBatteryForRom();
-}
+};
 
 let autoSaveTimer = null;
 
@@ -530,14 +574,19 @@ function startAutoSave() {
   autoSaveTimer = setInterval(function () {
     if (loaded && !paused && window.nes) {
       let output = document.getElementById('output');
-      let screenshot = output.toDataURL("image/png");
+      let screenshot = output.toDataURL('image/png');
       let timestamp = new Date().toLocaleString();
 
       if (window.SaveManager) {
-        window.SaveManager.updateSaveSlot(window.SaveManager.AUTO_SAVE_SLOT, screenshot, timestamp, function (err, record) {
-          if (err) {
-          }
-        });
+        window.SaveManager.updateSaveSlot(
+          window.SaveManager.AUTO_SAVE_SLOT,
+          screenshot,
+          timestamp,
+          function (err, record) {
+            if (err) {
+            }
+          },
+        );
       }
     }
   }, 7000);
@@ -548,10 +597,10 @@ function saveBatteryForRom() {
     let data = db.nes.getBattery();
     if (data) {
       try {
-        localStorage.setItem(loadedName + "_battery", JSON.stringify(data));
-        log(i18n('log.save.saved_battery'), "save");
+        localStorage.setItem(loadedName + '_battery', JSON.stringify(data));
+        log(i18n('log.save.saved_battery'), 'save');
       } catch (e) {
-        log(i18n('log.save.failed_save_battery', { err: e }), "save");
+        log(i18n('log.save.failed_save_battery', { err: e }), 'save');
       }
     }
   }
@@ -566,14 +615,14 @@ function setPausedState(paused) {
     if (autoSaveTimer) clearInterval(autoSaveTimer);
     cancelAnimationFrame(loopId);
     audioHandler.stop();
-    el("pause").innerText = "继续";
-    log(i18n('log.pause.paused'), "pause");
+    el('pause').innerText = 'Continue';
+    log(i18n('log.pause.paused'), 'pause');
   } else {
     cancelAnimationFrame(loopId);
     loopId = requestAnimationFrame(update);
     audioHandler.start();
-    el("pause").innerText = "暂停";
-    log(i18n('log.pause.unpaused'), "pause");
+    el('pause').innerText = 'Pause';
+    log(i18n('log.pause.unpaused'), 'pause');
     startAutoSave();
   }
   if (window.updatePauseBtnOverlayState) window.updatePauseBtnOverlayState();
@@ -598,7 +647,7 @@ function update() {
   // 60帧每秒，每帧约16.6667ms
   let nesFrames = (elapsed + nesFrameResidue) / (1000 / 60);
   let framesToRun = Math.floor(nesFrames);
-  nesFrameResidue = (elapsed + nesFrameResidue) - framesToRun * (1000 / 60);
+  nesFrameResidue = elapsed + nesFrameResidue - framesToRun * (1000 / 60);
 
   // turbo模式下加速
   let turbo = window.turboSpeed || 1;
@@ -624,7 +673,6 @@ function runFrame() {
   return false;
 }
 
-
 let lastFpsUpdate = performance.now();
 let frameCount = 0;
 let currentFps = 60;
@@ -637,7 +685,6 @@ if (fpsCheckbox) {
   });
 }
 
-
 function draw() {
   db.nes.getSamples(audioHandler.sampleBuffer, audioHandler.samplesPerFrame);
   audioHandler.nextBuffer();
@@ -648,7 +695,7 @@ function draw() {
   frameCount++;
   let now = performance.now();
   if (now - lastFpsUpdate >= 500) {
-    currentFps = Math.round(frameCount * 1000 / (now - lastFpsUpdate));
+    currentFps = Math.round((frameCount * 1000) / (now - lastFpsUpdate));
     lastFpsUpdate = now;
     frameCount = 0;
   }
@@ -672,16 +719,16 @@ function draw() {
     // 推荐字号和边距都用像素坐标
     const fontSize = Math.max(12, Math.round(realW / 28));
     ctx.font = `500 ${fontSize}px Arial,Consolas,monospace`;
-    ctx.textAlign = "right";
-    ctx.textBaseline = "top";
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
     ctx.globalAlpha = 0.55;
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = '#fff';
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "rgba(0,0,0,0.5)";
+    ctx.strokeStyle = 'rgba(0,0,0,0.5)';
     // 右上角，距离右边8像素
     const x = realW - 8 * scaleX;
     const y = 4 * scaleY;
-    let fpsText = currentFps > 0 ? currentFps + " FPS" : "... FPS";
+    let fpsText = currentFps > 0 ? currentFps + ' FPS' : '... FPS';
     ctx.strokeText(fpsText, x, y);
     ctx.fillText(fpsText, x, y);
     ctx.restore();
@@ -692,10 +739,10 @@ window.addEventListener('load', function () {
   if (window.resizeCanvasToFitWindow) window.resizeCanvasToFitWindow();
 });
 
-window.updateCtxAfterResiz=updateCtxAfterResize;
+window.updateCtxAfterResiz = updateCtxAfterResize;
 function updateCtxAfterResize() {
-  c = el("output");
-  ctx = c.getContext("2d");
+  c = el('output');
+  ctx = c.getContext('2d');
   imgData = ctx.createImageData(256, 240);
 }
 
@@ -703,33 +750,39 @@ function el(id) {
   return document.getElementById(id);
 }
 
-
-
 function save_State() {
   let saveState = db.nes.getState();
   let slot = window.currentSaveSlot !== undefined ? window.currentSaveSlot : 0;
 
   let output = document.getElementById('output');
-  let screenshot = output.toDataURL("image/png");
+  let screenshot = output.toDataURL('image/png');
   let timestamp = new Date().toLocaleString();
 
   if (window.SaveManager && SaveManager.updateSaveSlot) {
-    SaveManager.updateSaveSlot(slot, screenshot, timestamp, function (err, record) {
-      if (err) {
-        log(i18n('log.save.failed_save_state') + "到存档卡槽" + slot, "save");
-        return;
-      }
-
-      record.saveState = saveState;
-
-      window.SaveManager.updateSaveData(slot, record, function (err) {
+    SaveManager.updateSaveSlot(
+      slot,
+      screenshot,
+      timestamp,
+      function (err, record) {
         if (err) {
-          log(i18n('log.save.failed_save_state') + "到存档卡槽" + slot, "save");
-        } else {
-          log(i18n('log.save.saved_state') + "到存档卡槽" + slot, "save");
+          log(i18n('log.save.failed_save_state') + '到存档卡槽' + slot, 'save');
+          return;
         }
-      });
-    });
+
+        record.saveState = saveState;
+
+        window.SaveManager.updateSaveData(slot, record, function (err) {
+          if (err) {
+            log(
+              i18n('log.save.failed_save_state') + '到存档卡槽' + slot,
+              'save',
+            );
+          } else {
+            log(i18n('log.save.saved_state') + '到存档卡槽' + slot, 'save');
+          }
+        });
+      },
+    );
   }
 }
 
@@ -739,29 +792,26 @@ function load_State() {
   if (window.SaveManager && SaveManager.getSaveData) {
     window.SaveManager.getSaveData(slot, function (err, record) {
       if (err || !record || !record.saveState) {
-        log("存档卡槽" + slot + "为空，无法读档!", "save");
+        log('存档卡槽' + slot + '为空，无法读档!', 'save');
         return;
       }
 
       if (record.romName !== loadedName) {
-        log("存档卡槽" + slot + "为空，无法读档!", "save");
+        log('存档卡槽' + slot + '为空，无法读档!', 'save');
         return;
       }
 
       if (db.nes.setState(record.saveState)) {
         if (slot != -1) {
-          log("从存档卡槽" + slot + i18n('log.save.loaded_state'), "save");
-        }
-        else {
-          log("已加载自动存档", "save");
+          log('从存档卡槽' + slot + i18n('log.save.loaded_state'), 'save');
+        } else {
+          log('已加载自动存档', 'save');
         }
       } else {
-        log("从存档卡槽" + slot + i18n('log.save.failed_load_state'), "save");
+        log('从存档卡槽' + slot + i18n('log.save.failed_load_state'), 'save');
       }
     });
   }
 }
-
-
 
 window.nes = nes;
