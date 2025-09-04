@@ -77,7 +77,7 @@ function IntoChrPage() {
     currentTileData = currentData.slice(tileOffset, tileOffset + 16);
     ShowTileCode();
     drawSelectedTile(currentTileData);
-    drawClickedTile(currentTileData, tileIndex);
+    addClickedTile(currentTileData, tileIndex);
   });
 
   chrCanvas.addEventListener('contextmenu', (e) => {
@@ -195,13 +195,12 @@ var clickedTile = [];
 function clearClicked() {
   clickedData = [];
   clickedTile = [];
-  drawClickedTile();
+  addClickedTile();
 }
-function drawClickedTile(tileData, tileIndex) {
-  const canvas = document.getElementById('clickedCanvas');
-  const ctx = canvas.getContext('2d');
-
+function addClickedTile(tileData, tileIndex) {
   if (!tileData) {
+    const canvas = $('#clickedCanvas')[0];
+    const ctx = canvas.getContext('2d');
     canvas.width = clickedCanvas.height = 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     return;
@@ -209,18 +208,22 @@ function drawClickedTile(tileData, tileIndex) {
   clickedTile.push(tileIndex.toString(16));
   $('#arrTile').val(clickedTile.join(' '));
   clickedData.push(tileData);
+  drawClickedTile(clickedData);
+}
+function drawClickedTile(data, canvas = $('#clickedCanvas')[0]) {
+  const ctx = canvas.getContext('2d');
 
   const SCALE = 4;
   const TILE = 8;
   const BYTES_PER_TILE = 16;
 
-  const tileCount = clickedData.length;
+  const tileCount = data.length;
   canvas.width = tileCount * TILE * SCALE;
   canvas.height = TILE * SCALE;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   for (let t = 0; t < tileCount; t++) {
-    const td = clickedData[t];
+    const td = data[t];
     if (!td || td.length < BYTES_PER_TILE) continue;
 
     for (let y = 0; y < TILE; y++) {
@@ -253,7 +256,7 @@ function changeArrTile() {
       parseInt(chrPageSelect.value) * 0x1000 +
       tileIndex * 16);
     currentTileData = currentData.slice(tileOffset, tileOffset + 16);
-    drawClickedTile(currentTileData, tileIndex);
+    addClickedTile(currentTileData, tileIndex);
   }
 }
 

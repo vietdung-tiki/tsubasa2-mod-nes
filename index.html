@@ -18,7 +18,7 @@
 <body>
 	<div id="main">
 		<div>
-			<p style="font-size: 1.1em" id="updated_at">by tosenzzz 2025-09-03 18:06:12</p>
+			<p style="font-size: 1.1em" id="updated_at">by tosenzzz 2025-09-04 10:57:37</p>
 			<a href="http://daymoe.com/rom/" rel="nofollow noopener noreferrer">RomMarket</a>&nbsp;
 			<a href="https://daymoe.com/rom/Hack%20CT2.html" rel="nofollow noopener noreferrer">Original</a><br>
 
@@ -42,7 +42,8 @@
 				<li class="ctab">Music</li>
 				<li class="ctab">HEX</li>
 				<li class="ctab">CHR</li>
-				<li class="ctab">Addon</li>
+				<li class="ctab">Patch</li>
+				<li class="ctab">Replace Text</li>
 				<li class="tabFocus ctab">About</li>
 			</ul>
 			<ul id="content">
@@ -134,17 +135,35 @@
 						</div>
 					</div>
 				</li>
-				<li class="ctab" style="pointer-events: auto;">
+				<li class="ctab">
 					<span>Input patch code:</span><br>
-					<textarea id="patch_code" style="width: 100%; resize: none; height: 120px;">;Can select stage on start
+					<textarea id="patch_code" style="width: 100%; resize: none; height: 120px;">;Sample: can select stage on start
 127=A9;
-12E=A9;</textarea><br><button onclick="ApplyPatch()">Apply</button>
+12E=A9;</textarea><br>
+					<button onclick="ApplyPatch()">Apply</button><br>
+				</li>
+				<li class="ctab">
+					<span>Search text: </span> <input type="text" style="width:120px;" id="searchTxt" value="">
+					<button onclick="SearchInCHR('search')">Search in CHR</button>
+					Limit: <input type="number" style="width:30px;" id="searchLimit" value="0">
+					<span id="searchCnt"></span><br>
+					<span id="searchRs"></span><br>
+					<button onclick="SearchInRom()">Search in ROM </button>
+					<input id="has_end_char" checked type="checkbox"><label for="has_end_char"> End character (FC)</label>
+					<span id="searchRomCnt"></span><br>
+					<span>Replace text: </span> <input type="text" style="width:120px;" id="replaceTxt" value="">
+					<button onclick="SearchInCHR('replace')">Search in CHR</button>
+					<span id="replaceCnt"></span><br>
+					<span id="replaceRs"></span><br>
+					<button onclick="ReplaceText()">Replace Text </button>
 				</li>
 				<li class="c ctab" style="pointer-events: auto;">
 					<span>On mobile, it’s recommended to use Chrome or Microsoft Edge.<br>Switching your phone to landscape
 						improves the experience.<br>The page may load slowly...<br>Available features: Team \ Appearance \ Ability \
 						Commands \ Music \ AI \ CHR \ Hex editor.</span><br>
 					<textarea style="width: 100%; resize: none; height: 180px;" readonly="readonly">
+2025.09.03 Add replace TEXT feature.
+2025.09.01 Improve CHR feature. Add Patch feature.
 2025.05.08 Improve emulator features tailored for CT2.
 2025.04.23 Modified the emulator referencing VirtuaNES source; now compatible with most mods (Japanese/Chinese, etc.)
 2025.04.20 Switched to the open-source emulator NesJs.
