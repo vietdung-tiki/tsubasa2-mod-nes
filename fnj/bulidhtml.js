@@ -156,8 +156,9 @@ function BulidHTML_Team_Player() {
   // Select stage
   $('#Select_stage').empty();
   $('#Select_stage').append(
-    $(`<span><input id="sel_stage" type="checkbox"> Can select stage </span>`),
-    $(`<button onclick="ChangeSelStage()">Apply</button>`),
+    `<input id="sel_stage" type="checkbox">`,
+    `<label for="sel_stage">Can select stage</label>`,
+    `<button onclick="ChangeSelStage()">Apply</button>`,
   );
 
   // Players

@@ -27,12 +27,12 @@ file2.onchange = function () {
       NesHex.push(byts[i]);
     }
     filenamenes = getFileName(uploadfilenames);
-    CheckNesHex(filenamenes);
+    CheckNesHex();
     //alert(filenamenes);
   };
 };
 
-function CheckNesHex(fname) {
+function CheckNesHex() {
   IsCn = Is1v32 = false;
   if (NesHex[0x3d1f6] == 0xa2) {
     IsCn = true;

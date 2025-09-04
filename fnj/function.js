@@ -428,18 +428,6 @@ function ChangeSelStage() {
   alertMsg('#isfileload', 'green', 'Team data updated successfully!');
 }
 
-function ApplyPatch() {
-  var codes = $('#patch_code').val().replace(/;.*/g, '').trim().split('\n');
-  codes.forEach((code) => {
-    var addr = Number('0x' + code.split('=')[0]);
-    var vals = code.split('=')[1].trim().split(' ');
-    for (var i = 0; i < vals.length; i++) {
-      NesHex[addr + i] = vals[i];
-    }
-  });
-  alertMsg('#isfileload', 'green', 'Patch updated successfully!');
-}
-
 function TeamSelectChange() {
   $('#replayerlistdiv').css('display', 'none');
   // Team_player_list
